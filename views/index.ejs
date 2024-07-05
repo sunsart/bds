@@ -8,6 +8,9 @@
 
   <!-- 브라우저 css 기본스타일 초기화 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css">
+
+  <!-- ajax 사용을 위한 제이쿼리 -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   
   <!-- The Open Graph Protocal -->
   <meta property="og:type" content="website">
@@ -23,9 +26,107 @@
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
 
   <!-- css 링크  -->
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/menu.css">
+  <link rel="stylesheet" href="../css/dropdown.css">
 
+  <!-- JS 링크 -->
+  <script src="../js/dropdown.js"></script>
+  <script src="../js/table.js"></script>
+  
 </head>
 <body>
-  <p>웹사이트 테스트 입니다.</p>
+  <div id="container">
+
+    <!-- ===== header menu ===== -->
+    <header>
+      <%- include('menu') %>
+    </header>
+
+    <!-- ===== 드롭다운바 ===== -->
+    <div class="navibar">
+      <div class="dropdown">
+        <button id="apt" class="dropbtn" onclick="clickMenuBtn(this.id)">아파트</button>
+        <div id="apt-Dropdown" class="dropdown-content">
+          <a href="/type/apt_trade" class="menu">매매</a>
+          <a href="/type/apt_jeonse" class="menu">전세</a>
+          <a href="/type/apt_monthly" class="menu">월세</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <button id="officetel" class="dropbtn" onclick="clickMenuBtn(this.id)">오피스텔
+        </button>
+        <div id="officetel-Dropdown" class="dropdown-content">
+          <a href="/type/officetel_trade" class="menu">매매</a>
+          <a href="/type/officetel_jeonse" class="menu">전세</a>
+          <a href="/type/officetel_monthly" class="menu">월세</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <button id="dasedae" class="dropbtn" onclick="clickMenuBtn(this.id)">다세대주택</button>
+        <div id="dasedae-Dropdown" class="dropdown-content">
+          <a href="/type/dasedae_trade" class="menu">매매</a>
+          <a href="/type/dasedae_jeonse" class="menu">전세</a>
+          <a href="/type/dasedae_monthly" class="menu">월세</a>
+        </div>
+      </div>
+    
+      <div class="dropdown">
+        <button id="dagagu" class="dropbtn" onclick="clickMenuBtn(this.id)">다가구주택</button>
+        <div id="dagagu-Dropdown" class="dropdown-content">
+          <a href="/type/dagagu_trade" class="menu">매매</a>
+          <a href="/type/dagagu_jeonse" class="menu">전세</a>
+          <a href="/type/dagagu_monthly" class="menu">월세</a>
+        </div>
+      </div>
+    
+      <div class="dropdown">
+        <button id="oneroom" class="dropbtn" onclick="clickMenuBtn(this.id)">원룸</button>
+        <div id="oneroom-Dropdown" class="dropdown-content">
+          <a href="/type/oneroom_jeonse" class="menu">전세</a>
+          <a href="/type/oneroom_monthly" class="menu">월세</a>
+        </div>
+      </div>
+    
+      <div class="dropdown">
+        <button id="shop" class="dropbtn" onclick="clickMenuBtn(this.id)" style="color:yellowgreen;">상가</button>
+        <div id="shop-Dropdown" class="dropdown-content">
+          <a href="/type/shop_trade" class="menu">매매</a>
+          <a href="/type/shop_monthly" class="menu">월세</a>
+        </div>
+      </div>
+    
+      <div class="dropdown">
+        <button id="factory" class="dropbtn" onclick="clickMenuBtn(this.id)" style="color:yellowgreen;">공장/창고</button>
+        <div id="factory-Dropdown" class="dropdown-content">
+          <a href="/type/factory_trade">매매</a>
+          <a href="/type/factory_monthly">월세</a>
+        </div>
+      </div>
+    
+      <div class="dropdown">
+        <button id="land" class="dropbtn" onclick="clickMenuBtn(this.id)" style="color:yellowgreen;">토지</button>
+        <div id="land-Dropdown" class="dropdown-content">
+          <a href="/type/land_trade">매매</a>
+          <a href="/type/land_monthly">월세</a>
+        </div>
+      </div>
+    
+      <div class="dropdown">
+        <button id="etc" class="dropbtn" onclick="clickMenuBtn(this.id)" style="color:yellow;">기타</button>
+        <div id="etc-Dropdown" class="dropdown-content">
+          <a href="/type/etc">기타</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== 특약테이블 ===== -->
+    
+
+  </div>
 </body>
 </html>
