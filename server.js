@@ -49,15 +49,15 @@ app.use(express.static(__dirname + ''));
 
 //=============================//
 app.get('/', function(req, res) {
-  res.render("index.ejs");
+  res.render('index.ejs', {user:req.session.user});
 })
 
 app.get('/login', function(req, res) {
-  res.render("login.ejs");
+  res.render('login.ejs', {user:req.session.user});
 })
 
 app.get('/signup', function(req, res) {
-  res.render("signup.ejs");
+  res.render('signup.ejs', {user:req.session.user});
 })
 
 // 라우터 분리

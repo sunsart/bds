@@ -21,47 +21,50 @@
   
 </head>
 <body>
+  <div id="container">
 
-  <!-- ===== Header ===== -->
-  <header>
-    <%- include('menu') %>
-  </header>
+    <!-- Header -->
+    <header>
+      <%- include('menu', {user:user}) %>
+    </header>
 
-  <div class="signup_container">
-    <form action="#">
-      <div class="signup">
-        <span class="title">회원가입</span>
-        <hr>
-    
-        <label for="name">아이디</label>
-        <input type="text" id="name">
-    
-        <label for="pw1">비밀번호</label>
-        <input type="password" id="pw1">
+    <!-- 회원가입 -->
+    <div class="signup_container">
+      <form action="#">
+        <div class="signup">
+          <span class="title">회원가입</span>
+          <hr>
+      
+          <label for="name">아이디</label>
+          <input type="text" id="name">
+      
+          <label for="pw1">비밀번호</label>
+          <input type="password" id="pw1">
 
-        <label for="pw2">비밀번호 재입력</label>
-        <input type="password" id="pw2">
+          <label for="pw2">비밀번호 재입력</label>
+          <input type="password" id="pw2">
 
-        <label for="email">이메일주소</label>
-        <input type="text" id="email" placeholder="비밀번호 분실시 사용됩니다">
+          <label for="email">이메일주소</label>
+          <input type="text" id="email" placeholder="비밀번호 분실시 사용됩니다">
 
-        <input type="checkbox" id="terms">
-			  <label for="terms" class="terms_label">약관 내용에 동의합니다</label>
-        <a href="/terms" class="terms_link">*약관내용</a>
-        
-        <br><br>
-    
-        <button type="button" class="signup_btn" onclick="checkSignup()">회원가입</button>
-      </div>
-    
-      <div class="signup_link">
-        <a href="/">홈으로</a>
-      </div>
-    </form>
+          <input type="checkbox" id="terms">
+          <label for="terms" class="terms_label">약관 내용에 동의합니다</label>
+          <a href="/terms" class="terms_link">*약관내용</a>
+          
+          <br><br>
+      
+          <button type="button" class="signup_btn" onclick="checkSignup()">회원가입</button>
+        </div>
+      
+        <div class="signup_link">
+          <a href="/">홈으로</a>
+        </div>
+      </form>
+    </div>
   </div>
 
+  <!-- 회원가입버튼 클릭시 >> 휴효성검사 >> mysql저장 -->
   <script>
-    // 회원가입버튼 클릭시 >> 휴효성검사 >> mysql저장
     function checkSignup() {
 
     let name = document.querySelector("#name").value;

@@ -2,6 +2,11 @@
   box-sizing: border-box
 }
 
+#container {
+  margin: 0 auto; /* 화면 중앙에 배치 */
+  width: 1900px;  /* 화면 너비 지정 */
+}
+
 .signup_container {
   display: flex;
   justify-content: center;

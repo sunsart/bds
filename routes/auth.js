@@ -65,6 +65,11 @@ router.post('/signup', function(req, res) {
 });
 
 // 로그아웃 라우터
+router.get('/logout', function(req, res) {
+  req.session.destroy(function() {
+    res.redirect('/');
+  })
+})
 
 // 아이디 찾기 라우터
 
