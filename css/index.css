@@ -1,5 +1,103 @@
 #container {
   margin: 0 auto; /* 화면 중앙에 배치 */
   width: 1900px;  /* 화면 너비 지정 */
-  background-color: gray
+  background-color: rgba(227, 227, 227, 0.411);
 }
+
+/* --- 특약 제목 레이블 --- */
+.clause-name {
+  color: rgb(0, 0, 0);
+  padding: 8px;
+  background-color: #d2d1d1;
+}
+
+/* --- 수정 버튼 --- */
+.edit-btn {
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  float: none;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  background-color: rgb(145, 161, 36);
+}
+.edit-btn:hover {
+  background-color: rgb(119, 133, 31);
+}
+
+/* --- 선택 버튼 --- */
+.select-btn {
+  float: right;
+  margin-right: 5px;
+  display: none;
+}
+.show-btn{
+  display: inline;
+}
+.select-btn:hover {
+  background-color: rgb(196, 196, 196);
+}
+
+/* --- 특약 테이블 --- */
+.table-clause {
+  width: 100%;
+  margin-top: 10px 0px;
+}
+
+.table-clause, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  vertical-align: middle;
+}
+
+#col-size {
+  width: 11%;
+}
+
+table tr {
+  height: 40px;
+}
+
+.content {
+  color: darkgray;
+  padding-left: 15px;
+}
+
+/* --- textarea --- */
+.container_copy {
+  width: 100%;
+  margin : 0px auto;
+}
+
+#copy_content {
+  font-family: "Nanum Gothic", sans-serif;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #333;
+  font-size: 16px;
+  width: 100%;
+  resize: none;
+}
+
+/* --- 복사하기 버튼 --- */
+.copy-button {
+  border: none; 
+  color: white; 
+  padding: 10px 20px; 
+  cursor: pointer;
+  background-color: #04AA6D;
+}
+
+.copy-button:hover {
+  background-color: #46a049;
+}
+
+/* --- 특약 수정 모달 --- */
+
+
+
+
+
+

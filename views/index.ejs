@@ -11,6 +11,9 @@
 
   <!-- ajax 사용을 위한 제이쿼리 -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <!-- Clipboardl.js 라이브러리 사용 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
   
   <!-- The Open Graph Protocal -->
   <meta property="og:type" content="website">
@@ -30,6 +33,7 @@
   <link rel="stylesheet" href="../css/main.css">
   <link rel="stylesheet" href="../css/menu.css">
   <link rel="stylesheet" href="../css/dropdown.css">
+  <link rel="stylesheet" href="../css/footer.css">
 
   <!-- JS 링크 -->
   <script src="../js/dropdown.js"></script>
@@ -125,7 +129,47 @@
     </div>
 
     <!-- ===== 특약테이블 ===== -->
+    <div>
+      <br>
+
+      <span class="clause-name"> <%= type %> </span>
+      <% if (user) { %>
+        <button id="edit-button" class="edit-btn" style="visibility:visible;">수정</button>
+      <% } else { %>
+        <button id="edit-button" class="edit-btn" style="visibility:hidden;">수정</button>
+      <% } %>
+
+      <table class="table-clause">
+        <% for(let i=0; i<data.length; i++) { %>
+          <tr>
+            <td id="col-size">
+              <input type="checkbox" class="checkbox" id="<%= data[i].id %>" data-id="<%= data[i].id %>">
+              <label class="title" for="<%= data[i].id %>"> <%= data[i].title %> </label> 
+              <button id="select-button" class="select-btn" data-id="<%= data[i].id %>" onclick="clickEdit(this)">선택</button>
+            </td>
+            <td>
+              <label class="content"> <%= data[i].content %></label> 
+            </td>
+          </tr> 
+        <% } %> 
+      </table><br>
+
+      <input type="button" class="copy-button" data-clipboard-target="#copy_content" value="복사하기">
+      <span>(위 특약사항을 선택후, 복사하기 버튼을 클릭하고 계약서 작성 프로그램의 특약사항란에 붙여넣기(Ctrl+V) 하시면 됩니다)</span>
+      <br><br>
+    </div>
+
+    <!-- ===== 특약정리 ===== -->
+    <div class="container_copy">
+      <form action="/Copy.php">
+        <textarea id="copy_content" name="message" rows="20"></textarea>
+      </form>
+    </div>
     
+    <!-- ===== footer ===== -->
+    <footer>
+      <%- include('footer', {user:user}) %>
+    </footer>
 
   </div>
 </body>
