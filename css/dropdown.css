@@ -18,7 +18,7 @@
 }
 
 /* dropdown 세부 목록 */
-.dropdown-content {
+.dropdown_content {
   display: none;
   position: absolute;
   background-color: #000000da; /* 메뉴 배경색 */ 
@@ -29,7 +29,7 @@
   text-align: center;
 }
 
-.dropdown-content a {
+.dropdown_content a {
   color: rgb(255, 255, 255);
   padding: 8px 16px;
   text-decoration: none;

@@ -72,20 +72,102 @@ router.get('/logout', function(req, res) {
 })
 
 // 아이디 찾기 라우터
+router.post('/findid', function(req, res) {
+  let email = req.body.email;
+  const sql = "SELECT * FROM account WHERE email = ?";
+  conn.query(sql, [email], function(err, result) {
+    if(err) throw err;
+    if(result.length > 0) {
+      res.send(result[0].name);
+    } else {
+      res.send("아이디찾기실패");
+    }
+  })
+});
 
 // 비빌번호 찾기 라우터
+router.post('/findpw', function(req, res) {
+  let name = req.body.name;
+  let email = req.body.email;
+  const sql = "SELECT * FROM account WHERE name = ? AND email = ?";
+  conn.query(sql, [name, email], function(err, result) {
+    if(err) throw err;
+    if(result.length > 0) {
+      // 메일로 코드번호 발송
+      let codeNum = makeCodenum();
+      let address = email;
+      const mailOption = mailOpt(address, codeNum);
+      sendMail(mailOption)
+      // findpw.js 로 결과값 전송
+      let res_data = {};
+      res_data['codeNum'] = codeNum;
+      res_data['address'] = address;
+      res_data['memberNum'] = result[0].id;  // 회원 고유넘버
+      res.send(res_data)
+    } else {
+      res.send("비밀번호찾기실패");
+    }
+  })
+});
 
 // 약관 라우터
+router.get('/terms', function(req, res) {
+  res.render('terms.ejs', {user:req.session.user});
+})
 
 // 비밀번호 확인용 여섯자리 코드번호 생성
+function makeCodenum() {
+  let number = "";
+  let random = 0;
+  for(let i=0; i<6; i++) {
+    random = Math.trunc(Math.random() * (9 - 0) + 0);
+    number += random;
+  }
+  return number;
+}
 
 // 메일발송 서비스 환경설정
+const nodeMailer = require('nodemailer');
+const mailPoster = nodeMailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.SEND_MAIL_ADDRESS,
+    pass: process.env.SEND_MAIL_PASSWORD
+  }
+});
 
 // 메일수신 유저설정
+const mailOpt = (address, num) => {
+  const mailOptions = {
+    from: 'sunsartapp1@gmail.com',
+    to: address,
+    subject: '<부동산 도우미 웹사이트> 비밀번호 변경을 위한 6자리 코드번호 입니다',
+    text: "인증칸에 아래의 숫자를 입력해주세요. \n\n" + num
+  };
+  return mailOptions;
+}
 
 // mailPoster, mailOpt 이용하여 메일전송
+const sendMail = (mailOption) => {
+  mailPoster.sendMail(mailOption, function(error, info){
+    if (error) 
+      console.log('메일발송 에러 ' + error);
+    else 
+      console.log('메일발송 완료 ' + info.response);
+  });
+}
 
 // 비밀번호 재설정 라우터
+router.post('/changePw', function(req, res) {
+  let toPassword = sha(req.body.pw);
+  let toMember = req.body.memberId;
+  let sql = "UPDATE account SET pw=? WHERE id=?";
+  let params = [toPassword, toMember];
+  conn.query(sql, params, function(err, result) {
+    if(err) throw err;
+    res.send("비밀번호변경성공"); 
+  })
+});
 
 //router 변수를 외부 노출
 module.exports = router;

@@ -113,11 +113,6 @@ app.get('/signup', function(req, res) {
   res.render('signup.ejs', {user:req.session.user});
 })
 
-//약관 라우터
-app.get('/terms', function(req, res) {
-  res.render('terms.ejs', {user:req.session.user});
-})
-
 // 라우터 분리
 app.use('/', require('./routes/auth.js'));
 

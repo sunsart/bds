@@ -1,0 +1,64 @@
+/* 아이디찾기 모달 */
+.modal_id_container {
+  opacity: 0;
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: rgba(0,0,0,0.3);
+  z-index: -1;
+}
+
+.modal_id_popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+}
+
+.modal_id_container.on {
+  opacity: 1;
+  z-index: 1001;
+  transition: all .5s;
+}
+
+.findid_title {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+input[name=findid_email] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  margin-bottom: 25px;
+}
+
+.findid_btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  margin: 4px 0px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+  font-size: 16px;
+}
+
+.findid_btn:hover {
+  opacity:1;
+}

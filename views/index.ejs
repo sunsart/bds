@@ -52,7 +52,7 @@
     <div class="navibar">
       <div class="dropdown">
         <button id="apt" class="dropbtn" onclick="clickMenuBtn(this.id)">아파트</button>
-        <div id="apt-Dropdown" class="dropdown-content">
+        <div id="apt_Dropdown" class="dropdown_content">
           <a href="/type/apt_trade" class="menu">매매</a>
           <a href="/type/apt_jeonse" class="menu">전세</a>
           <a href="/type/apt_monthly" class="menu">월세</a>
@@ -62,7 +62,7 @@
       <div class="dropdown">
         <button id="officetel" class="dropbtn" onclick="clickMenuBtn(this.id)">오피스텔
         </button>
-        <div id="officetel-Dropdown" class="dropdown-content">
+        <div id="officetel_Dropdown" class="dropdown_content">
           <a href="/type/officetel_trade" class="menu">매매</a>
           <a href="/type/officetel_jeonse" class="menu">전세</a>
           <a href="/type/officetel_monthly" class="menu">월세</a>
@@ -71,7 +71,7 @@
 
       <div class="dropdown">
         <button id="dasedae" class="dropbtn" onclick="clickMenuBtn(this.id)">다세대주택</button>
-        <div id="dasedae-Dropdown" class="dropdown-content">
+        <div id="dasedae_Dropdown" class="dropdown_content">
           <a href="/type/dasedae_trade" class="menu">매매</a>
           <a href="/type/dasedae_jeonse" class="menu">전세</a>
           <a href="/type/dasedae_monthly" class="menu">월세</a>
@@ -80,7 +80,7 @@
     
       <div class="dropdown">
         <button id="dagagu" class="dropbtn" onclick="clickMenuBtn(this.id)">다가구주택</button>
-        <div id="dagagu-Dropdown" class="dropdown-content">
+        <div id="dagagu_Dropdown" class="dropdown_content">
           <a href="/type/dagagu_trade" class="menu">매매</a>
           <a href="/type/dagagu_jeonse" class="menu">전세</a>
           <a href="/type/dagagu_monthly" class="menu">월세</a>
@@ -89,7 +89,7 @@
     
       <div class="dropdown">
         <button id="oneroom" class="dropbtn" onclick="clickMenuBtn(this.id)">원룸</button>
-        <div id="oneroom-Dropdown" class="dropdown-content">
+        <div id="oneroom_Dropdown" class="dropdown_content">
           <a href="/type/oneroom_jeonse" class="menu">전세</a>
           <a href="/type/oneroom_monthly" class="menu">월세</a>
         </div>
@@ -97,7 +97,7 @@
     
       <div class="dropdown">
         <button id="shop" class="dropbtn" onclick="clickMenuBtn(this.id)" style="color:yellowgreen;">상가</button>
-        <div id="shop-Dropdown" class="dropdown-content">
+        <div id="shop_Dropdown" class="dropdown_content">
           <a href="/type/shop_trade" class="menu">매매</a>
           <a href="/type/shop_monthly" class="menu">월세</a>
         </div>
@@ -105,7 +105,7 @@
     
       <div class="dropdown">
         <button id="factory" class="dropbtn" onclick="clickMenuBtn(this.id)" style="color:yellowgreen;">공장/창고</button>
-        <div id="factory-Dropdown" class="dropdown-content">
+        <div id="factory_Dropdown" class="dropdown_content">
           <a href="/type/factory_trade">매매</a>
           <a href="/type/factory_monthly">월세</a>
         </div>
@@ -113,7 +113,7 @@
     
       <div class="dropdown">
         <button id="land" class="dropbtn" onclick="clickMenuBtn(this.id)" style="color:yellowgreen;">토지</button>
-        <div id="land-Dropdown" class="dropdown-content">
+        <div id="land_Dropdown" class="dropdown_content">
           <a href="/type/land_trade">매매</a>
           <a href="/type/land_monthly">월세</a>
         </div>
@@ -121,7 +121,7 @@
     
       <div class="dropdown">
         <button id="etc" class="dropbtn" onclick="clickMenuBtn(this.id)" style="color:yellow;">기타</button>
-        <div id="etc-Dropdown" class="dropdown-content">
+        <div id="etc_Dropdown" class="dropdown_content">
           <a href="/type/etc">기타</a>
         </div>
       </div>
@@ -132,20 +132,20 @@
     <div>
       <br>
 
-      <span class="clause-name"> <%= type %> </span>
+      <span class="clause_name"> <%= type %> </span>
       <% if (user) { %>
-        <button id="edit-button" class="edit-btn" style="visibility:visible;">수정</button>
+        <button id="edit_button" class="edit_btn" style="visibility:visible;">수정</button>
       <% } else { %>
-        <button id="edit-button" class="edit-btn" style="visibility:hidden;">수정</button>
+        <button id="edit_button" class="edit_btn" style="visibility:hidden;">수정</button>
       <% } %>
 
-      <table class="table-clause">
+      <table class="table_clause">
         <% for(let i=0; i<data.length; i++) { %>
           <tr>
-            <td id="col-size">
+            <td id="col_size">
               <input type="checkbox" class="checkbox" id="<%= data[i].id %>" data-id="<%= data[i].id %>">
               <label class="title" for="<%= data[i].id %>"> <%= data[i].title %> </label> 
-              <button id="select-button" class="select-btn" data-id="<%= data[i].id %>" onclick="clickEdit(this)">선택</button>
+              <button id="select_button" class="select_btn" data-id="<%= data[i].id %>" onclick="clickEdit(this)">선택</button>
             </td>
             <td>
               <label class="content"> <%= data[i].content %></label> 
@@ -154,7 +154,7 @@
         <% } %> 
       </table><br>
 
-      <input type="button" class="copy-button" data-clipboard-target="#copy_content" value="복사하기">
+      <input type="button" class="copy_button" data-clipboard-target="#copy_content" value="복사하기">
       <span>(위 특약사항을 선택후, 복사하기 버튼을 클릭하고 계약서 작성 프로그램의 특약사항란에 붙여넣기(Ctrl+V) 하시면 됩니다)</span>
       <br><br>
     </div>

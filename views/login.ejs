@@ -16,19 +16,25 @@
   <link rel="stylesheet" href="../css/main.css">
   <link rel="stylesheet" href="../css/menu.css">
   <link rel="stylesheet" href="../css/login.css">
+  <link rel="stylesheet" href="../css/findid.css">
+  <link rel="stylesheet" href="../css/findpw.css">
+  <link rel="stylesheet" href="../css/editpw.css">
   
   <!-- js 링크  -->
-
+  <script src="../js/login.js"></script>
+  <script src="../js/findid.js"></script>
+  <script src="../js/findpw.js"></script>
+  <script src="../js/editpw.js"></script>
 </head>
 <body>
   <div id="container">
 
-    <!-- Header -->
+    <!-- ===== header ===== -->
     <header>
       <%- include('menu', {user:user}) %>
     </header>
 
-    <!-- 로그인 -->
+    <!-- ===== 로그인 ===== -->
     <div class="login_container">
       <form action="#">
         <div class="login">
@@ -51,36 +57,66 @@
         </div>
       </form>
     </div>
+
+    <!-- ===== 아이디찾기 모달 ===== -->
+    <div class="modal_id_container">
+      <div class="modal_id_popup">
+        
+        <span class="findid_title">아이디 찾기</span>
+        <hr>
+
+        <label for="findid_email">회원가입시 작성한 이메일주소를 입력하세요</label>
+        <input type="text" name="findid_email" id="findid_email">
+
+        <button type="button" class="findid_btn" onclick="findid();">아이디 찾기</button>
+        <button type="button" class="findid_btn" onclick="closeFindid();">취소</button>
+
+      </div>
+    </div>
+
+    <!-- ===== 비밀번호 찾기 모달 ===== -->
+    <div class="modal_pw_container">
+      <div class="modal_pw_popup">
+
+        <span class="findpw_title">비밀번호 찾기</span>
+        <hr>
+
+        <label for="findpw_name">아이디</label>
+        <input type="text" name="findpw_name" id="findpw_name">
+
+        <label for="findpw_email">회원가입시 작성한 이메일주소를 입력하세요</label>
+        <input type="text" name="findpw_email" id="findpw_email">
+
+        <button type="button" class="findpw_btn" onclick="findpw();">비밀번호 찾기</button>
+        <button type="button" class="findpw_btn" onclick="closeFindpw();">취소</button>
+
+      </div>
+    </div>
+
+    <!-- ===== 비밀번호 수정 모달 ===== -->
+    <div class="modal_editpw_container">
+      <div class="modal_editpw_popup">
+
+        <div id="confirm_code" style="display:block;">
+          <label for="sixcode">비밀번호 변경을 위해 이메일로 전송된 6자리 코드번호를 입력하세요</label>
+          <input type="text" id="sixcode">
+          <button type="button" class="editpw_btn" onclick="confirmCode();">확인</button>
+          <button type="button" class="editpw_btn" onclick="closeEditpw();">취소</button>
+        </div>
+
+        <div id="change_password" style="display:none;">
+          <label for="pw1">변경할 비밀번호</label>
+          <input type="password" id="pw1">
+          <label for="pw2">비밀번호 재입력</label>
+          <input type="password" id="pw2">
+          <button type="button" class="editpw_btn" onclick="changePw();">비밀번호 변경</button>
+          <button type="button" class="editpw_btn" onclick="closeEditpw();">취소</button>
+        </div>
+
+      </div>
+    </div>
+
   </div>
-
-  <!-- 로그인 버튼 클릭시 -->
-  <script>
-    function Login() {
-      let name = document.querySelector("#name").value;
-      let pw = document.querySelector("#pw").value;
-
-      if (name == "") 
-        alert("아이디를 입력해주세요")
-      else if (pw == "") 
-        alert("비밀번호를 입력해주세요")
-      else {
-        $.ajax({
-          url : "/login",
-          type : "POST",
-          data : {name:name, pw:pw},
-          success : function(data) {
-            if(data == "로그인성공") {
-              alert("로그인 되었습니다")
-              window.location.href = '/';
-            }
-            else if(data == "로그인실패") {
-              alert("아이디 또는 비밀번호를 잘못 입력했습니다");
-            }
-          }
-        })
-      }
-    }
-  </script>
       
 </body>
 </html>
