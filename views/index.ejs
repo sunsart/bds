@@ -165,6 +165,19 @@
         <textarea id="copy_content" name="message" rows="20"></textarea>
       </form>
     </div>
+
+    <!-- ==== 특약수정 모달 ==== -->
+    <div id="edit_modal" class="modal">
+      <div class="modal_content">
+        <input type="hidden" id="clause_no" name="clause_no" value=""><br>
+        <input type="text" class="edit_title" value=""><br>
+        <input type="text" class="edit_content" value=""><br>
+
+        <button type="button" class="modal_conform" onclick="confirmModal();">확인</button>
+        <button type="button" class="modal_cancel" onclick="closeModal();">취소</button>
+        <br>
+      </div>
+    </div>
     
     <!-- ===== footer ===== -->
     <footer>

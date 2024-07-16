@@ -72,12 +72,12 @@ $(document).ready(function() {
 	})	
 });
 
-//로그인후 >> 테이블 수정버튼 >> 선택버튼 클릭 >> 모달뷰
+// 특약사항 수정
 function clickEdit(e) {
-	//선택한 basics 특약 id넘버 가져오기
+	// 선택한 basics 특약 id넘버 가져오기
 	num = e.dataset.id;
 
-	//list.js 에서 사용됨 (type="hidden" 화면에서 보이지 않음)
+	// 특약수정 모달의 hidden input 값으로 설정
 	document.querySelector("#clause_no").value = num;
 
 	//선택된행의 데이터를 모달입력창에 설정
@@ -95,5 +95,36 @@ function clickEdit(e) {
 	document.querySelector(".edit_content").value = content;
 	
 	//모달 show
-	document.querySelector(".edit_modal").style.display = "block";
+	document.querySelector("#edit_modal").style.display = "block";
+}
+
+//모달 내 확인버튼 클릭시
+function confirmModal() { 
+  let clauseNum = document.querySelector("#clause_no").value;
+  let title = document.querySelector(".edit_title").value;
+  let content = document.querySelector(".edit_content").value;
+ 
+  $.ajax({
+    url : "/edit",
+    type : "POST",
+    data : {clauseNum:clauseNum, title:title, content:content},
+    success : function(data) {
+      if(data == "특약수정성공") 
+        alert("특약사항을 저장했습니다");
+      else if(data == "특약저장성공") 
+        alert("특약사항을 저장했습니다");
+    }
+  })
+  
+  // 모달 닫기
+  closeModal();
+
+  // 특약수정된 결과를 바로 볼수 있게
+  window.location.href = '/';
+}
+
+//모달 내 취소버튼 클릭시
+function closeModal() { 
+  let modal = document.querySelector("#edit_modal");
+  modal.style.display = "none";
 }

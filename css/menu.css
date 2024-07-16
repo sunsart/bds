@@ -1,5 +1,5 @@
 header {
-  background-color: #e4e2e2;
+  background-color: #9e9a9a;
 }
 
 header .inner {
@@ -14,7 +14,7 @@ header .logo {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
+  left: 20px;
   margin: auto;
 }
 
@@ -53,11 +53,11 @@ header .sub_menu ul.menu li a {
   display: block;
   padding: 11px 16px;
   font-size: 15px;
-  color: #656565;
+  color: #e7e7e7;
 }
 
 header .sub_menu ul.menu li a:hover {
-  color: #000;
+  color: #cacaca;
 }
 
 header .main_menu {

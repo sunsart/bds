@@ -103,7 +103,42 @@ app.get('/type/:id', function(req, res) {
       res.render('index.ejs', {data:rows, user:req.session.user, type:setClauseName(clauseType)});
     })
   }
-}) 
+})
+
+//에디트 라우터(모달에서 수정)
+app.post('/edit', function(req, res, next) {
+  let type = clauseType;
+  let title = req.body.title;
+  let content = req.body.content;
+  let clause_id = req.body.clauseNum;
+  let account_id = req.session.user.id;
+
+  // 멤버의 기존 데이터가 존재하는지 확인
+  let sql = "SELECT * FROM clauses WHERE account_id=? AND clause_id=?";
+  let params = [account_id, clause_id];
+  conn.query(sql, params, function(err, result) {
+    if(err) throw err;
+    if(result.length > 0) {
+      // 존재하면 update
+      console.log("기존 회원의 테이터가 존재함...");
+      let sql = "UPDATE clauses SET title=?, content=? WHERE account_id=? AND clause_id=?";
+      let params = [title, content, account_id, clause_id];
+      conn.query(sql, params, function(err, result) {
+        if(err) throw err;
+        res.send("특약수정성공");
+      })
+    } else {
+      // 존재하지 않으면 insert
+      console.log("기존 회원의 테이터가 존재하지 않음...");
+      let sql = "INSERT INTO clauses (type, title, content, account_id, clause_id) VALUES (?, ?, ?, ?, ?)";
+      let params = [type, title, content, account_id, clause_id];
+      conn.query(sql, params, function(err, result) {
+        if(err) throw err;
+        res.send("특약저장성공");
+      })
+    }
+  })
+});
 
 app.get('/login', function(req, res) {
   res.render('login.ejs', {user:req.session.user});

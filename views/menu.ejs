@@ -1,13 +1,11 @@
 <div class="inner">
   <a href="/" class="logo">
-    <img src="../images/logo.png">
+    <img src="../images/logo2.png">
   </a>
 
   <div class="sub_menu">
     <ul class="menu">
       <li><a href="/">홈으로</a></li>
-
-      <!-- <li><a href="/login">로그인</a></li> -->
 
       <% if (user) { %>
         <li><a href="/logout"><%= user.name %> 님, 환영합니다 [로그아웃]</a></li>

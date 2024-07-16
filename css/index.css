@@ -1,7 +1,7 @@
 #container {
   margin: 0 auto; /* 화면 중앙에 배치 */
   width: 1900px;  /* 화면 너비 지정 */
-  background-color: rgba(227, 227, 227, 0.411);
+  background-color: #F5F6F7;
 }
 
 /* --- 특약 제목 레이블 --- */
@@ -53,7 +53,7 @@
 }
 
 #col_size {
-  width: 11%;
+  width: 10%;
 }
 
 table tr {
@@ -81,7 +81,6 @@ table tr {
 /* --- textarea --- */
 .container_copy {
   width: 100%;
-  /* margin : 0px auto; */
 }
 
 #copy_content {
@@ -92,8 +91,77 @@ table tr {
   font-size: 16px;
   width: 100%;
   resize: none;
+  box-sizing: border-box;
 }
 
+/* --- 특약 수정 모달 --- */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  padding-top: 100px; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+}
+
+.modal_content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 30px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.edit_title, .edit_content {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.edit_title {
+  width: 30%;
+}
+
+.modal_cancel {
+  border: none;
+  color: white;
+  padding: 12px 22px;
+  font-size: 15px;
+  cursor: pointer;
+  float: right;
+  margin-left: 15px;
+  background-color: #7a7979;
+  border-radius: 5px;
+}
+
+.modal_cancel:hover {
+  background-color: #616161;
+}
+
+.modal_conform {
+  border: none;
+  color: white;
+  padding: 12px 22px;
+  font-size: 15px;
+  cursor: pointer;
+  float: right;
+  margin-left: 15px;
+  background-color: #31d414;
+  border-radius: 5px;
+}
+
+.modal_conform:hover {
+  background-color: #2dc513;
+}
 
 
 
