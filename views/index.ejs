@@ -31,7 +31,7 @@
   <!-- css 링크  -->
   <link rel="stylesheet" href="../css/index.css">
   <link rel="stylesheet" href="../css/main.css">
-  <link rel="stylesheet" href="../css/menu.css">
+  <link rel="stylesheet" href="../css/header.css">
   <link rel="stylesheet" href="../css/dropdown.css">
   <link rel="stylesheet" href="../css/footer.css">
 
@@ -39,17 +39,20 @@
   <script src="../js/dropdown.js"></script>
   <script src="../js/table.js"></script>
   
+  
 </head>
-<body>
-  <div id="container">
 
-    <!-- ===== header menu ===== -->
-    <header>
-      <%- include('menu', {user:user}) %>
-    </header>
+<body>
+
+  <!-- ===== header menu ===== -->
+  <header>
+    <%- include('header', {user:user}) %>
+  </header>
+
+  <div id="contents">
 
     <!-- ===== 드롭다운바 ===== -->
-    <div class="navibar">
+    <div class="dropdownbar">
       <div class="dropdown">
         <button id="apt" class="dropbtn" onclick="clickMenuBtn(this.id)">아파트</button>
         <div id="apt_Dropdown" class="dropdown_content">
@@ -130,8 +133,7 @@
 
     <!-- ===== 특약테이블 ===== -->
     <div>
-      <br>
-
+      
       <span class="clause_name"> <%= type %> </span>
       <% if (user) { %>
         <button id="edit_button" class="edit_btn" style="visibility:visible;">수정</button>
@@ -178,12 +180,13 @@
         <br>
       </div>
     </div>
-    
-    <!-- ===== footer ===== -->
-    <footer>
-      <%- include('footer', {user:user}) %>
-    </footer>
 
   </div>
+
+  <!-- ===== footer ===== -->
+  <footer>
+    <%- include('footer', {user:user}) %>
+  </footer>
+
 </body>
 </html>

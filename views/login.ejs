@@ -14,7 +14,7 @@
   
   <!-- css 링크  -->
   <link rel="stylesheet" href="../css/main.css">
-  <link rel="stylesheet" href="../css/menu.css">
+  <link rel="stylesheet" href="../css/header.css">
   <link rel="stylesheet" href="../css/login.css">
   <link rel="stylesheet" href="../css/findid.css">
   <link rel="stylesheet" href="../css/findpw.css">
@@ -27,12 +27,13 @@
   <script src="../js/editpw.js"></script>
 </head>
 <body>
-  <div id="container">
 
-    <!-- ===== header ===== -->
-    <header>
-      <%- include('menu', {user:user}) %>
-    </header>
+  <!-- ===== header ===== -->
+  <header>
+    <%- include('header', {user:user}) %>
+  </header>
+
+  <div id="contents">
 
     <!-- ===== 로그인 ===== -->
     <div class="login_container">
@@ -69,7 +70,7 @@
         <input type="text" name="findid_email" id="findid_email">
 
         <button type="button" class="findid_btn" onclick="findid();">아이디 찾기</button>
-        <button type="button" class="findid_btn" onclick="closeFindid();">취소</button>
+        <button type="button" class="findid_btn cancel_btn" onclick="closeFindid();">취소</button>
 
       </div>
     </div>
@@ -88,7 +89,7 @@
         <input type="text" name="findpw_email" id="findpw_email">
 
         <button type="button" class="findpw_btn" onclick="findpw();">비밀번호 찾기</button>
-        <button type="button" class="findpw_btn" onclick="closeFindpw();">취소</button>
+        <button type="button" class="findpw_btn cancel_btn" onclick="closeFindpw();">취소</button>
 
       </div>
     </div>

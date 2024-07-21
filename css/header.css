@@ -1,0 +1,43 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 100px;
+  background: #ffffff;
+}
+
+.login_menu_list {
+  display: flex;
+}
+
+.login_menu_list a:hover {
+  color: #7e7e7e;
+}
+
+.space_line {
+  margin: 0px 10px;
+}
+
+.navbar {
+  padding: 0px 100px;
+  overflow: hidden;
+  background-color: #B2151A;
+  margin-bottom: 10px;
+}
+
+.navbar a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 20px;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  background-color: #ffffff3a;
+  color: black;
+}
+
+.navbar .planned p {
+  color: darkgray;
+}

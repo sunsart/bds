@@ -1,5 +1,9 @@
+.dropdownbar {
+  margin-bottom: 10px;
+}
+
 .dropbtn {
-  background-color: #333333d0;  /* 메뉴 배경색 */
+  background-color: #373737;
   color: rgb(255, 255, 255); /* 메뉴 글자색 */
   padding: 10px;
   font-size: 15px;
@@ -9,7 +13,7 @@
 }
 
 .dropbtn:hover, .dropbtn:focus {
-  background-color: #374d5d; /* 메뉴 호버링색 */
+  background-color: #373737c7; /* 메뉴 호버링색 */
 }
 
 .dropdown {
@@ -36,5 +40,11 @@
   display: block;
 }
 
-.dropdown a:hover {background-color: #ddd;}
-.show {display: block;}
+.dropdown a:hover {
+  background-color: #373737ee;
+  color: yellow;
+}
+
+.show {
+  display: block;
+}

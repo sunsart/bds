@@ -150,6 +150,7 @@ app.get('/signup', function(req, res) {
 
 // 라우터 분리
 app.use('/', require('./routes/auth.js'));
+app.use('/', require('./routes/calendar.route.js'));
 
 function setClauseName(eng) {
   let kor;

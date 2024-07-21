@@ -62,3 +62,11 @@ input[name=findid_email] {
 .findid_btn:hover {
   opacity:1;
 }
+
+.cancel_btn {
+  background-color: #7a7979;
+}
+
+.cancel_btn:hover {
+  opacity: 1;
+}

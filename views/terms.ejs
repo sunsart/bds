@@ -11,26 +11,24 @@
   
   <!-- css 링크  -->
   <link rel="stylesheet" href="../css/main.css">
-  <link rel="stylesheet" href="../css/menu.css">
+  <link rel="stylesheet" href="../css/header.css">
 	<link rel="stylesheet" href="../css/footer.css">
 
   <style>
-    #container {
+    #contents {
       margin: 0 auto; /* 화면 중앙에 배치 */
-      width: 1900px;  /* 화면 너비 지정 */
-      background-color: rgba(227, 227, 227, 0.411);
+      width: 1800px;  /* 화면 너비 지정 */
     }
 
-    .board_name {
-      padding-left: 10px;
-      padding-top: 10px;
+    .board_name span {
+      font-weight: bold;
     }
 
     #terms {
       resize: none;
       width: 100%;
-      padding: 10px 10px;
       border: none;
+      margin-top: 10px;
     }
   </style>
 
@@ -38,21 +36,19 @@
 </head>
 <body>
 
-  <div id="container">
+  <!-- ===== Header ===== -->
+  <header>
+    <%- include('header', {user:user}) %>
+  </header>
 
-    <!-- ===== Header ===== -->
-    <header>
-      <%- include('menu', {user:user}) %>
-    </header>
-
+  <div id="contents">
     <div class="board_name">
       <span>이용약관 & 개인정보처리방침</span>
     </div>
-
+  
     <div class="terms_container">
       <textarea name="terms" id="terms" rows="80"></textarea>
     </div>
-
   </div>
 
 

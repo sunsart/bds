@@ -1,0 +1,32 @@
+<div class="header">
+
+  <a href="/" class="logo">
+    <img src="../images/bds_logo.png">
+  </a>
+
+  <div class="login_menu">
+    <ul class="login_menu_list">
+      <li class="to_home"><a href="/">홈으로</a></li>
+
+      <li class="space_line"><a href="#">|</a></li>
+
+      <% if (user) { %>
+        <li><a href="/logout"><%= user.name %> 님, 환영합니다 [로그아웃]</a></li>
+      <% } else { %>
+        <li><a href="/login">로그인</a></li>
+      <% } %>
+    </ul>
+  </div>
+
+</div>
+
+<div class="navbar">
+  <a href="/">특약사항</a>
+  <a href="#" class="planned"><p onclick="alert('오픈 예정입니다. \n작업속도가 느린점 죄송합니다 ㅠㅠ')">질문답변</p></a>
+  <a href="#" class="planned"><p onclick="alert('얼럿')">매물찾아요</p></a>
+  <a href="#" class="planned"><p onclick="alert('얼럿')">부동산뉴스</p></a>
+  <a href="#" class="planned"><p onclick="alert('얼럿')">부동산서식</p></a>
+  <a href="/calendar">일정관리</a>
+</div>
+
+

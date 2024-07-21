@@ -75,7 +75,7 @@ $(document).ready(function() {
 // 특약사항 수정
 function clickEdit(e) {
 	// 선택한 basics 특약 id넘버 가져오기
-	num = e.dataset.id;
+	let num = e.dataset.id;
 
 	// 특약수정 모달의 hidden input 값으로 설정
 	document.querySelector("#clause_no").value = num;

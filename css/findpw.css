@@ -62,3 +62,11 @@ input[name=findpw_name], input[name=findpw_email] {
 .findpw_btn:hover {
   opacity:1;
 }
+
+.cancel_btn {
+  background-color: #7a7979;
+}
+
+.cancel_btn:hover {
+  opacity: 1;
+}
