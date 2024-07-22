@@ -8,7 +8,6 @@
 }
 
 .container_calendar {
-  /* width: 55%; */
   width: 1200px;
   margin: 20px auto;
 }
@@ -19,11 +18,12 @@
   width: 100%;
   background-color: #FFE8AD;
   text-align: center;
-  padding: 20px;
+  padding: 20px 20px;
+  margin-top: 15px;
 }
 h1 {
     margin: 0;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
 }
 /* 구글 폰트 아이콘 */
 .material-symbols-outlined {

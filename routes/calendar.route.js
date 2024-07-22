@@ -12,7 +12,6 @@ var conn = mysql.createConnection({
 });
 conn.connect();
 
-//-----------------------------------------//
 
 // 저장된 schedule과 todo를 동시에 불러옴. 다중쿼리
 router.get('/calendar', function(req, res) {
@@ -32,6 +31,7 @@ router.get('/calendar', function(req, res) {
   }
 })
 
+
 // schedule db에 저장
 router.post('/schedule_add', function(req, res) {
   let title = req.body.title;
@@ -48,6 +48,7 @@ router.post('/schedule_add', function(req, res) {
   })
 })
 
+
 // schedule 삭제
 router.post('/schedule_delete', function(req, res) {
   let schedule_id = req.body.id;
@@ -57,6 +58,7 @@ router.post('/schedule_delete', function(req, res) {
     res.send("일정삭제성공");
   })
 })
+
 
 // todo db에 저장
 router.post('/todo_add', function(req, res) {
@@ -71,6 +73,7 @@ router.post('/todo_add', function(req, res) {
   })
 })
 
+
 // todo 삭제
 router.post('/todo_delete', function(req, res) {
   let id = req.body.id;
@@ -81,6 +84,7 @@ router.post('/todo_delete', function(req, res) {
     res.send("투두삭제성공");
   })
 })
+
 
 //router 변수를 외부 노출
 module.exports = router;

@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
   })
 
   // db 저장된 schedule
-  let arrayData;
   let jsonData;
+  let arrayData;
   let headerToolbar; // 캘린더 헤더 옵션
   if (!document.querySelector("#scheduleData").value) { 
     // 로그인 되어 있지 않으면
@@ -35,18 +35,18 @@ document.addEventListener('DOMContentLoaded', function() {
       right: 'today prev next'
     }
   }
-  console.log(arrayData);
+  //console.log(arrayData);
 
   // 캘린더 생성 옵션
   const calendarOption = {
-    height: '750px',  // calendar 높이 설정
+    height: '800px',  // calendar 높이 설정
     expandRows: true, // 화면에 맞게 높이 재설정
-    initialView: 'dayGridMonth', // 초기 로드시 캘린더 화면 (기본설정: 달)
+    initialView: 'dayGridMonth', // 초기 로드시 캘린더 화면 (기본설정: month)
     headerToolbar: headerToolbar,
     titleFormat : function(date) {
 			return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
 		},
-    //날짜에서 "일" 제거
+    // 날짜에서 "일" 제거
     dayCellContent: function(info) {
       let number = document.createElement("a");
       number.classList.add("fc-daygrid-day-number");
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
     customButtons: {
       addEventButton: { // 추가한 버튼 설정
         text : "일정 추가",   // 버튼 내용
-        click : function() { // 버튼 클릭 시 이벤트 추가
+        click : function() { // 버튼 클릭시 이벤트
           showModal();
         }
       }
@@ -108,34 +108,36 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+
+// 일정등록 모달 show
 function showModal() {
   if (!isLogin) {
     alert("로그인이 필요합니다");
     return;
   }
-
   // 모달 show
   const modal = document.querySelector('.modal');
   modal.classList.add('on');
-
   // 입력창 초기화
   document.querySelector("#title").value = "";
   document.querySelector("#start_date").value = "";
   document.querySelector("#end_date").value = "";
 }
 
+
+// 일정등록 모달 off
 function closeModal() { 
-  // 모달 off
   const modal = document.querySelector('.modal');
   modal.classList.remove('on');
 }
 
+
+// 일정 등록
 function addCalendar() { 
   let title = document.querySelector("#title").value;
   let start_date = document.querySelector("#start_date").value;
   let end_date = document.querySelector("#end_date").value;
   let color = document.querySelector("#select").value;
-  
   if(title == null || title == "") {
     alert("일정내용을 입력하세요");
   } else if(start_date == "") {
@@ -151,7 +153,6 @@ function addCalendar() {
       "end" : end_date + " 24:00:00",
       "backgroundColor" : color,  
     } 
-
     $.ajax({
       url : "/schedule_add",
       type : "POST",
@@ -163,18 +164,18 @@ function addCalendar() {
         }
       }
     })
-
     closeModal();
   }
 }
 
+
+// todo 등록
 function createTodo(event) {
   const count = document.querySelector('#todoList').childElementCount;
   if(count >= 15) {
     alert("할 일은 15개까지만 등록할 수 있습니다");
     return;
   }
-
   const todoInput = document.querySelector('#todoInput');
   if(todoInput.value == null || todoInput.value == "") {
     alert("할 일을 입력하세요");
@@ -192,12 +193,14 @@ function createTodo(event) {
         }
       }
     })
-    todoInput.value = ''; // todo 생성후 초기화
+    todoInput.value = ''; // todo 등록후 input창 초기화
   }
 }
 
+
+// todo 삭제
 function deleteTodo(e) {
-	num = e.dataset.id;
+	num = e.dataset.id; // todod id번호
   if(confirm("삭제할까요?")) {
 		$.ajax({
       url : "/todo_delete",
