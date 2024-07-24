@@ -2,18 +2,18 @@
   box-sizing: border-box
 }
 
-#container {
+#contents {
   margin: 0 auto; /* 화면 중앙에 배치 */
-  width: 1900px;  /* 화면 너비 지정 */
+  width: 1800px;  /* 화면 너비 지정 */
 }
 
-.login_container {
+.signup_container {
   display: flex;
   justify-content: center;
   padding-top: 100px;
 }
 
-.login {
+.signup {
   padding: 16px;
   width: 400px;
   border: 1px solid;
@@ -49,11 +49,23 @@ input[type=text]:focus, input[type=password]:focus {
   outline: none;
 }
 
-.login_btn {
+#terms {
+  margin-top:-20px;
+}
+
+.terms_label {
+  margin-top:-20px;
+}
+
+.terms_link {
+  padding-left: 90px;
+}
+
+.signup_btn {
   background-color: #04AA6D;
   color: white;
   padding: 16px 20px;
-  margin: 16px 0px;
+  margin: 8px 0px;
   border: none;
   cursor: pointer;
   width: 100%;
@@ -61,23 +73,22 @@ input[type=text]:focus, input[type=password]:focus {
   font-size: 16px;
 }
 
-.login_btn:hover {
+.signup_btn:hover {
   opacity:1;
 }
 
-/* 비밀번호찾기, 아이디찾기, 회원가입 */
-.login_link {
+.signup_link {
   text-align: center;
   padding-top: 15px;
 }
 
-.login_link a {
+.signup_link a {
   font-size: 14px;
   margin: 0px 15px;
   color: rgb(97, 97, 97);
   text-decoration-line: none;
 }
 
-.login_link a:hover {
+.signup_link a:hover {
   color: rgb(0, 0, 0);
 }

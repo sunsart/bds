@@ -29,11 +29,6 @@
   transition: all .5s;
 }
 
-
-input[id=sixcode], input[id=pw1], input[id=pw2] {
- 
-}
-
 .editpw_btn {
   background-color: #04AA6D;
   color: white;
@@ -48,4 +43,12 @@ input[id=sixcode], input[id=pw1], input[id=pw2] {
 
 .editpw_btn:hover {
   opacity:1;
+}
+
+.cancel_btn {
+  background-color: #7a7979;
+}
+
+.cancel_btn:hover {
+  opacity: 1;
 }

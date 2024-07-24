@@ -3,8 +3,8 @@
 <head>
 	<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>부동산 도우미 - 약관 페이지</title>
-  <meta name="description" content="부동산 도우미 웹사이트는 부동산 계약 특약사항 작성에 도움을 드립니다">
+  <title>부동산 도우미 - 개인정보&약관</title>
+  <meta name="description" content="부동산 업무에 종사하는 분들에게 도움을 드립니다">
 
   <!-- 브라우저 css 기본스타일 초기화 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css">
@@ -12,7 +12,6 @@
   <!-- css 링크  -->
   <link rel="stylesheet" href="../css/main.css">
   <link rel="stylesheet" href="../css/header.css">
-	<link rel="stylesheet" href="../css/footer.css">
 
   <style>
     #contents {
@@ -31,9 +30,8 @@
       margin-top: 10px;
     }
   </style>
-
-  <!-- JS 링크 -->
 </head>
+
 <body>
 
   <!-- ===== Header ===== -->
@@ -53,19 +51,18 @@
 
 
   <script>
-  //로컬에서 약관(policy.txt) 텍스트파일 읽어오기
-  window.addEventListener('DOMContentLoaded', function()
-  {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        document.getElementById('terms').value = this.responseText;
-      }
-    };
-    xmlhttp.open("GET", "/policy.txt", true);
-    xmlhttp.send();
-  });
-
+    //로컬에서 약관(policy.txt) 텍스트파일 읽어오기
+    window.addEventListener('DOMContentLoaded', function()
+    {
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById('terms').value = this.responseText;
+        }
+      };
+      xmlhttp.open("GET", "/policy.txt", true);
+      xmlhttp.send();
+    });
   </script>
 	
 </body>

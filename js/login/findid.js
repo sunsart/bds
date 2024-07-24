@@ -1,10 +1,4 @@
 function showFindid() {
-
-  // if (!isLogin) {
-  //   alert("로그인이 필요합니다");
-  //   return;
-  // }
-
   // 모달 show
   const modal = document.querySelector('.modal_id_container');
   modal.classList.add('on');

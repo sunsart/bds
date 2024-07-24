@@ -1,6 +1,6 @@
 function Login() {
-  let name = document.querySelector("#name").value;
-  let pw = document.querySelector("#pw").value;
+  let name = document.querySelector("#login_name").value;
+  let pw = document.querySelector("#login_pw").value;
 
   if (name == "") 
     alert("아이디를 입력해주세요")

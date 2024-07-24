@@ -7,6 +7,7 @@
   display: flex;
 }
 
+/* calendar */
 .container_calendar {
   width: 1200px;
   margin: 20px auto;
@@ -22,8 +23,7 @@
   margin-top: 15px;
 }
 h1 {
-    margin: 0;
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 /* 구글 폰트 아이콘 */
 .material-symbols-outlined {
@@ -38,7 +38,7 @@ h1 {
 .material-symbols-outlined:hover {
   font-variation-settings:
   'FILL' 100,
-  'wght' 5000,
+  'wght' 4000,
   'GRAD' 0,
   'opsz' 24;
 }

@@ -2,17 +2,17 @@
 function confirmCode() {
   let codeNum = localStorage.getItem('codeNum');
   let memberNum = localStorage.getItem('memberNum');
-  //console.log("코드넘버 확인 = " + codeNum);
-  //console.log("회원 고유넘버 확인 = " + memberNum);
+  console.log("코드넘버 확인 = " + codeNum);
+  console.log("회원 고유넘버 확인 = " + memberNum);
 
-  //입력코드 6자리 확인
+  // 입력코드 6자리 확인
   let sixcode = document.querySelector("#sixcode").value;
   if (sixcode.length != 6) {
     alert("6자리의 코드번호를 입력해주세요");
     return;
   }
 
-  //입력코드 일치여부 확인
+  // 입력코드 일치여부 확인
   if (codeNum == sixcode) 
     unfoldWindow();
   else 
@@ -27,7 +27,7 @@ function closeEditpw() {
 }
 
 
-//--- 비밀번호 변경버튼 클릭 >> 비번변경 + 얼럿창 + 창닫기
+// 비밀번호 변경버튼 클릭 >> 비번변경 + 얼럿창 + 창닫기
 function changePw() {
   let pw1 = document.querySelector("#pw1").value;
   let pw2 = document.querySelector("#pw2").value;

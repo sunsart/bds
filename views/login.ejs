@@ -3,29 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>부동산 도우미 - 로그인 페이지</title>
-  <meta name="description" content="부동산 도우미에 로그인 하고 다양한 서비스를 이용해 보세요">
+  <title>부동산 도우미 - 로그인</title>
+  <meta name="description" content="부동산 업무에 종사하는 분들에게 도움을 드립니다">
 
   <!-- 브라우저 css 기본스타일 초기화 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css">
 
-  <!-- 제이쿼리 -->
+  <!-- ajax 사용을 위한 제이쿼리 -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   
   <!-- css 링크  -->
   <link rel="stylesheet" href="../css/main.css">
   <link rel="stylesheet" href="../css/header.css">
-  <link rel="stylesheet" href="../css/login.css">
-  <link rel="stylesheet" href="../css/findid.css">
-  <link rel="stylesheet" href="../css/findpw.css">
-  <link rel="stylesheet" href="../css/editpw.css">
+  <link rel="stylesheet" href="../css/login/login.css">
+  <link rel="stylesheet" href="../css/login/findid.css">
+  <link rel="stylesheet" href="../css/login/findpw.css">
+  <link rel="stylesheet" href="../css/login/editpw.css">
   
   <!-- js 링크  -->
-  <script src="../js/login.js"></script>
-  <script src="../js/findid.js"></script>
-  <script src="../js/findpw.js"></script>
-  <script src="../js/editpw.js"></script>
+  <script src="../js/login/login.js"></script>
+  <script src="../js/login/findid.js"></script>
+  <script src="../js/login/findpw.js"></script>
+  <script src="../js/login/editpw.js"></script>
 </head>
+
 <body>
 
   <!-- ===== header ===== -->
@@ -42,11 +43,11 @@
           <span class="title">로그인</span>
           <hr>
       
-          <label for="name">아이디</label>
-          <input type="text" id="name">
+          <label for="login_name">아이디</label>
+          <input type="text" id="login_name">
       
-          <label for="pw">비밀번호</label>
-          <input type="password" id="pw">
+          <label for="login_pw">비밀번호</label>
+          <input type="password" id="login_pw">
       
           <button type="button" class="login_btn" onclick="Login()">로그인</button>
         </div>
@@ -62,7 +63,6 @@
     <!-- ===== 아이디찾기 모달 ===== -->
     <div class="modal_id_container">
       <div class="modal_id_popup">
-        
         <span class="findid_title">아이디 찾기</span>
         <hr>
 
@@ -71,14 +71,12 @@
 
         <button type="button" class="findid_btn" onclick="findid();">아이디 찾기</button>
         <button type="button" class="findid_btn cancel_btn" onclick="closeFindid();">취소</button>
-
       </div>
     </div>
 
     <!-- ===== 비밀번호 찾기 모달 ===== -->
     <div class="modal_pw_container">
       <div class="modal_pw_popup">
-
         <span class="findpw_title">비밀번호 찾기</span>
         <hr>
 
@@ -90,19 +88,17 @@
 
         <button type="button" class="findpw_btn" onclick="findpw();">비밀번호 찾기</button>
         <button type="button" class="findpw_btn cancel_btn" onclick="closeFindpw();">취소</button>
-
       </div>
     </div>
 
     <!-- ===== 비밀번호 수정 모달 ===== -->
     <div class="modal_editpw_container">
       <div class="modal_editpw_popup">
-
         <div id="confirm_code" style="display:block;">
           <label for="sixcode">비밀번호 변경을 위해 이메일로 전송된 6자리 코드번호를 입력하세요</label>
           <input type="text" id="sixcode">
           <button type="button" class="editpw_btn" onclick="confirmCode();">확인</button>
-          <button type="button" class="editpw_btn" onclick="closeEditpw();">취소</button>
+          <button type="button" class="editpw_btn cancel_btn" onclick="closeEditpw();">취소</button>
         </div>
 
         <div id="change_password" style="display:none;">
@@ -111,13 +107,11 @@
           <label for="pw2">비밀번호 재입력</label>
           <input type="password" id="pw2">
           <button type="button" class="editpw_btn" onclick="changePw();">비밀번호 변경</button>
-          <button type="button" class="editpw_btn" onclick="closeEditpw();">취소</button>
+          <button type="button" class="editpw_btn cancel_btn" onclick="closeEditpw();">취소</button>
         </div>
-
       </div>
     </div>
 
-  </div>
-      
+  </div>    
 </body>
 </html>

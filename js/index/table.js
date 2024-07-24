@@ -67,7 +67,7 @@ $(document).ready(function() {
 				cb.style.visibility = 'visible';
 			//선택버튼 비활성화시 칼럼 사이즈 복원
 			let td = document.querySelector("#col_size");
-			td.style.width = '11%';
+			td.style.width = '10%';
 		}
 	})	
 });

@@ -1,5 +1,6 @@
+// calendar 페이지가 로드되면 바로 아래 함수에서 값을 설정함
 let calendar;
-let isLogin;  // 로그인 여부
+let isLogin;
 
 document.addEventListener('DOMContentLoaded', function() {
   // todo
@@ -35,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function() {
       right: 'today prev next'
     }
   }
-  //console.log(arrayData);
 
   // 캘린더 생성 옵션
   const calendarOption = {

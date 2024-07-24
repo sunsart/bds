@@ -1,5 +1,4 @@
 function checkSignup() {
-
   let name = document.querySelector("#name").value;
   let pw1 = document.querySelector("#pw1").value;
   let pw2 = document.querySelector("#pw2").value;

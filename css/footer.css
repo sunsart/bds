@@ -3,10 +3,11 @@ footer {
   border-top: 1px solid #333;
 }
 footer .inner {
-  width: 1900px;
+  width: 1800px;
   padding-bottom: 20px;
-  margin: 0 auto;
+  margin-left: 100px;
 }
+
 footer .menu {
   display: flex;
   justify-content: center;
@@ -14,31 +15,13 @@ footer .menu {
 footer .menu li {
   position: relative;
 }
-footer .menu li::before {
-  content: "";
-  width: 3px;
-  height: 3px;
-  background-color: #555;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: -1px;
-  margin: auto;
-}
-footer .menu li:last-child::before {
-  display: none;
-}
 footer .menu li a {
   color: #ccc;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   padding: 15px;
   display: block;
 }
-footer .menu li a.green {
-  color: #669900
-}
-
 
 footer .info {
   margin-top: 10px;
@@ -51,13 +34,10 @@ footer .info span {
   line-height: 150%;
   display: block;
 }
-footer .info span:last-child {
-  margin-right: 0;
-}
 #email_address {
   color: rgb(81, 225, 127);
+  font-size: 17px;
 }
-
 
 footer .copyright {
   color: #999;
