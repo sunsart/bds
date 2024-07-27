@@ -3,15 +3,32 @@ let calendar;
 let isLogin;
 
 document.addEventListener('DOMContentLoaded', function() {
-  // todo
-  const addBtn = document.querySelector('#addBtn');
-  addBtn.addEventListener('click', () => {
-    if (!isLogin) {
-      alert("로그인이 필요합니다");
-    } else {
-      createTodo();
-    }
-  })
+  // todo 체크박스값 변경시
+  const checkboxes = document.querySelectorAll('.checkbox');
+  for(const checkbox of checkboxes) {
+    checkbox.addEventListener('click', function() {
+      let num = checkbox.dataset.id;      // todo id번호
+      let title = checkbox.nextElementSibling;  // todo 제목
+    
+      let complete = 0;
+      if(checkbox.checked) complete = 1;
+    
+      $.ajax({
+        url : "/todo_complete",
+        type : "POST",
+        data : {id:num, complete:complete},
+        success : function(data) {
+          if(data == "완료변경") {
+            if(complete == 1)
+              title.classList.add("completed");
+            else
+              title.classList.remove("completed");
+          }
+        }
+      })
+    });
+  }
+
 
   // db 저장된 schedule
   let jsonData;
@@ -170,7 +187,10 @@ function addCalendar() {
 
 
 // todo 등록
-function createTodo(event) {
+function createTodo() {
+  if (!isLogin) {
+    alert("로그인이 필요합니다");
+  }
   const count = document.querySelector('#todoList').childElementCount;
   if(count >= 15) {
     alert("할 일은 15개까지만 등록할 수 있습니다");
@@ -187,20 +207,62 @@ function createTodo(event) {
       type : "POST",
       data : {title:todoInput.value},
       success : function(data) {
-        if(data == "투두저장성공") {
-          window.location.href = '/calendar';
-          // 화면을 리로드하지 않고 ajax 사용하여 부분 갱신하는 방법 필요
-        }
+        const li = document.createElement("li");
+
+        const todo = document.createElement("div");
+        todo.id = "todo";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = data[2];
+        checkbox.setAttribute("data-id", data[2]);
+
+        checkbox.addEventListener('click', function() {
+          let num = data[2]; 
+          let title = checkbox.nextElementSibling;
+        
+          let complete = 0;
+          if(checkbox.checked) complete = 1;
+        
+          $.ajax({
+            url : "/todo_complete",
+            type : "POST",
+            data : {id:num, complete:complete},
+            success : function(data) {
+              if(data == "완료변경") {
+                if(complete == 1)
+                  title.classList.add("completed");
+                else
+                  title.classList.remove("completed");
+              }
+            }
+          })
+        });
+
+        const title = document.createElement("span");
+        title.id = "todo_title";
+        title.addEventListener('click', function() {
+          deleteTodo(title);
+        });
+
+        title.textContent = data[1];
+
+        todo.appendChild(checkbox);
+        todo.appendChild(title);
+
+        li.appendChild(todo);
+
+        const ul = document.querySelector("#todoList");
+        ul.appendChild(li);
       }
     })
-    todoInput.value = ''; // todo 등록후 input창 초기화
+    todoInput.value = ""; // todo 등록후 input창 초기화
   }
 }
 
-
-// todo 삭제
 function deleteTodo(e) {
-	num = e.dataset.id; // todod id번호
+	let checkbox = e.previousElementSibling;
+  let num = checkbox.dataset.id;
   if(confirm("삭제할까요?")) {
 		$.ajax({
       url : "/todo_delete",
@@ -208,10 +270,10 @@ function deleteTodo(e) {
       data : {id:num},
       success : function(data) {
         if(data == "투두삭제성공") {
-          window.location.href = '/calendar';
-          // 화면을 리로드하지 않고 ajax 사용하여 부분 갱신하는 방법 필요
+          $(checkbox).parent('div').parent('li').remove();
         }
       }
     })
 	}
 }
+

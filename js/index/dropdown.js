@@ -1,4 +1,4 @@
-// 메뉴 카테고리 선택시 >> 드롭다운메뉴 보이기
+// 특약 카테고리 선택시 >> 드롭다운메뉴 보이기
 function clickMenuBtn(id) {
   document.querySelector("#apt_Dropdown").classList.remove("show");
   document.querySelector("#officetel_Dropdown").classList.remove("show");
@@ -13,6 +13,7 @@ function clickMenuBtn(id) {
   let temp = id + "_Dropdown";
   document.getElementById(temp).classList.toggle("show");
 }
+
 
 // 드롭다운메뉴 밖의 공간을 클릭시 드롭다운메뉴 닫기
 window.onclick = function (event) {

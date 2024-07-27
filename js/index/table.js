@@ -13,7 +13,8 @@ $(document).ready(function() {
 	})
 });
 
-// 특약 체크박스 선택후 >> 작성하기 버튼 클릭시
+
+// 특약테이블에서 체크박스 선택후 >> 작성하기 버튼 클릭시
 $(document).ready(function() {
   $('.copy_button').click(function(e) {
 
@@ -38,41 +39,43 @@ $(document).ready(function() {
 	})
 });
 
-//로그인후 >> 테이블 위쪽 수정버튼 클릭
+
+// 로그인후 >> 테이블 위쪽 수정버튼 클릭
 $(document).ready(function() {
   $('#edit_button').click(function(e) {
 		if (this.innerText == "수정") {
 			this.innerText = "완료";
-			//선택버튼 활성화
+			// 선택버튼 활성화
 			let btns = document.querySelectorAll(".select_btn");
 			for(let btn of btns)
 				btn.className = "select_btn show_btn";
-			//체크박스 비활성화
+			// 체크박스 비활성화
 			let checkboxes = document.querySelectorAll(".checkbox");
 			for(let cb of checkboxes)
 				cb.style.visibility = 'hidden';
-			//선택버튼 활성화시 칼럼 사이즈 늘리기
+			// 선택버튼 활성화시 칼럼 사이즈 늘리기
 			let td = document.querySelector("#col_size");
 			td.style.width = '14%';
 		} 
 		else if (this.innerText == "완료") {
 			this.innerText = "수정";
-			//선택버튼 비활성화
+			// 선택버튼 비활성화
 			let btns = document.querySelectorAll(".select_btn");
 			for(let btn of btns)
 				btn.className = "select_btn";
-			//체크박스 활성화
+			// 체크박스 활성화
 			let checkboxes = document.querySelectorAll(".checkbox");
 			for(let cb of checkboxes)
 				cb.style.visibility = 'visible';
-			//선택버튼 비활성화시 칼럼 사이즈 복원
+			// 선택버튼 비활성화시 칼럼 사이즈 복원
 			let td = document.querySelector("#col_size");
 			td.style.width = '10%';
 		}
 	})	
 });
 
-// 특약사항 수정
+
+// 선택버튼 클릭하여 특약사항 수정시
 function clickEdit(e) {
 	// 선택한 basics 특약 id넘버 가져오기
 	let num = e.dataset.id;
@@ -80,7 +83,7 @@ function clickEdit(e) {
 	// 특약수정 모달의 hidden input 값으로 설정
 	document.querySelector("#clause_no").value = num;
 
-	//선택된행의 데이터를 모달입력창에 설정
+	// 선택된 행의 데이터를 모달입력창에 설정
 	let title;
 	let content;
 	let checkboxes = document.querySelectorAll(".checkbox");
@@ -96,35 +99,4 @@ function clickEdit(e) {
 	
 	//모달 show
 	document.querySelector("#edit_modal").style.display = "block";
-}
-
-//모달 내 확인버튼 클릭시
-function confirmModal() { 
-  let clauseNum = document.querySelector("#clause_no").value;
-  let title = document.querySelector(".edit_title").value;
-  let content = document.querySelector(".edit_content").value;
- 
-  $.ajax({
-    url : "/edit",
-    type : "POST",
-    data : {clauseNum:clauseNum, title:title, content:content},
-    success : function(data) {
-      if(data == "특약수정성공") 
-        alert("특약사항을 저장했습니다");
-      else if(data == "특약저장성공") 
-        alert("특약사항을 저장했습니다");
-    }
-  })
-  
-  // 모달 닫기
-  closeModal();
-
-  // 특약수정된 결과를 바로 볼수 있게
-  window.location.href = '/';
-}
-
-//모달 내 취소버튼 클릭시
-function closeModal() { 
-  let modal = document.querySelector("#edit_modal");
-  modal.style.display = "none";
 }

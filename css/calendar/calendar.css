@@ -63,25 +63,27 @@ h1 {
 #todoList li {
   padding: 10px 0;
 }
-#todoList #todo {
+#todo {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   vertical-align: middle;
 }
-#todoList #todo #todo_title {
+#todo_title {
   display: inline;
   width: 320px;
   text-align: left;
   margin-left: 15px;
-  font-size: 16px;
-
-  /* 말줄임 표시 : display를 inline에서 block으로 변경*/
-  display: block;
-  white-space: nowrap;  
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 17px;
+  cursor: pointer;
+}
+.completed {
+  color: gray;
+  text-decoration: line-through;
+}
+#todo_title:hover {
+  font-weight: bold;
 }
 
 

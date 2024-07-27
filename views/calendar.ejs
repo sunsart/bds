@@ -55,20 +55,28 @@
         <h1>할 일</h1>
         <div id="inputField">
           <input type="text" id="todoInput" placeholder="할 일 추가하기">
-          <span class="material-symbols-outlined" id="addBtn">add_box</span>
+          <span class="material-symbols-outlined" 
+            id="addBtn"
+            onclick="createTodo()">
+            add_box
+          </span>
         </div>
         <% if (user) { %>
           <ul id="todoList">
             <% for(let i=0; i<data_2.length; i++) { %>
               <li>
                 <div id="todo">
-                  <span class="material-symbols-outlined" 
-                    id="<%= data_2[i].id %>"
-                    data-id="<%= data_2[i].id %>"
-                    onclick="deleteTodo(this)">
-                    do_not_disturb_on
-                  </span>
-                  <span id="todo_title"><%= data_2[i].title %></span> 
+                  <% if(data_2[i].completed) { %>
+                    <input type="checkbox" class="checkbox completed" id="<%= data_2[i].id %>" data-id="<%= data_2[i].id %>" checked>
+                  <% } else { %>  
+                    <input type="checkbox" class="checkbox" id="<%= data_2[i].id %>" data-id="<%= data_2[i].id %>">
+                  <% } %>
+
+                  <% if(data_2[i].completed) { %>
+                    <span id="todo_title" class="completed" onclick="deleteTodo(this)"><%= data_2[i].title %></span> 
+                  <% } else { %>  
+                    <span id="todo_title" onclick="deleteTodo(this)"><%= data_2[i].title %></span> 
+                  <% } %>
                 </div>
               </li>
             <% } %> 

@@ -4,96 +4,26 @@
 }
 
 
-/* --- 특약 제목 레이블 --- */
-.clause_name {
-  border: none;
-  color: white;
-  width: 180px;
-  height: 42px;
-  text-align: center;
-  background-color: #3468B6;
-  font-size: 16px;
-  display: inline-block;
-  line-height: 42px;
-  border-radius: 10px 10px 0px 0px;
-}
-
-/* --- 수정 버튼 --- */
-.edit_btn {
-  border: none;
-  color: white;
-  width: 60px;
-  height: 41px;
-  text-align: center;
-  background-color: rgb(1, 167, 1);
-  font-size: 16px;
-  cursor: pointer;
-  display: inline-block;
-  line-height: 40px;
-  border-radius: 5px 5px 0px 0px;
-  opacity: 0.9;
-}
-.edit_btn:hover {
-  opacity: 1;
-}
-
-/* --- 선택 버튼 --- */
-.select_btn {
-  float: right;
-  margin-right: 5px;
-  display: none;
-}
-.show_btn{
-  display: inline;
-}
-.select_btn:hover {
-  background-color: rgb(196, 196, 196);
-}
-
-/* --- 특약 테이블 --- */
-.table_clause {
-  width: 100%;
-}
-
-.table_clause, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-  vertical-align: middle;
-}
-
-#col_size {
-  width: 10%;
-}
-
-table tr {
-  height: 40px;
-}
-
-.content {
-  color: darkgray;
-  padding-left: 15px;
-}
-
-/* --- 복사하기 버튼 --- */
+/* 복사하기 버튼 */
 .copy_button {
   border: none; 
   color: white; 
   font-size: 17px;
   padding: 12px 20px; 
   cursor: pointer;
-  background-color: rgb(1, 167, 1);
+  background-color: rgb(1, 151, 1);
+  opacity: 0.9;
 }
-
 .copy_button:hover {
-  background-color: green;
+  opacity: 1;
 }
 
-/* --- textarea --- */
+
+/* textarea */
 .container_copy {
   width: 100%;
   margin-bottom: 15px;
 }
-
 #copy_content {
   font-family: "Nanum Gothic", sans-serif;
   font-weight: 400;
@@ -105,7 +35,8 @@ table tr {
   box-sizing: border-box;
 }
 
-/* --- 특약 수정 모달 --- */
+
+/* 특약수정 모달 */
 .modal {
   display: none; 
   position: fixed; 
@@ -119,7 +50,6 @@ table tr {
   background-color: rgb(0,0,0); 
   background-color: rgba(0,0,0,0.4); 
 }
-
 .modal_content {
   background-color: #fefefe;
   margin: auto;
@@ -127,7 +57,6 @@ table tr {
   border: 1px solid #888;
   width: 80%;
 }
-
 .edit_title, .edit_content {
   width: 100%;
   padding: 12px 20px;
@@ -137,11 +66,9 @@ table tr {
   box-sizing: border-box;
   font-size: 16px;
 }
-
 .edit_title {
   width: 30%;
 }
-
 .modal_cancel {
   border: none;
   color: white;
@@ -151,13 +78,12 @@ table tr {
   float: right;
   margin-left: 15px;
   background-color: #7a7979;
+  opacity: 0.9;
   border-radius: 5px;
 }
-
 .modal_cancel:hover {
-  background-color: #616161;
+  opacity: 1;
 }
-
 .modal_conform {
   border: none;
   color: white;
@@ -167,11 +93,11 @@ table tr {
   float: right;
   margin-left: 15px;
   background-color: #31d414;
+  opacity: 0.9;
   border-radius: 5px;
 }
-
 .modal_conform:hover {
-  background-color: #2dc513;
+  opacity: 1;
 }
 
 

@@ -69,7 +69,12 @@ router.post('/todo_add', function(req, res) {
   let params = [title, user_id];
   conn.query(sql, params, function(err, result) {
     if(err) throw err;
-    res.send("투두저장성공");
+    //res.send("투두저장성공");
+    let bags = [];
+    bags[0] = user_id;
+    bags[1] = title;
+    bags[2] = result.insertId;
+    res.send(bags);
   })
 })
 
@@ -84,6 +89,19 @@ router.post('/todo_delete', function(req, res) {
     res.send("투두삭제성공");
   })
 })
+
+// todo 완료 변경
+router.post('/todo_complete', function(req, res) {
+  let id = req.body.id;
+  let complete = req.body.complete;
+  
+  let sql = "UPDATE todo SET completed=? WHERE id=?";
+  let params = [complete, id];
+  conn.query(sql, params, function(err, result) {
+    if(err) throw err;
+    res.send("완료변경"); 
+  })
+});
 
 
 //router 변수를 외부 노출

@@ -2,30 +2,29 @@
   margin-bottom: 10px;
 }
 
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
 .dropbtn {
   background-color: #373737;
-  color: rgb(255, 255, 255); /* 메뉴 글자색 */
+  color: rgb(255, 255, 255);
   padding: 10px;
   font-size: 15px;
   border: none;
   cursor: pointer;
   min-width: 100px;
 }
-
 .dropbtn:hover, .dropbtn:focus {
-  background-color: #373737c7; /* 메뉴 호버링색 */
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
+  background-color: #373737c7;
 }
 
 /* dropdown 세부 목록 */
 .dropdown_content {
   display: none;
   position: absolute;
-  background-color: #000000da; /* 메뉴 배경색 */ 
+  background-color: #373737;
   min-width: 100px;
   overflow: auto;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -41,7 +40,7 @@
 }
 
 .dropdown a:hover {
-  background-color: #373737ee;
+  background-color: #373737;
   color: yellow;
 }
 
