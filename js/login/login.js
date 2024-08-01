@@ -19,6 +19,10 @@ function Login() {
         else if(data == "로그인실패") {
           alert("아이디 또는 비밀번호를 잘못 입력했습니다");
         }
+      },
+      error : function(xhr, textStatus, errorThrown) {
+        console.log("login 실패, 서버에러");
+        console.log(xhr, textStatus, errorThrown);
       }
     })
   }

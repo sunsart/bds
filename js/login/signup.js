@@ -25,12 +25,16 @@ function checkSignup() {
       type : "POST",
       data : {name:name, pw:pw1, email:email},
       success : function(data) {
-        if(data == "아이디중복") 
+        if(data[0] == "아이디중복") 
           alert("이미 존재하는 아이디 입니다");
         else if(data[0] == "가입성공") {
           alert("정상적으로 회원가입 되었습니다.");
           window.location.href = '/login';
         }
+      },
+      error : function(xhr, textStatus, errorThrown) {
+        console.log("signup 실패, 서버에러");
+        console.log(xhr, textStatus, errorThrown);
       }
     })
   }

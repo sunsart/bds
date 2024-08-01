@@ -2,8 +2,8 @@
 function confirmCode() {
   let codeNum = localStorage.getItem('codeNum');
   let memberNum = localStorage.getItem('memberNum');
-  console.log("코드넘버 확인 = " + codeNum);
-  console.log("회원 고유넘버 확인 = " + memberNum);
+  //console.log("코드넘버 확인 = " + codeNum);
+  //console.log("회원 고유넘버 확인 = " + memberNum);
 
   // 입력코드 6자리 확인
   let sixcode = document.querySelector("#sixcode").value;
@@ -48,9 +48,12 @@ function changePw() {
     url : "/changePw",
     type : "POST",
     data : {pw:pw1, memberId:memberNum},
-    success : function(data) {
-      if(data == "비밀번호변경성공") 
-        alert("비밀번호가 변경되었습니다");
+    success : function() {
+      alert("비밀번호가 변경되었습니다");
+    },
+    error : function(xhr, textStatus, errorThrown) {
+      console.log("changePw 비밀번호변경 실패, 서버에러");
+      console.log(xhr, textStatus, errorThrown);
     }
   })
   

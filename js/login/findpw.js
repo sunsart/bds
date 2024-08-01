@@ -3,7 +3,6 @@ function showFindpw() {
   // 모달 show
   const modal = document.querySelector('.modal_pw_container');
   modal.classList.add('on');
-
   // 입력창 초기화
   document.querySelector("#findpw_name").value = "";  
   document.querySelector("#findpw_email").value = "";      
@@ -15,7 +14,7 @@ function closeFindpw() {
   modal.classList.remove('on');
 }
 
-//비밀번호찾기 버튼 클릭시
+// 비밀번호찾기 버튼 클릭시
 function findpw() {
   let name = document.querySelector("#findpw_name").value;
   let email = document.querySelector("#findpw_email").value;
@@ -50,6 +49,10 @@ function findpw() {
           const modal_edit = document.querySelector('.modal_editpw_container');
           modal_edit.classList.add('on');
         }
+      },
+      error : function(xhr, textStatus, errorThrown) {
+        console.log("findpw 비밀번호찾기 실패, 서버에러");
+        console.log(xhr, textStatus, errorThrown);
       }
     })
   }

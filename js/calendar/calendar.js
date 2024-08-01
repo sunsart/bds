@@ -7,28 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const checkboxes = document.querySelectorAll('.checkbox');
   for(const checkbox of checkboxes) {
     checkbox.addEventListener('click', function() {
-      let num = checkbox.dataset.id;      // todo id번호
-      let title = checkbox.nextElementSibling;  // todo 제목
-    
-      let complete = 0;
-      if(checkbox.checked) complete = 1;
-    
-      $.ajax({
-        url : "/todo_complete",
-        type : "POST",
-        data : {id:num, complete:complete},
-        success : function(data) {
-          if(data == "완료변경") {
-            if(complete == 1)
-              title.classList.add("completed");
-            else
-              title.classList.remove("completed");
-          }
-        }
-      })
+      completeTodo(checkbox);
     });
   }
-
 
   // db 저장된 schedule
   let jsonData;
@@ -109,16 +90,18 @@ document.addEventListener('DOMContentLoaded', function() {
   calendar.on("select", info => { showModal(); });
   calendar.on("eventClick", info => {
     let result = confirm("일정을 삭제할까요?");
-    if (result) {
+    if(result) {
       $.ajax({
         url : "/schedule_delete",
         type : "POST",
         data : {id:info.event.id},
-        success : function(data) {
-          if(data == "일정삭제성공") {
-            info.event.remove();
-            alert("일정을 삭제했습니다")
-          }
+        success : function() {
+          info.event.remove();
+          alert("일정을 삭제했습니다");
+        },
+        error : function(xhr, textStatus, errorThrown) {
+          console.log("schedule delete 일정삭제실패, 서버에러");
+          console.log(xhr, textStatus, errorThrown);
         }
       })
     }
@@ -174,11 +157,13 @@ function addCalendar() {
       url : "/schedule_add",
       type : "POST",
       data : {title:obj.title, start:obj.start, end:obj.end, color:obj.backgroundColor},
-      success : function(data) {
-        if(data == "일정등록성공") {
-          calendar.addEvent(obj);
-          alert("일정을 등록했습니다")
-        }
+      success : function() {
+        calendar.addEvent(obj);
+        alert("일정을 등록했습니다");
+      },
+      error : function(xhr, textStatus, errorThrown) {
+        console.log("schedule delete 일정삭제실패, 서버에러");
+        console.log(xhr, textStatus, errorThrown);
       }
     })
     closeModal();
@@ -216,27 +201,8 @@ function createTodo() {
         checkbox.type = "checkbox";
         checkbox.id = data[2];
         checkbox.setAttribute("data-id", data[2]);
-
         checkbox.addEventListener('click', function() {
-          let num = data[2]; 
-          let title = checkbox.nextElementSibling;
-        
-          let complete = 0;
-          if(checkbox.checked) complete = 1;
-        
-          $.ajax({
-            url : "/todo_complete",
-            type : "POST",
-            data : {id:num, complete:complete},
-            success : function(data) {
-              if(data == "완료변경") {
-                if(complete == 1)
-                  title.classList.add("completed");
-                else
-                  title.classList.remove("completed");
-              }
-            }
-          })
+          completeTodo(checkbox);
         });
 
         const title = document.createElement("span");
@@ -254,11 +220,16 @@ function createTodo() {
 
         const ul = document.querySelector("#todoList");
         ul.appendChild(li);
+      },
+      error : function(xhr, textStatus, errorThrown) {
+        console.log("todo add 저장실패, 서버에러");
+        console.log(xhr, textStatus, errorThrown);
       }
     })
     todoInput.value = ""; // todo 등록후 input창 초기화
   }
 }
+
 
 function deleteTodo(e) {
 	let checkbox = e.previousElementSibling;
@@ -268,12 +239,36 @@ function deleteTodo(e) {
       url : "/todo_delete",
       type : "POST",
       data : {id:num},
-      success : function(data) {
-        if(data == "투두삭제성공") {
-          $(checkbox).parent('div').parent('li').remove();
-        }
+      success : function() {
+        $(checkbox).parent('div').parent('li').remove();
+      },
+      error : function(xhr, textStatus, errorThrown) {
+        console.log("todo delete 삭제실패, 서버에러");
+        console.log(xhr, textStatus, errorThrown);
       }
     })
 	}
 }
 
+
+function completeTodo(e) {
+	let num = e.dataset.id;
+  let title = e.nextElementSibling;
+  let complete = 0;
+  if(e.checked) complete = 1;
+  $.ajax({
+    url : "/todo_complete",
+    type : "POST",
+    data : {id:num, complete:complete},
+    success : function() {
+      if(complete == 1)
+        title.classList.add("completed");
+      else
+        title.classList.remove("completed");
+    },
+    error : function(xhr, textStatus, errorThrown) {
+      console.log("todo complete 변경실패, 서버에러");
+      console.log(xhr, textStatus, errorThrown);
+    }
+  })
+}

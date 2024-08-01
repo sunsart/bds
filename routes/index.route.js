@@ -19,7 +19,7 @@ let clauseType = "";
 router.get('/', function(req, res) {
   clauseType = "apt_trade";
   if(req.session.user) {
-    //로그인 되어 있으면
+    // 로그인 되어 있으면
     let sql = " (SELECT cl.clause_id AS 'id', cl.title, cl.content FROM clauses AS cl WHERE cl.account_id=? AND cl.type=?) \
                 UNION ALL \
                 (SELECT BASICS.id, BASICS.title, BASICS.content \
@@ -30,15 +30,19 @@ router.get('/', function(req, res) {
                 ORDER BY id ASC ";
     let params = [req.session.user.id, clauseType, clauseType, req.session.user.id, clauseType];
     conn.query(sql, params, function(err, rows) {
-      if(err) throw err;
-      res.render('index.ejs', {data:rows, user:req.session.user, type:setClauseName(clauseType)});
+      if(err)
+        res.status(500).send();
+      else  
+        res.render('index.ejs', {data:rows, user:req.session.user, type:setClauseName(clauseType)});
     })
   } else {
-    //로그인 되어 있지 않으면
+    // 로그인 되어 있지 않으면
     let sql = "SELECT * FROM basics WHERE type=? AND title!=''";
     conn.query(sql, clauseType, function(err, rows) {
-      if(err) throw err;
-      res.render('index.ejs', {data:rows, user:req.session.user, type:setClauseName(clauseType)});
+      if(err)
+        res.status(500).send();
+      else  
+        res.render('index.ejs', {data:rows, user:req.session.user, type:setClauseName(clauseType)});
     })
   }
 });
@@ -47,7 +51,7 @@ router.get('/', function(req, res) {
 router.get('/type/:id', function(req, res) {
   clauseType = req.params.id;
   if(req.session.user) {
-    //로그인 되어 있으면
+    // 로그인 되어 있으면
     let sql = " (SELECT cl.clause_id AS 'id', cl.title, cl.content FROM clauses AS cl WHERE cl.account_id=? AND cl.type=?) \
                 UNION ALL \
                 (SELECT BASICS.id, BASICS.title, BASICS.content \
@@ -58,15 +62,19 @@ router.get('/type/:id', function(req, res) {
                 ORDER BY id ASC ";
     let params = [req.session.user.id, clauseType, clauseType, req.session.user.id, clauseType];
     conn.query(sql, params, function(err, rows) {
-      if(err) throw err;
-      res.render('index.ejs', {data:rows, user:req.session.user, type:setClauseName(clauseType)});
+      if(err)
+        res.status(500).send();
+      else  
+        res.render('index.ejs', {data:rows, user:req.session.user, type:setClauseName(clauseType)});
     })
   } else {
-    //로그인 되어 있지 않으면
+    // 로그인 되어 있지 않으면
     let sql = "SELECT * FROM basics WHERE type=? AND title!=''";
     conn.query(sql, clauseType, function(err, rows) {
-      if(err) throw err;
-      res.render('index.ejs', {data:rows, user:req.session.user, type:setClauseName(clauseType)});
+      if(err)
+        res.status(500).send();
+      else  
+        res.render('index.ejs', {data:rows, user:req.session.user, type:setClauseName(clauseType)});
     })
   }
 })
@@ -83,28 +91,34 @@ router.post('/edit', function(req, res, next) {
   let sql = "SELECT * FROM clauses WHERE account_id=? AND clause_id=?";
   let params = [account_id, clause_id];
   conn.query(sql, params, function(err, result) {
-    if(err) throw err;
-    if(result.length > 0) {
-      // 존재하면 update
-      console.log("기존 회원의 테이터가 존재함...");
-      let sql = "UPDATE clauses SET title=?, content=? WHERE account_id=? AND clause_id=?";
-      let params = [title, content, account_id, clause_id];
-      conn.query(sql, params, function(err, result) {
-        if(err) throw err;
-        res.send("특약수정성공");
-      })
-    } else {
-      // 존재하지 않으면 insert
-      console.log("기존 회원의 테이터가 존재하지 않음...");
-      let sql = "INSERT INTO clauses (type, title, content, account_id, clause_id) VALUES (?, ?, ?, ?, ?)";
-      let params = [type, title, content, account_id, clause_id];
-      conn.query(sql, params, function(err, result) {
-        if(err) throw err;
-        res.send("특약저장성공");
-      })
-    }
+    if(err)
+      res.status(500).send();
+    else {
+      if(result.length > 0) {
+        // 기존 회원의 특약사항 데이터가 존재하면 update
+        let sql = "UPDATE clauses SET title=?, content=? WHERE account_id=? AND clause_id=?";
+        let params = [title, content, account_id, clause_id];
+        conn.query(sql, params, function(err, result) {
+          if(err)
+            res.status(500).send();
+          else  
+            res.status(200).send("특약수정성공");
+        })
+      } else {
+        // 기존 회원의 특약사항 데이터가 존재하지 않으면 insert
+        let sql = "INSERT INTO clauses (type, title, content, account_id, clause_id) VALUES (?, ?, ?, ?, ?)";
+        let params = [type, title, content, account_id, clause_id];
+        conn.query(sql, params, function(err, result) {
+          if(err)
+            res.status(500).send();
+          else  
+            res.status(200).send("특약저장성공");
+        })
+      }
+    } 
   })
 });
+
 
 function setClauseName(eng) {
   let kor;

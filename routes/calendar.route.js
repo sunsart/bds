@@ -15,18 +15,18 @@ conn.connect();
 
 // 저장된 schedule과 todo를 동시에 불러옴. 다중쿼리
 router.get('/calendar', function(req, res) {
-  //로그인 되어 있으면
-  if(req.session.user) {
+  if(req.session.user) {  //로그인 되어 있으면
     let sql_1 = "SELECT * FROM schedule WHERE user_id=?;";
     let sql_2 = "SELECT * FROM todo WHERE user_id=?;";
     let params = [req.session.user.id, req.session.user.id];
 
     conn.query(sql_1 + sql_2, params, function(err, rows) {
-    if(err) throw err;
-    res.render('calendar.ejs', {data_1:rows[0], data_2:rows[1], user:req.session.user});
+      if(err)
+        res.status(500).send();
+      else  
+        res.render('calendar.ejs', {data_1:rows[0], data_2:rows[1], user:req.session.user});
     })
-  } else {
-    //로그인 되어 있지 않으면
+  } else {  //로그인 되어 있지 않으면
     res.render('calendar.ejs', {user:req.session.user});
   }
 })
@@ -39,12 +39,13 @@ router.post('/schedule_add', function(req, res) {
   let end = req.body.end;
   let color = req.body.color;
   let user_id = req.session.user.id;
-
   let sql = "INSERT INTO schedule (title, start, end, color, user_id) VALUES (?, ?, ?, ?, ? )";
   let params = [title, start, end, color, user_id];
   conn.query(sql, params, function(err, result) {
-    if(err) throw err;
-    res.send("일정등록성공");
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send();
   })
 })
 
@@ -54,8 +55,10 @@ router.post('/schedule_delete', function(req, res) {
   let schedule_id = req.body.id;
   let sql = "DELETE FROM schedule WHERE id = ?";
   conn.query(sql, schedule_id, function(err, result) {
-    if(err) throw err;
-    res.send("일정삭제성공");
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send();
   })
 })
 
@@ -64,17 +67,20 @@ router.post('/schedule_delete', function(req, res) {
 router.post('/todo_add', function(req, res) {
   let title = req.body.title;
   let user_id = req.session.user.id;
-
   let sql = "INSERT INTO todo (title, user_id) VALUES (?, ?)";
   let params = [title, user_id];
   conn.query(sql, params, function(err, result) {
-    if(err) throw err;
-    //res.send("투두저장성공");
-    let bags = [];
-    bags[0] = user_id;
-    bags[1] = title;
-    bags[2] = result.insertId;
-    res.send(bags);
+    if(err) {
+      res.status(500).send();
+    }
+    else {
+      let bags = [];
+      bags[0] = user_id;
+      bags[1] = title;
+      bags[2] = result.insertId;
+      res.status(200).send(bags);
+    }
+    
   })
 })
 
@@ -85,8 +91,10 @@ router.post('/todo_delete', function(req, res) {
   let sql = "DELETE FROM todo WHERE id = ?";
   let params = [id];
   conn.query(sql, params, function(err, result) {
-    if(err) throw err;
-    res.send("투두삭제성공");
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send();
   })
 })
 
@@ -94,12 +102,13 @@ router.post('/todo_delete', function(req, res) {
 router.post('/todo_complete', function(req, res) {
   let id = req.body.id;
   let complete = req.body.complete;
-  
   let sql = "UPDATE todo SET completed=? WHERE id=?";
   let params = [complete, id];
   conn.query(sql, params, function(err, result) {
-    if(err) throw err;
-    res.send("완료변경"); 
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send();
   })
 });
 

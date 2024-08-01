@@ -2,7 +2,6 @@ function showFindid() {
   // 모달 show
   const modal = document.querySelector('.modal_id_container');
   modal.classList.add('on');
-
   // 입력창 초기화
   document.querySelector("#findid_email").value = "";
 }
@@ -35,6 +34,10 @@ function findid() {
           alert(text);
           closeFindid();
         }
+      },
+      error : function(xhr, textStatus, errorThrown) {
+        console.log("findid 아이디찾기 실패, 서버에러");
+        console.log(xhr, textStatus, errorThrown);
       }
     })
   }
