@@ -140,6 +140,8 @@ function addCalendar() {
   let color = document.querySelector("#select").value;
   if(title == null || title == "") {
     alert("일정내용을 입력하세요");
+  } else if(title.length > 45) {
+    alert("일정내용은 45글자 이하로 입력해주세요 (띄어쓰기 포함)");
   } else if(start_date == "") {
     alert("시작날짜를 입력하세요");
   } else if(end_date == "") {

@@ -25,8 +25,8 @@ function checkSignup() {
       type : "POST",
       data : {name:name, pw:pw1, email:email},
       success : function(data) {
-        if(data[0] == "아이디중복") 
-          alert("이미 존재하는 아이디 입니다");
+        if(data[0] == "가입실패") 
+          alert("아이디, 이메일주소가 이미 존재합니다");
         else if(data[0] == "가입성공") {
           alert("정상적으로 회원가입 되었습니다.");
           window.location.href = '/login';

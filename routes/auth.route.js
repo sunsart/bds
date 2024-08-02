@@ -44,8 +44,8 @@ router.post('/signup', function(req, res) {
   let name = req.body.name;
   let pw = sha(req.body.pw);
   let email = req.body.email;
-  let sql = "SELECT name FROM account WHERE name=?";
-  conn.query(sql, [name], function(err, rows) {
+  let sql = "SELECT name, email FROM account WHERE name=? OR email=?";
+  conn.query(sql, [name, email], function(err, rows) {
     if(err)
       res.status(500).send();
     else {
@@ -65,7 +65,7 @@ router.post('/signup', function(req, res) {
       } 
       else {
         let bags = [];
-        bags[0] = "아이디중복";
+        bags[0] = "가입실패";
         bags[1] = "";
         res.status(200).send(bags);
       }

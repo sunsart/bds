@@ -9,7 +9,7 @@ $(document).ready(function() {
 		if (this.checked == true)
 			label[0].style.color = "blue";
 		else 
-			label[0].style.color = "darkgray";
+			label[0].style.color = "dimgray";
 	})
 });
 
