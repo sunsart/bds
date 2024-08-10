@@ -32,7 +32,7 @@ app.use(session({
   resave : false,
   saveUninitialized : true,
   store : sessionStore,
-  cookie : { maxAge: 3600000 }  //1시간
+  cookie : { maxAge: 3600000 }  // 1시간
 }))
 //---------------------------------------
 
