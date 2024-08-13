@@ -14,7 +14,7 @@ conn.connect();
 const express = require('express');
 const app = express();
 
-//----------세션 미들웨어 설정----------
+// --------세션 미들웨어 설정--------
 // 사용자마다 고유한 req.session 객체가 생성됨
 let session = require('express-session');
 let mysqlstore = require('express-mysql-session')(session);
@@ -34,7 +34,7 @@ app.use(session({
   store : sessionStore,
   cookie : { maxAge: 3600000 }  // 1시간
 }))
-//---------------------------------------
+// ---------------------------------------
 
 // post방식의 데이터 사용을 위한 body-parser 설정
 const bodyParser = require('body-parser');
