@@ -15,7 +15,7 @@ conn.connect();
 const express = require('express');
 const app = express();
 
-// ---세션 미들웨어 설정---
+// -----세션 미들웨어 설정-----
 // 사용자마다 고유한 req.session 객체가 생성됨
 let session = require('express-session');
 let mysqlstore = require('express-mysql-session')(session);
