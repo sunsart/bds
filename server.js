@@ -4,11 +4,11 @@ const dotenv = require('dotenv').config();
 // nodejs 와 mysql 접속
 const mysql = require('mysql');
 const conn = mysql.createConnection({
-  host: process.env.HOST,
-  port: process.env.PORT,
-  user: process.env.USER,
-  password: process.env.PASS,
-  database: process.env.DATABASE
+  host: "mariadb",
+  port: 3306,
+  user: "root",
+  password: "0322",
+  database: "bds-db"
 });
 conn.connect();
 
@@ -20,11 +20,11 @@ const app = express();
 let session = require('express-session');
 let mysqlstore = require('express-mysql-session')(session);
 let option = {
-  host: process.env.HOST,
-  port: process.env.PORT,
-  user: process.env.USER,
-  password: process.env.PASS,
-  database: process.env.DATABASE
+  host: "mariadb",
+  port: 3306,
+  user: "root",
+  password: "0322",
+  database: "bds-db"
 }
 let sessionStore = new mysqlstore(option);
 
