@@ -142,6 +142,5 @@ dist
 .svelte-kit
 
 # add to .gitnore
-images/
 
 # End of https://www.toptal.com/developers/gitignore/api/node
