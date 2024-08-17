@@ -1,5 +1,5 @@
-//.env 환경변수 사용
-require('dotenv').config();
+// .env 환경변수 사용
+// require('dotenv').config();
 
 // nodejs 와 mysql 접속
 const mysql = require('mysql');
