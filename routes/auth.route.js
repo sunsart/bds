@@ -1,7 +1,7 @@
 // .env 환경변수 사용
 require('dotenv').config();
 
-//라우터 객체
+// 라우터 객체
 let router = require('express').Router();
 
 //nodejs 와 mysql 접속
