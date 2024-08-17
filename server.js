@@ -1,5 +1,8 @@
 // .env 환경변수 사용
-require('dotenv').config();
+// require('dotenv').config();
+const path = require("path")
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+
 
 // nodejs 와 mysql 접속
 const mysql = require('mysql');
