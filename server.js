@@ -1,14 +1,14 @@
 //.env 환경변수 사용
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 
 // nodejs 와 mysql 접속
 const mysql = require('mysql');
 const conn = mysql.createConnection({
-  host: "mariadb",
-  port: 3306,
-  user: "root",
-  password: "0322",
-  database: "bds-db"
+  host: process.env.HOST,
+  port: process.env.PORT,
+  user: process.env.USER,
+  password: process.env.PASS,
+  database: process.env.DATABASE
 });
 conn.connect();
 
@@ -20,16 +20,16 @@ const app = express();
 let session = require('express-session');
 let mysqlstore = require('express-mysql-session')(session);
 let option = {
-  host: "mariadb",
-  port: 3306,
-  user: "root",
-  password: "0322",
-  database: "bds-db"
+  host: process.env.HOST,
+  port: process.env.PORT,
+  user: process.env.USER,
+  password: process.env.PASS,
+  database: process.env.DATABASE
 }
 let sessionStore = new mysqlstore(option);
 
 app.use(session({
-  secret : "secretkey012safa",
+  secret : process.env.SESSION_SECRET,
   resave : false,
   saveUninitialized : true,
   store : sessionStore,

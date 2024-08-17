@@ -4,11 +4,11 @@ let router = require('express').Router();
 //nodejs 와 mysql 접속
 var mysql = require('mysql');
 var conn = mysql.createConnection({
-  host: "mariadb",
-  port: 3306,
-  user: "root",
-  password: "0322",
-  database: "bds-db",
+  host: process.env.HOST,
+  port: process.env.PORT,
+  user: process.env.USER,
+  password: process.env.PASS,
+  database: process.env.DATABASE,
   multipleStatements: true  // 다중쿼리 옵션
 });
 conn.connect();
