@@ -31,7 +31,7 @@ let option = {
 let sessionStore = new mysqlstore(option);
 
 app.use(session({
-  secret : DB_SESSION_SECRET,
+  secret : SESSION_SECRET,
   resave : false,
   saveUninitialized : true,
   store : sessionStore,
