@@ -5,11 +5,11 @@ let router = require('express').Router();
 //nodejs 와 mysql 접속
 const mysql = require('mysql');
 const conn = mysql.createConnection({
-  host: HOST,
-  port: PORT,
-  user: USER,
-  password: PASS,
-  database: DATABASE
+  host: process.env.HOST,
+  port: process.env.PORT,
+  user: process.env.USER,
+  password: process.env.PASS,
+  database: process.env.DATABASE
 });
 conn.connect();
 
