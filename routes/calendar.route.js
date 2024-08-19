@@ -1,5 +1,3 @@
-// .env 환경변수 사용
-require('dotenv').config();
 
 // 라우터 객체
 let router = require('express').Router();
@@ -7,11 +5,11 @@ let router = require('express').Router();
 //nodejs 와 mysql 접속
 var mysql = require('mysql');
 var conn = mysql.createConnection({
-  host: process.env.HOST,
-  port: process.env.PORT,
-  user: process.env.USER,
-  password: process.env.PASS,
-  database: process.env.DATABASE,
+  host: HOST,
+  port: PORT,
+  user: USER,
+  password: PASS,
+  database: DATABASE,
   multipleStatements: true  // 다중쿼리 옵션
 });
 conn.connect();

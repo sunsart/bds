@@ -1,17 +1,16 @@
 // .env 환경변수 사용
 // require('dotenv').config();
-const path = require("path")
-require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
+// console.log("h o s t = " + process.env.HOST); mariadb 잘 나옴
 
 // nodejs 와 mysql 접속
 const mysql = require('mysql');
 const conn = mysql.createConnection({
-  host: process.env.HOST,
-  port: process.env.PORT,
-  user: process.env.USER,
-  password: process.env.PASS,
-  database: process.env.DATABASE
+  host: HOST,
+  port: PORT,
+  user: USER,
+  password: PASS,
+  database: DATABASE
 });
 conn.connect();
 
@@ -23,16 +22,16 @@ const app = express();
 let session = require('express-session');
 let mysqlstore = require('express-mysql-session')(session);
 let option = {
-  host: process.env.HOST,
-  port: process.env.PORT,
-  user: process.env.USER,
-  password: process.env.PASS,
-  database: process.env.DATABASE
+  host: HOST,
+  port: PORT,
+  user: USER,
+  password: PASS,
+  database: DATABASE
 }
 let sessionStore = new mysqlstore(option);
 
 app.use(session({
-  secret : process.env.SESSION_SECRET,
+  secret : SESSION_SECRET,
   resave : false,
   saveUninitialized : true,
   store : sessionStore,
