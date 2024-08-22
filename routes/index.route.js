@@ -127,7 +127,6 @@ function setClauseName(eng) {
   if (eng == "apt_trade") kor = "아파트 매매 특약사항"
   else if (eng == "apt_jeonse") kor = "아파트 전세 특약사항"
   else if (eng == "apt_monthly") kor = "아파트 월세 특약사항"
-  else if (eng == "apt_monthly") kor = "아파트 월세 특약사항"
 
   else if (eng == "officetel_trade") kor = "오피스텔 매매 특약사항"
   else if (eng == "officetel_jeonse") kor = "오피스텔 전세 특약사항"

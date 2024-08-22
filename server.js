@@ -1,8 +1,6 @@
 // .env 환경변수 사용
 require('dotenv').config();
 
-console.log("h o s t = " + process.env.HOST);
-
 // nodejs 와 mysql 접속
 const mysql = require('mysql');
 const conn = mysql.createConnection({
