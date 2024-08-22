@@ -17,10 +17,7 @@ function confirmModal() {
       type : "POST",
       data : {clauseNum:clauseNum, title:title, content:content},
       success : function(data) {
-        if(data == "특약수정성공") 
-          alert("특약사항을 저장했습니다");
-        else if(data == "특약저장성공") 
-          alert("특약사항을 저장했습니다");
+        console.log("특약사항 변경내용 : " + data);
       },
       error : function(xhr, textStatus, errorThrown) {
         console.log("특약사항 변경실패, 서버에러");
