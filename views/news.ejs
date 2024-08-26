@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>부동산 도우미</title>
+  <meta name="description" content="부동산 업무에 종사하는 분들에게 도움을 드립니다">
+
+  <!-- 브라우저 css 기본스타일 초기화 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css">
+
+  <!-- ajax 사용을 위한 제이쿼리 -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <!-- The Open Graph Protocal -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="부동산 도우미">
+  <meta property="og:title" content="부동산 도우미 웹사이트">
+  <meta property="og:description" content="부동산 업무에 종사하는 분들에게 도움을 드립니다">
+  <meta property="og:image" content="../images/bds_logo.png">
+  <meta property="og:url" content="">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- css 링크  -->
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <link rel="stylesheet" href="../css/news/news.css">
+
+  <!-- JS 링크 -->
+</head>
+
+<body>
+
+  <!-- ===== header menu ===== -->
+  <header>
+    <%- include('header', {user:user}) %>
+  </header>
+
+  <div id="contents">
+    <!-- ===== news table ===== -->
+    <table class="table-news">
+      <% for(let i=0; i<data.length; i++) { %>
+        <tr>
+          <td>
+            <a class="table-title" href="<%= data[i].url %>" target="_blank"> 
+              <%= data[i].title %>
+            </a>
+          </td>
+          <td>
+            <a class="table-press" href="<%= data[i].url %>" target="_blank">
+              <%= data[i].press %>
+            </a>
+          </td>
+        </tr> 
+      <% } %> 
+    </table>
+  </div>
+
+</body>
+
+</html>

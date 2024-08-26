@@ -1,0 +1,45 @@
+* {
+  box-sizing: border-box
+}
+
+#contents {
+  margin: 0 auto; /* 화면 중앙에 배치 */
+  width: 1800px;  /* 화면 너비 지정 */
+}
+
+/* --- 테이블 뉴스 --- */
+.table-news {
+  width: 80%;
+  margin : 40px auto;
+}
+
+.table-news, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  vertical-align: middle;
+}
+
+table tr {
+  height: 50px;
+}
+
+.table-title {
+  padding-left: 10px;
+  font-size: 16px;
+}
+
+.table-title a:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
+.table-press {
+  padding-left: 10px;
+  font-size: 16px;
+}
+
+.table-press a:visited {
+  color: blue;
+}
+
+
