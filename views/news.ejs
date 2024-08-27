@@ -32,6 +32,7 @@
   <link rel="stylesheet" href="../css/news/news.css">
 
   <!-- JS 링크 -->
+  <script src="../js/news/news.js"></script>
 </head>
 
 <body>
@@ -42,16 +43,22 @@
   </header>
 
   <div id="contents">
-    <!-- ===== news table ===== -->
+
+    <!-- page title -->
+    <div class="page_date">
+      <span></span>
+    </div>
+
+    <!-- news table -->
     <table class="table-news">
       <% for(let i=0; i<data.length; i++) { %>
         <tr>
-          <td>
+          <td style="width: 84%;">
             <a class="table-title" href="<%= data[i].url %>" target="_blank"> 
               <%= data[i].title %>
             </a>
           </td>
-          <td>
+          <td style="width: 16%;">
             <a class="table-press" href="<%= data[i].url %>" target="_blank">
               <%= data[i].press %>
             </a>

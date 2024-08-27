@@ -7,10 +7,21 @@
   width: 1800px;  /* 화면 너비 지정 */
 }
 
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.page_date {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  font-size: 20px;
+}
+
 /* --- 테이블 뉴스 --- */
 .table-news {
-  width: 80%;
-  margin : 40px auto;
+  width: 60%;
+  margin : 20px auto;
 }
 
 .table-news, td {
@@ -20,26 +31,29 @@
 }
 
 table tr {
-  height: 50px;
+  height: 44px;
 }
 
 .table-title {
   padding-left: 10px;
   font-size: 16px;
+  color: black;
 }
 
-.table-title a:visited {
-  color: inherit;
+.table-title:visited {
+  color: blue;
   text-decoration: none;
 }
 
 .table-press {
   padding-left: 10px;
-  font-size: 16px;
+  font-size: 15px;
+  color: black;
 }
 
-.table-press a:visited {
+.table-press:visited {
   color: blue;
+  text-decoration: none;
 }
 
 
