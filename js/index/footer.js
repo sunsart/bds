@@ -17,6 +17,8 @@ function sendContactMail() {
       data : {email:email, subject:subject},
       success : function() {
         alert("내용을 전달했습니다");
+        document.querySelector("#contact_email").value = "";
+        document.querySelector("#contact_subject").value = "";
       },
       error : function(xhr, textStatus, errorThrown) {
         alert("메일발송 에러가 발생했습니다");
@@ -25,6 +27,4 @@ function sendContactMail() {
       }
     })
   }
-  document.querySelector("#contact_email").value = "";
-  document.querySelector("#contact_subject").value = "";
 }
