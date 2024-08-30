@@ -2,22 +2,36 @@
 <footer>
   <div class="inner">
 
-    <ul class="menu">
-      <li><a href="/terms">웹사이트 이용약관</a></li>
-      <li><a href="/terms">개인정보처리방침</a></li>
-    </ul>
-
-    <div class="info">
-      <span>경기도에서 현직 공인중개사로 일하고 있습니다</span>
-      <span>취미로 제작하는 사이트라서 부족한 부분이 많습니다</span>
-      <span>수정할 부분이나 건의할 내용은 언제든 환영합니다</span>
-      <br>
-      <span>문의하기 <a id="email_address">sunsart7@naver.com</a></span>
+    <div>
+      <ul class="menu">
+        <li><a href="/terms">웹사이트 이용약관</a></li>
+        <li><a href="/terms">개인정보처리방침</a></li>
+      </ul>
+  
+      <div class="info">
+        <span>경기도에서 현직 공인중개사로 일하고 있습니다</span>
+        <span>취미로 제작하는 사이트라서 부족한 부분이 많습니다</span>
+        <span>수정할 부분이나 건의할 내용은 언제든 환영합니다</span>
+        <br>
+        <span>문의하기 <a id="email_address">sunsart7@naver.com</a></span>
+      </div>
+  
+      <p class="copyright">
+        &copy; <span class="this_year"></span> 2024. All Rights Reseved.
+      </p>
     </div>
 
-    <p class="copyright">
-      &copy; <span class="this_year"></span> 2024. All Rights Reseved.
-    </p>
+    <div class="contact_form">
+      <div class="container">
+      
+          <input type="text" id="contact_email" placeholder="답변 받을 이메일주소를 적어주세요">
+      
+          <textarea id="contact_subject" placeholder="문의내용, 건의내용을 적어주세요" style="height:100px"></textarea>
+      
+          <input type="button" id="contact_btn" value="보내기" onclick="sendContactMail()">
+      
+      </div>
+    </div>
 
   </div>
 </footer>

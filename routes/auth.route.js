@@ -157,7 +157,7 @@ const mailPoster = nodeMailer.createTransport({
 // 메일수신 유저설정
 const mailOpt = (address, num) => {
   const mailOptions = {
-    from: 'sunsartapp1@gmail.com',
+    from: process.env.SEND_MAIL_ADDRESS,
     to: address,
     subject: '<부동산 도우미 웹사이트> 비밀번호 변경을 위한 6자리 코드번호 입니다',
     text: "인증칸에 아래의 숫자를 입력해주세요. \n\n" + num

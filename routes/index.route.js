@@ -1,8 +1,8 @@
 
-//라우터 객체
+// 라우터 객체
 let router = require('express').Router();
 
-//nodejs 와 mysql 접속
+// nodejs 와 mysql 접속
 const mysql = require('mysql');
 const conn = mysql.createConnection({
   host: process.env.HOST,
@@ -121,7 +121,6 @@ router.post('/edit', function(req, res, next) {
   })
 });
 
-
 function setClauseName(eng) {
   let kor;
   if (eng == "apt_trade") kor = "아파트 매매 특약사항"
@@ -155,6 +154,38 @@ function setClauseName(eng) {
   else if (eng == "etc") kor = "기타 특약사항"
   return kor;
 }
+
+
+// ==== contact mail 발송 ==== //
+const nodemailer = require('nodemailer');
+
+router.post('/sendContactMail', function(req, res) {
+  let email = req.body.email;
+  let subject = req.body.subject;
+
+  let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.SEND_MAIL_ADDRESS, // Gmail 주소
+      pass: process.env.SEND_MAIL_PASSWORD // Gmail 비밀번호 or 앱 비밀번호
+    }
+  });
+  
+  let mailOptions = {
+    from: process.env.SEND_MAIL_ADDRESS,
+    to: process.env.RECEIVE_MAIL_ADDRESS,  // contact mail 받는주소 sunsart7@naver.com
+    subject: "부동산도우미 contact 메일 from : " + email,
+    text: subject
+  };
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      res.status(500).send();
+    } else {
+      res.status(200).send("contact mail 발송 성공");
+    }
+  });
+});
 
 // router 변수를 외부 노출
 module.exports = router;
