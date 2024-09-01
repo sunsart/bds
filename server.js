@@ -61,6 +61,20 @@ app.get('/signup', function(req, res) {
   res.render('signup.ejs', {user:req.session.user});
 })
 
+app.get('/bookmark', function(req, res) {
+
+  let sql = "SELECT * FROM bookmark";
+    conn.query(sql, function(err, rows) {
+      if(err)
+        res.status(500).send();
+      else  
+        res.render('bookmark.ejs', {data:rows, user:req.session.user});
+    })
+
+
+  //res.render('bookmark.ejs', {user:req.session.user});
+})
+
 app.listen(8080, function() {
   console.log("포트 8080 으로 서버 대기중...");
 })
