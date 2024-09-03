@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>부동산 도우미 - 매물찾아요 게시판 리스트 페이지</title>
+  <meta name="description" content="부동산 업무에 종사하는 분들에게 도움을 드립니다">
+
+  <!-- 브라우저 css 기본스타일 초기화 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css">
+  
+	<!-- 제이쿼리 -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  
+  <!-- css 링크  -->
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/header.css">
+	<link rel="stylesheet" href="../css/find/find_list.css">
+
+  <!-- JS 링크 -->
+	<!-- 이미지 폰트 사용 -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+	<!-- ===== header ===== -->
+  <header>
+    <%- include('header', {user:user}) %>
+  </header>
+
+  <div id="contents">
+
+    <div class="page_title">
+      <span>매물찾아요</span>
+    </div>
+    
+    <!-- 매물찾아요 검색창 -->
+    <form class="example" method="GET" action="/find_search">
+      <input type="text" name="search" placeholder="검색어를 입력하세요">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+
+    <!-- 매물찾아요 테이블 -->
+    <div class="container">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 70%;">제목</th>
+            <th style="width: 12%;">작성자</th>
+            <th style="width: 10%;">작성일</th>
+            <th style="width: 8%;">조회수</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% for(let i=0; i<data.length; i++) { %>
+            <tr>
+              <td class="td_title"> <a href="/find_detail/<%= data[i].id %>"><%= data[i].title %></a> </td>
+              <td class="td_center"> <label><%= data[i].user_name %></label> </td>
+              <td class="td_center"> <label><%= data[i].post_date %></label> </td>
+              <td class="td_center"> <label><%= data[i].hit %></label> </td>
+            </tr> 
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <nav>
+      <ul id="page_indicator">
+      
+        <!-- 뒤로가기 버튼 (1보다 작으면 무조건 뒤로가기 생성)-->
+        <% if(paging.currentSet > 1) { %>
+          <li class="page_arrow">
+            <a href="/find_list/?page=<%=paging.startPage-1%>">
+              <span> < </span>
+            </a>
+          </li>
+        <% } %>
+
+        <!--숫자 버튼-->
+        <% for(let i=paging.startPage; i<=paging.endPage; i++) {
+          if(i > paging.totalPage) {break;}  
+          
+          if(i == paging.currentPage) { %>
+            <tr>
+              <td>    
+                <li class="page_num"><a class="active"><%=i%></a></li>
+              </td>
+            </tr>
+          <% } else { %> 
+            <tr>
+              <td>
+                <% if(paging.isSearchResult == 'true') { %>
+                  <li class="page_num"><a class="num" href='/find_search/?page=<%=i%>?search=<%=paging.isSearchQuery%>'><%=i%></a></li>
+                <% } else { %>
+                  <li class="page_num"><a class="num" href='/find_list/?page=<%=i%>'><%=i%></a></li>
+                <% } %>   
+              </td>
+            </tr>
+          <% } 
+        } %>
+
+        <!--앞으로 버튼 (현재 세트가 토탈보다 작으면 생성)-->
+        <% if(paging.currentSet < paging.totalSet) { %>
+          <li class="page_arrow">
+            <a href="/find_list/?page=<%=paging.endPage+1%>">
+              <span> > </span>
+            </a>
+          </li>
+        <% } %>
+
+      </ul>
+    </nav>
+
+    
+    <div>
+      <% if (user) { %>
+        <button class="buttons" id="list_btn" style="visibility:visible;" onclick="location.href='/find_list'">목록</button>
+        <button class="buttons" id="write_btn" style="visibility:visible;" onclick="location.href='./find_write'">글쓰기</button>
+      <% } else { %>
+        <button class="buttons" id="list_btn" style="visibility:visible;" onclick="location.href='/find_list'">목록</button>
+        <button class="buttons" id="write_btn" style="visibility:hidden;" onclick="location.href='./find_write'">글쓰기</button>
+      <% } %>
+    </div>
+
+  </div>
+</body>
+</html>

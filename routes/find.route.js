@@ -1,0 +1,126 @@
+// 라우터 객체
+let router = require('express').Router();
+
+// nodejs 와 mysql 접속
+var mysql = require('mysql');
+var conn = mysql.createConnection({
+  host: process.env.HOST,
+  user: process.env.USER,
+  password: process.env.PASS,
+  database: process.env.DATABASE
+});
+conn.connect();
+
+//-----------------------------------------//
+
+//매물찾아요 리스트 페이지
+router.get('/find_list', function(req, res) {
+  let currentPage = req.query.page; // 현재 보여지는 페이지
+  if(!currentPage) currentPage = 1; // page 파라미터 값을 넘겨주지 않을 시, 1페이지로 설정
+  let postPerPage = 10; // 한 페이지에 보여질 게시물 수
+  let btnPerPage = 5;  // 한 페이지에 보여질 페이지 버튼의 개수 
+
+  let totalPostCnt = 0; // 전체 게시물 수
+  let sql = "SELECT COUNT(*) AS findCount FROM find";
+  conn.query(sql, function(err, rows) {
+    if(err) throw err;
+    totalPostCnt = rows[0].findCount;
+    console.log("전체 게시물 개수 = " + totalPostCnt);
+
+    if(totalPostCnt <= 0)
+      totalPostCnt = 1
+
+    let totalPage = Math.ceil(totalPostCnt / postPerPage); // 전체 페이지 수 (ceil 소수점 올림)
+    let totalSet = Math.ceil(totalPage / btnPerPage);     // 전체 세트 수 (5페이지가 한 세트)
+    let currentSet = Math.ceil(currentPage / btnPerPage); // 현재 세트 번호 
+    let startPage = ((currentSet-1) * btnPerPage) + 1;    // 시작 페이지 번호
+    let endPage = (startPage + btnPerPage) - 1;           // 끝 페이지 번호
+    let startPost = '';  // 시작 게시글 번호
+
+    // sql 문에 들어갈 offset 설정
+    if(currentPage <= 0)
+      startPost = 0
+    else 
+      startPost = (currentPage - 1) * postPerPage // 시작 게시글 번호 설정
+
+    // console.log("현재 페이지 = " + currentPage);
+    // console.log("현재 세트 = " + currentSet);
+    // console.log("현재 세트의 시작 페이지 = " + startPage);
+    // console.log("현재 세트의 끝 페이지 = " + endPage);
+    // console.log("현재 페이지의 시작 게시글 번호 = " + startPost);
+    // console.log("============================");
+    
+    //
+    let sql2 = "SELECT * FROM find ORDER BY id DESC LIMIT ? OFFSET ? ";
+    let params = [postPerPage, startPost];
+    let data = []; 
+    conn.query(sql2, params, function(err, rows) {
+      if(err) throw err;
+      for(let i=0; i<rows.length; i++) {
+        let node = {
+          'id' : rows[i].id,
+          'title' : rows[i].title,
+          'user_name' : rows[i].user_name,
+          'post_date' : rows[i].post_date,
+          'hit' : rows[i].hit
+        };
+        data.push(node);
+      }
+
+      let paging = { // ejs로 전송하기위해 객체화
+        'startPage' : startPage,
+        'endPage' : endPage,
+        'currentSet' : currentSet,
+        'totalSet' : totalSet,
+        'totalPage' : totalPage,
+        'currentPage' : currentPage,
+        'isSearchResult' : 'false',
+      }
+
+      res.render('find_list.ejs', {paging:paging, data:data, user:req.session.user})
+    })
+  })
+})
+
+// 매물찾아요 게시물등록 페이지
+router.get('/find_write', function(req, res) {
+  res.render('find_write.ejs', {user:req.session.user});
+})
+
+
+// 매물찾아요 게시물 등록
+router.post('/find_post', function(req, res) {
+  let title = req.body.title;
+  let content = req.body.content;
+  let user_id = req.session.user.id;
+  let user_name = req.session.user.name;
+  let post_date = postDate();
+
+  let sql = "INSERT INTO find (title, content, user_id, user_name, post_date) VALUES (?, ?, ?, ?, ?)";
+  let params = [title, content, user_id, user_name, post_date];
+  conn.query(sql, params, function(err, result) {
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send("매물찾아요 등록성공");
+  })
+})
+
+//현재 날짜 가져오기
+function postDate() {
+  const today = new Date();
+  const year = today.toLocaleDateString('en-US', {year: 'numeric',});
+  const month = today.toLocaleDateString('en-US', {month: '2-digit',});
+  const day = today.toLocaleDateString('en-US', {day: '2-digit',});
+  return `${year}-${month}-${day}`;
+}
+
+// ??? 어따 쓰는거였지?? client ip를 가져오는 함수
+function getUserIP(req) {
+  const addr = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+  return addr
+}
+
+
+//router 변수를 외부 노출
+module.exports = router;

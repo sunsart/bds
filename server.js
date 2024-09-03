@@ -52,6 +52,7 @@ app.use('/', require('./routes/index.route.js'));
 app.use('/', require('./routes/auth.route.js'));
 app.use('/', require('./routes/calendar.route.js'));
 app.use('/', require('./routes/news.route.js'));
+app.use('/', require('./routes/find.route.js'));
 
 app.get('/login', function(req, res) {
   res.render('login.ejs', {user:req.session.user});
@@ -70,9 +71,6 @@ app.get('/bookmark', function(req, res) {
       else  
         res.render('bookmark.ejs', {data:rows, user:req.session.user});
     })
-
-
-  //res.render('bookmark.ejs', {user:req.session.user});
 })
 
 app.listen(8080, function() {

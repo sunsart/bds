@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+@media print {
+	body {
+		margin: 0 !important;
+	}
+}
+
+.main-container {
+	font-family: 'Lato';
+	width: fit-content;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.ck-content {
+	font-family: 'Lato';
+	line-height: 1.6;
+	word-break: break-word;
+}
+
+.editor-container_classic-editor .editor-container__editor {
+	min-width: 795px;
+	max-width: 795px;
+}
+
+
+/* === ckeditor 추가한 내용 === */
+.ck-editor__editable { height: 400px; }
+.ck-content { font-size: 16px; }
+
+.page_title {
+  display: flex;
+  justify-content: center;
+  margin: 30px auto;
+  font-size: 20px;
+}
+
+.input_title {
+  margin-bottom: 10px;
+  width: 790px;
+  font-size: 16px;
+}
+
+input[type=button] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-left: 1020px;
+}
+
+input[type=button]:hover {
+  background-color: #45a049;
+}
