@@ -1,18 +1,28 @@
 
-.page_title {
-  margin-top: 20px;
-  font-size: 20px;
-  text-align: center;
-}
-
 * {
   box-sizing: border-box;
 }
 
-/* === 검색창 === */
+#contents {
+  margin: 0 auto; /* 화면 중앙에 배치 */
+  width: 1000px;  /* 화면 너비 지정 */
+}
+
+.table_head {
+  display: flex;
+  justify-content: space-between;
+  margin: 40px auto;
+}
+
+.page_title {
+  /* margin-top: 20px; */
+  font-size: 18px;
+  /* text-align: center; */
+}
+
 form.example {
-  margin : 40px auto 0px auto;
-  max-width: 300px;
+  /* margin : 40px auto 0px auto; */
+  max-width: 400px;
 }
 
 form.example input[type=text] {
@@ -49,14 +59,20 @@ form.example::after {
 /* === 리스트 테이블 === */
 table { 
   line-height: 40px; 
-  width: 50%;
-  margin : 30px auto;
+  width: 100%;
+  /* margin : 30px auto; */
+  /* margin-top: 0px; */
+  margin-bottom: 30px;
 }
 
 table, th, td { 
   border: 1px solid darkgray; 
   border-collapse: collapse;
   vertical-align: middle;
+}
+
+th {
+  background-color: rgb(232, 232, 232);
 }
 
 .td_title {
@@ -85,15 +101,6 @@ table, th, td {
 
 .buttons:hover {
   background-color: #46a049;
-}
-
-#list_btn {
-  margin-left: 255px;
-  margin-bottom: 50px;
-}
-
-#write_btn {
-  margin-left: 1025px;
 }
 
 #page_indicator {

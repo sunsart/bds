@@ -1,9 +1,16 @@
+
+/* === ckeditor5 === */
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 @media print {
 	body {
 		margin: 0 !important;
 	}
+}
+
+#contents {
+  margin: 0 auto; /* 화면 중앙에 배치 */
+  width: 1000px;  /* 화면 너비 지정 */
 }
 
 .main-container {
@@ -20,14 +27,17 @@
 }
 
 .editor-container_classic-editor .editor-container__editor {
-	min-width: 795px;
-	max-width: 795px;
+	min-width: 1000px;
+	max-width: 1000px;
 }
 
-
-/* === ckeditor 추가한 내용 === */
-.ck-editor__editable { height: 400px; }
-.ck-content { font-size: 16px; }
+.ck-editor__editable { min-height: 500px; }
+.ck-content { 
+  font-size: 16px; 
+}
+.ck.ck-editor{
+  max-width: 1000px;
+}
 
 .page_title {
   display: flex;
@@ -37,9 +47,15 @@
 }
 
 .input_title {
-  margin-bottom: 10px;
-  width: 790px;
+  padding: 5px 10px;
   font-size: 16px;
+  margin-bottom: 10px;
+  width: 80%;
+}
+
+.buttons {
+  display: flex;
+  justify-content:space-between;
 }
 
 input[type=button] {
@@ -49,7 +65,7 @@ input[type=button] {
   border: none;
   cursor: pointer;
   margin-top: 20px;
-  margin-left: 1020px;
+  /* margin-left: 1020px; */
 }
 
 input[type=button]:hover {

@@ -30,15 +30,13 @@
 
   <div id="contents">
 
-    <div class="page_title">
-      <span>매물찾아요</span>
+    <div class="table_head">
+      <span class="page_title">매물찾아요 게시판</span>
+      <form class="example" method="GET" action="/find_search">
+        <input type="text" name="search" placeholder="검색어를 입력하세요">
+        <button type="submit"><i class="fa fa-search"></i></button>
+      </form>
     </div>
-    
-    <!-- 매물찾아요 검색창 -->
-    <form class="example" method="GET" action="/find_search">
-      <input type="text" name="search" placeholder="검색어를 입력하세요">
-      <button type="submit"><i class="fa fa-search"></i></button>
-    </form>
 
     <!-- 매물찾아요 테이블 -->
     <div class="container">

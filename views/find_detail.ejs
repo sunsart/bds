@@ -11,7 +11,7 @@
 
   <!-- ajax 사용을 위한 제이쿼리 -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+  
   <!-- ckeditor5 cdn -->
   <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css">
   <link rel="stylesheet" href="../css/find/find_write.css">
@@ -32,11 +32,15 @@
 
   <div id="contents"> 
 		<!-- page title -->
-    <div class="page_title"> <span>매물찾아요 등록</span> </div>
+    <div class="page_title"> <span>매물찾아요 내용</span> </div>
 
-    <label><input type="text" class="input_title" placeholder="제목을 입력하세요"></label>
+    <label>
+      <input type="text" class="input_title" value="<%= data[0].title %>">
+      <input type="hidden" class="input_no" value="<%= data[0].id %>">
+      <input type="hidden" class="input_content" value="<%= data[0].content %>">
+    </label>
 
-    <div>
+		<div>
 			<div class="main-container">
 				<div class="editor-container editor-container_classic-editor" id="editor-container">
 					<div class="editor-container__editor"><div id="editor"></div></div>
@@ -45,7 +49,10 @@
 		</div>
 
     <div class="buttons">
-      <input type="button" id="post_btn" value="등록">
+      <% if(user && (user.id == data[0].user_id) ) { %>
+        <input type="button" id="edit_btn" value="수정하기">
+        <input type="button" id="delete_btn" value="삭제하기">
+      <% } %>
       <input type="button" value="목록" onclick="location.href='/find_list'">
     </div>
   </div> 
@@ -59,7 +66,7 @@
 			}
 		}
 	</script>
-	<script type="module" src="../js/find/find_write.js"></script>
+	<script type="module" src="../js/find/find_detail.js"></script>
 
 </body>
 </html>

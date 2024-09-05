@@ -106,6 +106,61 @@ router.post('/find_post', function(req, res) {
   })
 })
 
+// 게시물 내용보기 페이지
+router.get('/find_detail/:id', async function(req, res) {
+  // 조회수 카운트, 쿠키에 저장되어있는 값이 있는지 확인 (없을시 undefined 반환)
+  let keyVal = "f_" + req.params.id;
+  if (req.cookies[keyVal] == undefined) {
+    // key, value, 옵션을 설정해준다.
+    res.cookie(keyVal, getUserIP(req), {
+      // 유효시간 : 1분  **테스트용 1분 / 출시용 1시간 3600000  
+      maxAge: 60000
+    })
+    // 쿠키에 저장값이 없으면 조회수 1 증가
+    let sql = "UPDATE find SET hit=find.hit+1 WHERE id=?";
+    let params = [req.params.id];
+    conn.query(sql, params, function(err, result) {
+      if(err) throw err;
+    })
+  }
+  // 쿠키에 client ip 저장값이 있으면 조회수 증가하지 않고, 내용을 보여줌
+  let sql = "SELECT * FROM find WHERE id = ?";
+  let params = req.params.id;
+  conn.query(sql, params, function(err, rows) {
+    if(err) throw err;
+    res.render('find_detail.ejs', {data:rows, user:req.session.user});
+  })
+})
+
+// 매물찾아요 수정
+router.post('/find_edit', function(req, res) {
+  let id = req.body.id;
+  let title = req.body.title;
+  let content = req.body.content;
+  let post_date = postDate();
+
+  let sql = "UPDATE find SET title=?, content=?, post_date=? WHERE id=?";
+  let params = [title, content, post_date, id]
+  conn.query(sql, params, function(err, result) {
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send("매물찾아요 수정 성공");
+  })
+})
+
+// 매물찾아요 삭제
+router.post('/find_delete', function(req, res) {
+  let id = req.body.id;
+  let sql = "DELETE FROM find WHERE id = ?";
+  conn.query(sql, id, function(err, result) {
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send("매물찾아요 삭제 성공");
+  })
+})
+
 //현재 날짜 가져오기
 function postDate() {
   const today = new Date();
@@ -115,7 +170,7 @@ function postDate() {
   return `${year}-${month}-${day}`;
 }
 
-// ??? 어따 쓰는거였지?? client ip를 가져오는 함수
+// client ip를 가져오는 함수 (조회수 카운트)
 function getUserIP(req) {
   const addr = req.headers['x-forwarded-for'] || req.connection.remoteAddress
   return addr
