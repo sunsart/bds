@@ -1,6 +1,11 @@
 // 라우터 객체
 let router = require('express').Router();
 
+// 이미지 업로드
+// const multer = require('multer');
+// const cors = require('cors');
+// const path = require('path');
+
 // nodejs 와 mysql 접속
 var mysql = require('mysql');
 var conn = mysql.createConnection({
@@ -160,6 +165,55 @@ router.post('/find_delete', function(req, res) {
       res.status(200).send("매물찾아요 삭제 성공");
   })
 })
+
+//============
+//파일 업로드
+// const upload = multer({
+//   storage: multer.diskStorage({
+//     destination: function(req, file, done) {
+//       done(null, "upload/");
+//     },
+//     filename: function(req, file, done){
+//       const ext = path.extname(file.originalname); // 확장자명 ex)hwp
+//       const baseName = path.basename(file.originalname, ext);  // 파일명 ex)정산양식
+//       let changed_name = baseName + "_" + Date.now() + ext; // 정산양식_2324343.hwp  
+//       changed_name = Buffer.from(changed_name, "latin1").toString("utf8");      
+//       done(null, changed_name);
+//     }
+//   }),
+//   limits: {fileSize: 2 * 1024 * 1024} // 2 MB 제한
+// });
+
+// router.post("/upload", upload.single("file"), (req, res)=> {
+//   res.status(200).send("이미지 업로드 성공");
+// });
+// router.post('/upload', function(req, res) {
+//   console.log("aaaa...");
+//   res.status(200).send("이미지 업로드 성공");
+//   console.log("bbbb...");
+// })
+// let imageName = '';
+// const storage = multer.diskStorage({
+//   destination: path.resolve(__dirname, 'uploads/'),
+//   filename: function (req, file, cb) {
+//     imageName = Date.now() + path.extname(file.originalname);
+//     cb(null, imageName);
+//   },
+// });
+// const upload = multer({ storage: storage }).single('upload');
+
+// app.use(cors());
+// app.use("/uploads", express.static("uploads"));
+
+// router.post('/upload', (req, res) => {
+//   upload(req, res, (err) => {
+//     if (err) return res.json({ error: { message: 'image upload failed~!' } });
+//     res.json({
+//       url: `http://localhost:8080/uploads/${imageName}`,
+//     });
+//   });
+// });
+//==========
 
 //현재 날짜 가져오기
 function postDate() {

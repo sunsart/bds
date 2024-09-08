@@ -6,46 +6,34 @@ import {
 	AutoLink,
 	Autosave,
 	Bold,
+	CloudServices,
 	Essentials,
 	FontBackgroundColor,
 	FontColor,
 	FontFamily,
 	FontSize,
 	Highlight,
+	//Image,
 	ImageBlock,
 	ImageCaption,
-	ImageInline,
 	ImageInsert,
 	ImageInsertViaUrl,
-	ImageResize,
-	ImageStyle,
-	ImageTextAlternative,
 	ImageToolbar,
 	ImageUpload,
 	Italic,
 	Link,
-	List,
-	ListProperties,
 	Paragraph,
 	SelectAll,
 	SimpleUploadAdapter,
 	SpecialCharacters,
-	SpecialCharactersArrows,
-	SpecialCharactersCurrency,
-	SpecialCharactersEssentials,
-	SpecialCharactersLatin,
-	SpecialCharactersMathematical,
-	SpecialCharactersText,
-	Strikethrough,
 	Table,
 	TableCaption,
 	TableCellProperties,
 	TableColumnResize,
 	TableProperties,
 	TableToolbar,
-	TodoList,
 	Underline,
-	Undo
+	Undo,
 } from 'ckeditor5';
 
 import translations from 'ckeditor5/translations/ko.js';
@@ -56,6 +44,8 @@ const editorConfig = {
 			'undo',
 			'redo',
 			'|',
+			'selectAll',
+			'|',
 			'fontSize',
 			'fontFamily',
 			'fontColor',
@@ -64,7 +54,6 @@ const editorConfig = {
 			'bold',
 			'italic',
 			'underline',
-			'strikethrough',
 			'|',
 			'specialCharacters',
 			'link',
@@ -74,9 +63,7 @@ const editorConfig = {
 			'|',
 			'alignment',
 			'|',
-			'bulletedList',
-			'numberedList',
-			'todoList'
+			'accessibilityHelp'
 		],
 		shouldNotGroupWhenFull: false
 	},
@@ -87,46 +74,34 @@ const editorConfig = {
 		AutoLink,
 		Autosave,
 		Bold,
+		CloudServices,
 		Essentials,
 		FontBackgroundColor,
 		FontColor,
 		FontFamily,
 		FontSize,
 		Highlight,
+		//Image,
 		ImageBlock,
 		ImageCaption,
-		ImageInline,
 		ImageInsert,
 		ImageInsertViaUrl,
-		ImageResize,
-		ImageStyle,
-		ImageTextAlternative,
 		ImageToolbar,
 		ImageUpload,
 		Italic,
 		Link,
-		List,
-		ListProperties,
 		Paragraph,
 		SelectAll,
 		SimpleUploadAdapter,
 		SpecialCharacters,
-		SpecialCharactersArrows,
-		SpecialCharactersCurrency,
-		SpecialCharactersEssentials,
-		SpecialCharactersLatin,
-		SpecialCharactersMathematical,
-		SpecialCharactersText,
-		Strikethrough,
 		Table,
 		TableCaption,
 		TableCellProperties,
 		TableColumnResize,
 		TableProperties,
 		TableToolbar,
-		TodoList,
 		Underline,
-		Undo
+		Undo,
 	],
 	fontFamily: {
 		supportAllValues: true
@@ -137,15 +112,8 @@ const editorConfig = {
 	},
 	image: {
 		toolbar: [
-			'toggleImageCaption',
-			'imageTextAlternative',
-			'|',
-			'imageStyle:inline',
-			'imageStyle:wrapText',
-			'imageStyle:breakText',
-			'|',
-			'resizeImage'
-		]
+			'ImageCaption',
+			'imageTextAlternative'],
 	},
 	initialData: ' ',
 	language: 'ko',
@@ -160,13 +128,6 @@ const editorConfig = {
 					download: 'file'
 				}
 			}
-		}
-	},
-	list: {
-		properties: {
-			styles: true,
-			startIndex: true,
-			reversed: true
 		}
 	},
 	placeholder: '내용을 입력하세요',
@@ -191,6 +152,8 @@ const editorConfig = {
 	}
 };
 
+
+
 let editor;
 ClassicEditor
 .create(document.querySelector('#editor'), editorConfig)
@@ -201,7 +164,8 @@ ClassicEditor
 	console.error(error);
 });
 
-// 등록 버튼 클릭시
+
+//
 document.querySelector('#post_btn').addEventListener('click', () => {
   let title = document.querySelector(".input_title").value;
   let content = editor.getData();

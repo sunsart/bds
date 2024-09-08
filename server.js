@@ -1,6 +1,11 @@
 // .env 환경변수 사용
 require('dotenv').config();
 
+// 이미지 업로드
+const multer = require('multer');
+const cors = require('cors');
+const path = require('path');
+
 // nodejs 와 mysql 접속
 const mysql = require('mysql');
 const conn = mysql.createConnection({
@@ -51,6 +56,10 @@ app.set('view engine', 'ejs');
 // 서버가 정적파일을 제공하도록 하기 위한 설정
 app.use(express.static(__dirname + ''));
 
+// 이미지 업로드 정적파일
+app.use("/upload", express.static("upload"));
+app.use(cors());
+
 // 라우터 분리
 app.use('/', require('./routes/index.route.js'));
 app.use('/', require('./routes/auth.route.js'));
@@ -67,7 +76,6 @@ app.get('/signup', function(req, res) {
 })
 
 app.get('/bookmark', function(req, res) {
-
   let sql = "SELECT * FROM bookmark";
     conn.query(sql, function(err, rows) {
       if(err)
@@ -76,6 +84,54 @@ app.get('/bookmark', function(req, res) {
         res.render('bookmark.ejs', {data:rows, user:req.session.user});
     })
 })
+
+
+//==========
+// let imageName = '';
+// const storage = multer.diskStorage({
+//   destination: path.resolve(__dirname, 'upload/'),
+//   filename: function(req, file, done){
+//     const ext = path.extname(file.originalname); // 확장자명 : hwp
+//     const baseName = path.basename(file.originalname, ext);  // 파일명 : 정산양식
+//     let changed_name = baseName + "_" + Date.now() + ext; // 정산양식_2324343.hwp  
+//     imageName = Buffer.from(changed_name, "latin1").toString("utf8");      
+//     done(null, imageName);
+//   }
+// });
+// const upload = multer({storage: storage}).single('upload');
+
+// app.post('/upload', (req, res) => {
+//   upload(req, res, (err) => {
+//     if (err) return res.json({error:{message:"2MB image upload failed ~~!"}});
+//     res.json({
+//       url: `http://localhost:8080/upload/${imageName}`,
+//     });
+//   });
+// });
+
+let imageName = '';
+const storage = multer.diskStorage({
+  destination: path.resolve(__dirname, 'upload/'),
+  filename: function(req, file, done){
+    const ext = path.extname(file.originalname); // 확장자명 : hwp
+    const baseName = path.basename(file.originalname, ext);  // 파일명 : 정산양식
+    let changed_name = baseName + "_" + Date.now() + ext; // 정산양식_2324343.hwp  
+    imageName = Buffer.from(changed_name, "latin1").toString("utf8");      
+    done(null, imageName);
+  },
+});
+const upload = multer({storage:storage, limits:{fileSize: 3 * 1024 * 1024}}).single('upload');
+
+app.post('/upload', (req, res) => {
+  upload(req, res, (err) => {
+    if (err) return res.json({error:{message:"이미지의 크기는 3mb를 초과할 수 없습니다"}});
+    res.json({
+      url: `http://localhost:8080/upload/${imageName}`,
+    });
+  });
+});
+
+//==========
 
 app.listen(8080, function() {
   console.log("포트 8080 으로 서버 대기중...");

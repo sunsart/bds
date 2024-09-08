@@ -6,6 +6,7 @@ import {
 	AutoLink,
 	Autosave,
 	Bold,
+	CloudServices,
 	Essentials,
 	FontBackgroundColor,
 	FontColor,
@@ -13,37 +14,22 @@ import {
 	FontSize,
 	Highlight,
 	ImageBlock,
-	ImageCaption,
-	ImageInline,
 	ImageInsert,
 	ImageInsertViaUrl,
-	ImageResize,
-	ImageStyle,
-	ImageTextAlternative,
 	ImageToolbar,
 	ImageUpload,
 	Italic,
 	Link,
-	List,
-	ListProperties,
 	Paragraph,
 	SelectAll,
 	SimpleUploadAdapter,
 	SpecialCharacters,
-	SpecialCharactersArrows,
-	SpecialCharactersCurrency,
-	SpecialCharactersEssentials,
-	SpecialCharactersLatin,
-	SpecialCharactersMathematical,
-	SpecialCharactersText,
-	Strikethrough,
 	Table,
 	TableCaption,
 	TableCellProperties,
 	TableColumnResize,
 	TableProperties,
 	TableToolbar,
-	TodoList,
 	Underline,
 	Undo
 } from 'ckeditor5';
@@ -56,6 +42,8 @@ const editorConfig = {
 			'undo',
 			'redo',
 			'|',
+			'selectAll',
+			'|',
 			'fontSize',
 			'fontFamily',
 			'fontColor',
@@ -64,7 +52,6 @@ const editorConfig = {
 			'bold',
 			'italic',
 			'underline',
-			'strikethrough',
 			'|',
 			'specialCharacters',
 			'link',
@@ -74,9 +61,7 @@ const editorConfig = {
 			'|',
 			'alignment',
 			'|',
-			'bulletedList',
-			'numberedList',
-			'todoList'
+			'accessibilityHelp'
 		],
 		shouldNotGroupWhenFull: false
 	},
@@ -87,6 +72,7 @@ const editorConfig = {
 		AutoLink,
 		Autosave,
 		Bold,
+		CloudServices,
 		Essentials,
 		FontBackgroundColor,
 		FontColor,
@@ -94,37 +80,22 @@ const editorConfig = {
 		FontSize,
 		Highlight,
 		ImageBlock,
-		ImageCaption,
-		ImageInline,
 		ImageInsert,
 		ImageInsertViaUrl,
-		ImageResize,
-		ImageStyle,
-		ImageTextAlternative,
 		ImageToolbar,
 		ImageUpload,
 		Italic,
 		Link,
-		List,
-		ListProperties,
 		Paragraph,
 		SelectAll,
 		SimpleUploadAdapter,
 		SpecialCharacters,
-		SpecialCharactersArrows,
-		SpecialCharactersCurrency,
-		SpecialCharactersEssentials,
-		SpecialCharactersLatin,
-		SpecialCharactersMathematical,
-		SpecialCharactersText,
-		Strikethrough,
 		Table,
 		TableCaption,
 		TableCellProperties,
 		TableColumnResize,
 		TableProperties,
 		TableToolbar,
-		TodoList,
 		Underline,
 		Undo
 	],
@@ -136,16 +107,7 @@ const editorConfig = {
 		supportAllValues: true
 	},
 	image: {
-		toolbar: [
-			'toggleImageCaption',
-			'imageTextAlternative',
-			'|',
-			'imageStyle:inline',
-			'imageStyle:wrapText',
-			'imageStyle:breakText',
-			'|',
-			'resizeImage'
-		]
+		toolbar: ['imageTextAlternative']
 	},
 	initialData: document.querySelector(".input_content").value,
 	language: 'ko',
@@ -162,33 +124,11 @@ const editorConfig = {
 			}
 		}
 	},
-	list: {
-		properties: {
-			styles: true,
-			startIndex: true,
-			reversed: true
-		}
-	},
 	placeholder: '내용을 입력하세요',
 	table: {
 		contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
 	},
-	translations: [translations],
-	// simpleUpload 추가함
-	simpleUpload: {
-		// The URL that the images are uploaded to
-		// uploadUrl: 'http://localhost:8080/upload',
-		uploadUrl: '/upload',
-
-		// Enable the XMLHttpRequest.withCredentials property.
-		withCredentials: true,
-
-		// Headers sent along with the XMLHttpRequest to the upload server.
-		headers: {
-				'X-CSRF-TOKEN': 'CSRF-Token',
-				Authorization: 'Bearer <JSON Web Token>'
-		}
-	}
+	translations: [translations]
 };
 
 let editor;
@@ -232,7 +172,6 @@ document.querySelector('#edit_btn').addEventListener('click', () => {
 	}
 });
 
-// 삭제 버튼 클릭시
 document.querySelector('#delete_btn').addEventListener('click', () => {
 	let id = document.querySelector(".input_no").value;
 	let result = confirm("게시글을 삭제할까요?");
