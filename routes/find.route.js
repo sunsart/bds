@@ -129,7 +129,17 @@ router.get('/find_detail/:id', async function(req, res) {
     })
   }
   // 쿠키에 client ip 저장값이 있으면 조회수 증가하지 않고, 내용을 보여줌
-  let sql = "SELECT * FROM find WHERE id = ?";
+  // let sql = "SELECT * FROM find WHERE id = ?";
+  // let params = req.params.id;
+  // conn.query(sql, params, function(err, rows) {
+  //   if(err) throw err;
+  //   res.render('find_detail.ejs', {data:rows, user:req.session.user});
+  // })
+
+  let sql = " SELECT f.id, f.title, f.content, f.user_id, fc.user_name, fc.comment, fc.post_date \
+              FROM find AS f LEFT OUTER JOIN find_comment AS fc \
+              ON f.id = fc.find_id \
+              WHERE f.id = ? ";
   let params = req.params.id;
   conn.query(sql, params, function(err, rows) {
     if(err) throw err;
@@ -166,54 +176,24 @@ router.post('/find_delete', function(req, res) {
   })
 })
 
-//============
-//파일 업로드
-// const upload = multer({
-//   storage: multer.diskStorage({
-//     destination: function(req, file, done) {
-//       done(null, "upload/");
-//     },
-//     filename: function(req, file, done){
-//       const ext = path.extname(file.originalname); // 확장자명 ex)hwp
-//       const baseName = path.basename(file.originalname, ext);  // 파일명 ex)정산양식
-//       let changed_name = baseName + "_" + Date.now() + ext; // 정산양식_2324343.hwp  
-//       changed_name = Buffer.from(changed_name, "latin1").toString("utf8");      
-//       done(null, changed_name);
-//     }
-//   }),
-//   limits: {fileSize: 2 * 1024 * 1024} // 2 MB 제한
-// });
+// 매물찾아요 댓글 등록
+router.post('/find_comment_post', function(req, res) {
+  let comment = req.body.content; // 댓글 내용
+  let find_id = req.body.find_id; // 댓글이 등록되는 게시물의 인덱스
+  // let response_to = NULL;  // 상위 댓글의 인덱스
+  let user_id = req.session.user.id;
+  let user_name = req.session.user.name;
+  let post_date = postDate();
 
-// router.post("/upload", upload.single("file"), (req, res)=> {
-//   res.status(200).send("이미지 업로드 성공");
-// });
-// router.post('/upload', function(req, res) {
-//   console.log("aaaa...");
-//   res.status(200).send("이미지 업로드 성공");
-//   console.log("bbbb...");
-// })
-// let imageName = '';
-// const storage = multer.diskStorage({
-//   destination: path.resolve(__dirname, 'uploads/'),
-//   filename: function (req, file, cb) {
-//     imageName = Date.now() + path.extname(file.originalname);
-//     cb(null, imageName);
-//   },
-// });
-// const upload = multer({ storage: storage }).single('upload');
-
-// app.use(cors());
-// app.use("/uploads", express.static("uploads"));
-
-// router.post('/upload', (req, res) => {
-//   upload(req, res, (err) => {
-//     if (err) return res.json({ error: { message: 'image upload failed~!' } });
-//     res.json({
-//       url: `http://localhost:8080/uploads/${imageName}`,
-//     });
-//   });
-// });
-//==========
+  let sql = "INSERT INTO find_comment (comment, user_id, user_name, post_date, find_id) VALUES (?, ?, ?, ?, ?)";
+  let params = [comment, user_id, user_name, post_date, find_id];
+  conn.query(sql, params, function(err, result) {
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send("매물찾아요 댓글 등록성공");
+  })
+})
 
 //현재 날짜 가져오기
 function postDate() {

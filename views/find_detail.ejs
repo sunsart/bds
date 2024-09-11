@@ -14,7 +14,7 @@
   
   <!-- ckeditor5 cdn -->
   <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.1.0/ckeditor5.css">
-  <link rel="stylesheet" href="../css/find/find_write.css">
+  <link rel="stylesheet" href="../css/find/find_detail.css">
 
   <!-- css 링크  -->
   <link rel="stylesheet" href="../css/main.css">
@@ -35,9 +35,9 @@
     <div class="page_title"> <span>매물찾아요 내용</span> </div>
 
     <label>
-      <input type="text" class="input_title" value="<%= data[0].title %>">
-      <input type="hidden" class="input_no" value="<%= data[0].id %>">
-      <input type="hidden" class="input_content" value="<%= data[0].content %>">
+      <input type="text" class="find_title" value="<%= data[0].title %>">
+      <input type="hidden" class="find_no" value="<%= data[0].id %>">
+      <input type="hidden" class="find_content" value="<%= data[0].content %>">
     </label>
 
 		<div>
@@ -50,11 +50,53 @@
 
     <div class="buttons">
       <% if(user && (user.id == data[0].user_id) ) { %>
-        <input type="button" id="edit_btn" value="수정하기">
-        <input type="button" id="delete_btn" value="삭제하기">
+        <input type="button" id="edit_btn" style="visibility: visible;" value="수정하기">
+        <input type="button" id="delete_btn" style="visibility: visible;" value="삭제하기">
+      <% } else { %>
+        <input type="button" id="edit_btn" style="visibility: hidden;" value="수정하기">
+        <input type="button" id="delete_btn" style="visibility: hidden;" value="삭제하기">
       <% } %>
       <input type="button" value="목록" onclick="location.href='/find_list'">
     </div>
+
+    <!-- 댓글 리스트 -->
+    <% if(data[0].comment) { %>
+      <div class="container_comment_list">
+        <% for(let i=0; i<data.length; i++) { %>
+          <div class="comment_list">
+            <p class="comment_name"> <%= data[i].user_name %> </p>
+            <p class="comment_content"> <%= data[i].comment %> </p>
+            <p class="comment_date"> <%= data[i].post_date %> </p>
+            <% if(user) { %>
+              <span class="response_open_btn">답글쓰기</span>
+            <% } %>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+
+    <!-- 대 댓글 -->
+    <div class="container_response">
+      <% if(user) { %>
+        <p class="comment_name"><%= user.name %></p>
+      <% } %>
+      <textarea class="response_box" placeholder="답글을 남겨보세요."></textarea>
+      <p class="cancel_btn">취소</p>
+      <p class="response_btn">등록</p>
+    </div>
+
+    <!-- 댓글 입력창 -->
+    <div class="container_comment">
+      <% if(user) { %>
+        <p class="comment_name"><%= user.name %></p>
+        <textarea class="comment_box" placeholder="댓글을 남겨보세요."></textarea>
+        <p class="comment_btn">등록</p>
+      <% } else { %>
+        <p class="comment_btn" style="display: none;">등록</p>
+        <p class="login_btn" onclick="location.href='/login'">로그인하고 댓글을 남겨보세요.</p>
+      <% } %>
+    </div>
+
   </div> 
 
   <!-- ckeditor5 -->

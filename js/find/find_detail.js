@@ -147,7 +147,7 @@ const editorConfig = {
 			'resizeImage'
 		]
 	},
-	initialData: document.querySelector(".input_content").value,
+	initialData: document.querySelector(".find_content").value,
 	language: 'ko',
 	link: {
 		addTargetToExternalLinks: true,
@@ -208,8 +208,8 @@ ClassicEditor
 
 // 수정 버튼 클릭시
 document.querySelector('#edit_btn').addEventListener('click', () => {
-	let title = document.querySelector(".input_title").value;
-	let id = document.querySelector(".input_no").value;
+	let title = document.querySelector(".find_title").value;
+	let id = document.querySelector(".find_no").value;
 	let content = editor.getData();
 	if(title == "")
 		alert("제목을 입력하세요");
@@ -234,7 +234,7 @@ document.querySelector('#edit_btn').addEventListener('click', () => {
 
 // 삭제 버튼 클릭시
 document.querySelector('#delete_btn').addEventListener('click', () => {
-	let id = document.querySelector(".input_no").value;
+	let id = document.querySelector(".find_no").value;
 	let result = confirm("게시글을 삭제할까요?");
 	if(result) {
 		$.ajax({
@@ -251,4 +251,55 @@ document.querySelector('#delete_btn').addEventListener('click', () => {
 			}
 		})
 	}	
+});
+
+// 댓글입력창 등록 버튼 클릭시
+document.querySelector('.comment_btn').addEventListener('click', () => {
+  let content = document.querySelector(".comment_box").value;
+	// 댓글이 등록되는 게시물의 인덱스
+	let find_id = document.querySelector(".find_no").value;
+	// 상위 댓글 인덱스
+	// let response_to = ;
+
+  if(content == "")
+    alert("댓글을 입력하세요");
+  else {
+    $.ajax({
+      url : "/find_comment_post",
+      type : "POST",
+      data : {content:content, find_id:find_id},
+      success : function(data) {
+        alert("등록 되었습니다")
+				// 댓글 바로 볼수 있게 디테일페이지로 가야함
+				// ajax 사용해서 리로드 하지 않게 해야함
+        window.location.href = '/find_list';
+      },
+      error : function(xhr, textStatus, errorThrown) {
+        console.log("매물찾아요 댓글 등록실패");
+        console.log(xhr, textStatus, errorThrown);
+      }
+    })
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+	const btns = document.querySelectorAll(".response_open_btn");
+	btns.forEach(btn => { 
+    btn.addEventListener('click', () => {
+			// 대댓글 입력창 열기
+			const response = document.querySelector(".container_response");
+			response.classList.add("on");
+
+			// 대댓글 입력창의 위치를 선택한 댓글 아래로 이동함
+			const comment_list = btn.parentElement;
+			comment_list.after(response);
+		})
+	});
+
+	// 대댓글 입력창 닫기
+	const cancel = document.querySelector(".cancel_btn");
+	cancel.addEventListener('click', () => {
+		const response = document.querySelector(".container_response");
+		response.classList.remove("on");
+	})
 });
