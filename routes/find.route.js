@@ -56,7 +56,15 @@ router.get('/find_list', function(req, res) {
     // console.log("============================");
     
     //
-    let sql2 = "SELECT * FROM find ORDER BY id DESC LIMIT ? OFFSET ? ";
+    // let sql2 = "SELECT * FROM find ORDER BY id DESC LIMIT ? OFFSET ? ";
+
+    let sql2 = "SELECT id, title, content, user_id, user_name, post_date, hit, ( \
+                SELECT count(*) \
+                FROM find_comment AS fc \
+                WHERE fc.find_id = f.id) AS commentCount \
+                FROM find AS f \
+                ORDER BY id DESC LIMIT ? OFFSET ? ";
+
     let params = [postPerPage, startPost];
     let data = []; 
     conn.query(sql2, params, function(err, rows) {
@@ -67,7 +75,8 @@ router.get('/find_list', function(req, res) {
           'title' : rows[i].title,
           'user_name' : rows[i].user_name,
           'post_date' : rows[i].post_date,
-          'hit' : rows[i].hit
+          'hit' : rows[i].hit,
+          'commentCount' : rows[i].commentCount
         };
         data.push(node);
       }
@@ -136,7 +145,8 @@ router.get('/find_detail/:id', async function(req, res) {
   //   res.render('find_detail.ejs', {data:rows, user:req.session.user});
   // })
 
-  let sql = " SELECT f.id, f.title, f.content, f.user_id, fc.user_name, fc.comment, fc.post_date \
+  let sql = " SELECT f.id, f.title, f.content, f.user_id, f.user_name, \
+              fc.idx, fc.comment, fc.commenter_id, fc.commenter_name, fc.post_date, fc.find_id, fc.response_to \
               FROM find AS f LEFT OUTER JOIN find_comment AS fc \
               ON f.id = fc.find_id \
               WHERE f.id = ? ";
@@ -177,21 +187,53 @@ router.post('/find_delete', function(req, res) {
 })
 
 // 매물찾아요 댓글 등록
-router.post('/find_comment_post', function(req, res) {
+// router.post('/find_comment_post', function(req, res) {
+//   let comment = req.body.content; // 댓글 내용
+//   let find_id = req.body.find_id; // 댓글이 등록되는 게시물의 인덱스
+//   //let response_to = null;  // 상위 댓글의 인덱스
+//   let user_id = req.session.user.id;
+//   let user_name = req.session.user.name;
+//   let post_date = postDate();
+
+//   let sql = "INSERT INTO find_comment (comment, user_id, user_name, post_date, find_id) VALUES (?, ?, ?, ?, ?)";
+//   let params = [comment, user_id, user_name, post_date, find_id];
+//   conn.query(sql, params, function(err, result) {
+//     if(err)
+//       res.status(500).send();
+//     else  
+//       res.status(200).send("매물찾아요 댓글 등록성공");
+//   })
+// })
+
+// 매물찾아요 답글 등록 insert
+router.post('/find_response_post', function(req, res) {
   let comment = req.body.content; // 댓글 내용
   let find_id = req.body.find_id; // 댓글이 등록되는 게시물의 인덱스
-  // let response_to = NULL;  // 상위 댓글의 인덱스
-  let user_id = req.session.user.id;
-  let user_name = req.session.user.name;
+  let response_to = req.body.response_to;  // 상위 댓글의 인덱스
+  let commenter_id = req.session.user.id;
+  let commenter_name = req.session.user.name;
   let post_date = postDate();
-
-  let sql = "INSERT INTO find_comment (comment, user_id, user_name, post_date, find_id) VALUES (?, ?, ?, ?, ?)";
-  let params = [comment, user_id, user_name, post_date, find_id];
+  let sql = "INSERT INTO find_comment (comment, commenter_id, commenter_name, post_date, find_id, response_to) VALUES (?, ?, ?, ?, ?, ?)";
+  let params = [comment, commenter_id, commenter_name, post_date, find_id, response_to];
   conn.query(sql, params, function(err, result) {
     if(err)
       res.status(500).send();
     else  
-      res.status(200).send("매물찾아요 댓글 등록성공");
+      res.status(200).send("매물찾아요 답글 등록성공");
+  })
+})
+
+// 매물찾아요 답글 수정 edit
+router.post('/find_response_edit', function(req, res) {
+  let idx = req.body.idx; // 답글 idx
+  let comment = req.body.content; // 댓글 내용
+  let sql = "UPDATE find_comment SET comment=? WHERE idx=?";
+  let params = [comment, idx]
+  conn.query(sql, params, function(err, result) {
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send("매물찾아요 답글 수정 성공");
   })
 })
 

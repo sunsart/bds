@@ -11,17 +11,19 @@ function sendContactMail() {
   else if (subject == "")
     alert("문의내용, 건의내용을 입력해주세요");
   else {
+    // contact 메일 발송 버튼 반응이 느려서 
+    // success 안의 alert을 앞으로 이동함
+    alert("내용을 전달했습니다");
+    document.querySelector("#contact_email").value = "";
+    document.querySelector("#contact_subject").value = "";
     $.ajax({
       url : "/sendContactMail",
       type : "POST",
       data : {email:email, subject:subject},
       success : function() {
-        alert("내용을 전달했습니다");
-        document.querySelector("#contact_email").value = "";
-        document.querySelector("#contact_subject").value = "";
+        console.log("contact 내용을 전달했습니다");
       },
       error : function(xhr, textStatus, errorThrown) {
-        alert("메일발송 에러가 발생했습니다");
         console.log("contact mail 발송 에러");
         console.log(xhr, textStatus, errorThrown);
       }

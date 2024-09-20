@@ -9,59 +9,25 @@
 }
 
 .table_head {
-  display: flex;
-  justify-content: space-between;
-  margin: 40px auto;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  line-height: 30px;
 }
 
 .page_title {
-  /* margin-top: 20px; */
-  font-size: 18px;
-  /* text-align: center; */
+  font-size:22px;
+  font-weight: bold;
 }
 
-form.example {
-  /* margin : 40px auto 0px auto; */
-  max-width: 400px;
-}
-
-form.example input[type=text] {
-  padding: 10px;
-  font-size: 15px;
-  border: 1px solid grey;
-  float: left;
-  width: 80%;
-  background: #f1f1f1;
-}
-
-form.example button {
-  float: left;
-  width: 20%;
-  padding: 10px;
-  background: #2196F3;
-  color: white;
-  font-size: 15px;
-  border: 1px solid grey;
-  border-left: none;
-  cursor: pointer;
-}
-
-form.example button:hover {
-  background: #0b7dda;
-}
-
-form.example::after {
-  content: "";
-  clear: both;
-  display: table;
+.page_title_desc {
+  font-size:14px;
+  color: darkgray;
 }
 
 /* === 리스트 테이블 === */
 table { 
   line-height: 40px; 
   width: 100%;
-  /* margin : 30px auto; */
-  /* margin-top: 0px; */
   margin-bottom: 30px;
 }
 
@@ -85,6 +51,11 @@ th {
 
 .td_title a:visited {
   color: black;
+}
+
+#comment_count {
+  color: red;
+  font-weight: bold;
 }
 
 .td_center {

@@ -36,6 +36,7 @@
 
     <label>
       <input type="text" class="find_title" value="<%= data[0].title %>">
+      <input type="text" class="find_title" value="<%= data[0].user_name %>">
       <input type="hidden" class="find_no" value="<%= data[0].id %>">
       <input type="hidden" class="find_content" value="<%= data[0].content %>">
     </label>
@@ -59,33 +60,64 @@
       <input type="button" value="목록" onclick="location.href='/find_list'">
     </div>
 
+
     <!-- 댓글 리스트 -->
-    <% if(data[0].comment) { %>
+    <% if(data[0].comment) { %> <!-- 해당게시물에 댓글이 있을때 -->
       <div class="container_comment_list">
         <% for(let i=0; i<data.length; i++) { %>
-          <div class="comment_list">
-            <p class="comment_name"> <%= data[i].user_name %> </p>
-            <p class="comment_content"> <%= data[i].comment %> </p>
-            <p class="comment_date"> <%= data[i].post_date %> </p>
-            <% if(user) { %>
-              <span class="response_open_btn">답글쓰기</span>
+          <% if(data[i].response_to == 0) { %> <!-- 답글이면 화면에 표시하지 않음, 먼저 댓글만 표시 -->
+            <div class="comment">
+              <input type="hidden" class="response_to" value="<%= data[i].response_to %>">
+              <input type="hidden" class="comment_id" value="<%= data[i].idx %>">
+              <p class="comment_name"> <%= data[i].commenter_name %> </p>
+              <p class="comment_content"> <%= data[i].comment %> </p>
+              <p class="comment_date"> <%= data[i].post_date %> </p>
+              <% if(user) { %>
+                <span class="response_open_btn">답글쓰기</span>
+                <% if(user.id == data[i].commenter_id) { %>
+                  <span class="response_edit_btn">수정</span>
+                <% } %>
+              <% } %>
+            </div>
+          <% } %>
+          
+          <!-- for문 안에 for문 -->
+          <% for(let j=0; j<data.length; j++) { %> 
+            <% if(data[j].response_to == data[i].idx) { %>  <!-- 댓글의 답글이면 화면에 표시함 -->
+              <div class="re_comment">
+                <input type="hidden" class="response_to" value="<%= data[j].response_to %>">
+                <input type="hidden" class="re_comment_id" value="<%= data[j].idx %>">
+                <p class="comment_name"> <%= data[j].commenter_name %> </p>
+                <p class="comment_content"> <%= data[j].comment %> </p>
+                <p class="comment_date"> <%= data[j].post_date %> </p>
+                <% if(user) { %>
+                  <span class="response_open_btn">답글쓰기</span>
+                  <% if(user.id == data[j].commenter_id) { %>
+                    <span class="response_edit_btn">수정</span>
+                  <% } %>
+                <% } %>
+              </div>
             <% } %>
-          </div>
+          <% } %>
+
         <% } %>
       </div>
     <% } %>
 
-    <!-- 대 댓글 -->
+
+    <!-- on/off 되는 답글 입력창 -->
     <div class="container_response">
       <% if(user) { %>
         <p class="comment_name"><%= user.name %></p>
       <% } %>
       <textarea class="response_box" placeholder="답글을 남겨보세요."></textarea>
+      <input type="hidden" id="post_type_edit" value="false">
+      <input type="hidden" id="edit_comment_idx" value="">
       <p class="cancel_btn">취소</p>
       <p class="response_btn">등록</p>
     </div>
 
-    <!-- 댓글 입력창 -->
+    <!-- 가장 아래쪽 댓글 입력창 -->
     <div class="container_comment">
       <% if(user) { %>
         <p class="comment_name"><%= user.name %></p>

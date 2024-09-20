@@ -38,6 +38,14 @@
   color: black;
 }
 
-.navbar .planned p {
+.navbar a.selected {
+  /* background-color: #ffffff3a;
+  border-radius: 10px; */
+
+  color: rgb(239, 239, 11);
+  font-weight: bold;
+}
+
+.navbar a.planned {
   color: darkgray;
 }

@@ -1,12 +1,6 @@
 #contents {
   margin: 0 auto; /* 화면 중앙에 배치 */
   width: 1800px;  /* 화면 너비 지정 */
-
-  /* background-color: #EFF1F6; */
-}
-
-.main {
-  /* border: 1px solid red; */
 }
 
 .grid {
@@ -51,12 +45,12 @@
 }
 
 .card:hover {
-  width: 95%;
+  width: 92%;
 }
 
 .container {
   padding: 2px 10px;
-  background-color: rgb(231, 200, 200)
+  background-color: rgb(241, 219, 219)
 }
 
 #bookmark_title {

@@ -18,6 +18,7 @@
 	<link rel="stylesheet" href="../css/find/find_list.css">
 
   <!-- JS 링크 -->
+
 	<!-- 이미지 폰트 사용 -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -31,11 +32,8 @@
   <div id="contents">
 
     <div class="table_head">
-      <span class="page_title">매물찾아요 게시판</span>
-      <form class="example" method="GET" action="/find_search">
-        <input type="text" name="search" placeholder="검색어를 입력하세요">
-        <button type="submit"><i class="fa fa-search"></i></button>
-      </form>
+      <p class="page_title">매물찾아요</p>
+      <p class="page_title_desc">조건에 맞는 매물을 찾는 게시판 입니다 </p>
     </div>
 
     <!-- 매물찾아요 테이블 -->
@@ -53,7 +51,13 @@
         <tbody>
           <% for(let i=0; i<data.length; i++) { %>
             <tr>
-              <td class="td_title"> <a href="/find_detail/<%= data[i].id %>"><%= data[i].title %></a> </td>
+              <% if(data[i].commentCount > 0) { %>
+                <td class="td_title"> <a href="/find_detail/<%= data[i].id %>"><%= data[i].title %> <span id="comment_count">[<%=data[i].commentCount%>]</span></a></td>
+              <% } else { %>
+                <td class="td_title"> <a href="/find_detail/<%= data[i].id %>"><%= data[i].title %></a></td>
+              <% } %>
+
+              
               <td class="td_center"> <label><%= data[i].user_name %></label> </td>
               <td class="td_center"> <label><%= data[i].post_date %></label> </td>
               <td class="td_center"> <label><%= data[i].hit %></label> </td>

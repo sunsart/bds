@@ -8,7 +8,8 @@
   background-color: #3468B6;
   font-size: 16px;
   display: inline-block;
-  line-height: 42px;
+  /* line-height: 42px; */
+  line-height: 2.6;
   border-radius: 10px 10px 0px 0px;
 }
 
@@ -18,14 +19,15 @@
   border: none;
   color: white;
   width: 60px;
-  height: 41px;
+  height: 42px;
   text-align: center;
   background-color: rgb(1, 167, 1);
   font-size: 16px;
   cursor: pointer;
   display: inline-block;
-  line-height: 40px;
-  border-radius: 5px 5px 0px 0px;
+  /* line-height: 42px; */
+  line-height: 2.6;
+  border-radius: 10px 10px 0px 0px;
   opacity: 0.9;
 }
 .edit_btn:hover {
