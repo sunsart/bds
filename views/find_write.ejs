@@ -31,12 +31,15 @@
   </header>
 
   <div id="contents"> 
-		<!-- page title -->
-    <div class="page_title"> 
-      <span>매물찾아요 등록</span> 
+
+    <div class="table_head">
+      <p class="page_title">매물찾아요</p>
+      <p class="page_title_desc">찾고 있는 부동산 매물을 등록하세요</p>
     </div>
 
-    <label><input type="text" class="input_title" placeholder="제목을 입력하세요"></label>
+    <div class="table_title">
+      <input type="text" class="input_title" placeholder="제목을 입력하세요">
+    </div>
 
     <div>
 			<div class="main-container">
@@ -47,8 +50,8 @@
 		</div>
 
     <div class="buttons">
-      <input type="button" id="post_btn" value="등록">
       <input type="button" value="목록" onclick="location.href='/find_list'">
+      <input type="button" id="post_btn" value="등록">
     </div>
   </div> 
 

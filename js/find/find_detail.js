@@ -196,18 +196,40 @@ ClassicEditor
   .create(document.querySelector('#editor'), editorConfig)
   .then(newEditor => {
     editor = newEditor;
-		if(document.querySelector("#edit_btn")) {
-			editor.disableReadOnlyMode('#editor');
-		} else {
-			editor.enableReadOnlyMode('#editor');
-		}
+		//
+		// if(document.querySelector("#edit_btn")) {
+		// 	editor.disableReadOnlyMode('#editor');
+		// } else {
+		// 	editor.enableReadOnlyMode('#editor');
+		// }
+		editor.enableReadOnlyMode('#editor');
   })
   .catch(error => {
     console.error(error);
   });
 
+
 // 수정 버튼 클릭시
 document.querySelector('#edit_btn').addEventListener('click', () => {
+	// 게시물 제목 활성화, 포커스
+	const title = document.querySelector(".find_title");
+	title.disabled = false;
+	title.focus();
+
+	// 게시물 본문 활성화
+	editor.disableReadOnlyMode('#editor');
+
+	// 완료버튼 활성화, 수정버튼/삭제버튼 비활성화
+	const complete_btn = document.querySelector("#complete_btn");
+	complete_btn.style.display = 'inline';
+	const edit_btn = document.querySelector("#edit_btn");
+	edit_btn.style.display = 'none';
+	const delete_btn = document.querySelector("#delete_btn");
+	delete_btn.style.display = 'none';
+});
+
+// 완료버튼 클릭시
+document.querySelector('#complete_btn').addEventListener('click', () => {
 	let title = document.querySelector(".find_title").value;
 	let id = document.querySelector(".find_no").value;
 	let content = editor.getData();
@@ -222,7 +244,6 @@ document.querySelector('#edit_btn').addEventListener('click', () => {
 			data : {title:title, id:id, content:content},
 			success : function(data) {
 				alert("수정했습니다")
-				//window.location.href = '/find_list';
 				window.location.reload();
 			},
 			error : function(xhr, textStatus, errorThrown) {
@@ -232,6 +253,7 @@ document.querySelector('#edit_btn').addEventListener('click', () => {
 		})
 	}
 });
+
 
 // 삭제 버튼 클릭시
 document.querySelector('#delete_btn').addEventListener('click', () => {
@@ -320,6 +342,7 @@ document.querySelector('.response_btn').addEventListener('click', () => {
   }
 });
 
+// 페이지 로드 후 작업
 document.addEventListener('DOMContentLoaded', function() {
 	// 답글쓰기 버튼 클릭시
 	const btns = document.querySelectorAll(".response_open_btn");
@@ -342,13 +365,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		})
 	});
 
-	// 답글 입력창 off
+	// 취소버튼 클릭시 답글 입력창 off
 	const cancel = document.querySelector(".cancel_btn");
 	cancel.addEventListener('click', () => {
 		// 수정할 답글을 보이게 함
-		cancel.parentElement.previousElementSibling.classList.remove("off");
+		cancel.parentElement.parentElement.previousElementSibling.classList.remove("off");
 		// 답글 입력창 off
-		cancel.parentElement.classList.remove("on");
+		cancel.parentElement.parentElement.classList.remove("on");
 	})
 
 	// 댓글&답글 수정 버튼 클릭시

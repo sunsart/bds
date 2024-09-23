@@ -1,4 +1,3 @@
-
 * {
   box-sizing: border-box;
 }
@@ -8,94 +7,93 @@
   width: 1000px;  /* 화면 너비 지정 */
 }
 
+
+/* 게시판 제목 */
 .table_head {
   margin-top: 40px;
   margin-bottom: 20px;
   line-height: 30px;
 }
-
 .page_title {
   font-size:22px;
   font-weight: bold;
 }
-
 .page_title_desc {
   font-size:14px;
   color: darkgray;
 }
 
-/* === 리스트 테이블 === */
+
+/* 게시판 테이블 */
 table { 
   line-height: 40px; 
   width: 100%;
   margin-bottom: 30px;
 }
-
 table, th, td { 
   border: 1px solid darkgray; 
   border-collapse: collapse;
   vertical-align: middle;
 }
-
 th {
   background-color: rgb(232, 232, 232);
 }
-
 .td_title {
   padding-left: 10px;
 }
-
 .td_title a:link {
   color: black;
 }
-
 .td_title a:visited {
   color: black;
 }
-
 #comment_count {
   color: red;
   font-weight: bold;
 }
-
 .td_center {
   text-align: center;
 }
 
-.buttons {
+
+/* 페이지 인디케이터 */
+#page_indicator {
+  text-align: center; 
+}
+#page_indicator a {
+  padding: 5px 5px;
+  font-size: 15px;
+}
+.page_num {
+  display: inline;
+}
+.page_num a.active {
+  color: blue;
+  font-weight: bold;
+}
+.page_arrow {
+  display: inline;
+}
+.page_arrow span {
+  font-size: 16px;
+}
+
+
+/* 목록버튼, 글쓰기버튼 */
+.list_btns {
+  display: flex;
+  justify-content: space-between;
+}
+.btn {
   border: none; 
   color: white; 
   padding: 10px 20px; 
   cursor: pointer;
   background-color: #04AA6D;
 }
-
-.buttons:hover {
+.btn:hover {
   background-color: #46a049;
 }
-
-#page_indicator {
-  text-align: center; 
-}
-
-#page_indicator a {
-  padding: 5px 5px;
-  font-size: 15px;
-}
-
-.page_num {
-  display: inline;
-}
-
-.page_num a.active {
-  color: blue;
-  font-weight: bold;
-}
-
-.page_arrow {
-  display: inline;
-}
-
-.page_arrow span {
-  font-size: 16px;
+#write_btn {
+  background-color: darkgoldenrod;
 }
