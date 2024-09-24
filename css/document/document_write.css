@@ -60,7 +60,6 @@
 	word-break: break-word;
   font-size: 16px; 
   height:500px;
-  white-space: pre; /* placeholder 줄바꿈 */
 }
 .ck.ck-editor{
   min-width: 100%;

@@ -276,7 +276,7 @@ document.querySelector('#delete_btn').addEventListener('click', () => {
 // 댓글 입력창 등록 버튼 클릭시
 document.querySelector('.comment_btn').addEventListener('click', () => {
   let content = document.querySelector(".comment_box").value;	// 댓글 내용
-	let find_id = document.querySelector(".qna_no").value;	// 댓글이 등록되는 게시물의 인덱스
+	let qna_id = document.querySelector(".qna_no").value;	// 댓글이 등록되는 게시물의 인덱스
 	let response_to = 0;	// 상위 댓글 인덱스 없음
   if(content == "")
     alert("댓글을 입력하세요");
@@ -284,7 +284,7 @@ document.querySelector('.comment_btn').addEventListener('click', () => {
     $.ajax({
       url : "/qna_response_post",
       type : "POST",
-      data : {content:content, find_id:find_id, response_to:response_to},
+      data : {content:content, qna_id:qna_id, response_to:response_to},
       success : function(data) {
         alert("댓글이 등록 되었습니다")
 				window.location.reload();
@@ -300,7 +300,7 @@ document.querySelector('.comment_btn').addEventListener('click', () => {
 // 답글 입력창 등록 버튼 클릭시
 document.querySelector('.response_btn').addEventListener('click', () => {
 	let content = document.querySelector(".response_box").value;	// 답글 내용
-	let find_id = document.querySelector(".qna_no").value;	// 댓글이 등록되는 게시물의 인덱스
+	let qna_id = document.querySelector(".qna_no").value;	// 댓글이 등록되는 게시물의 인덱스
 	let response_to = document.querySelector(".comment_id").value;	// 최상위 댓글 인덱스
 	let is_edit = document.querySelector("#post_type_edit").value;	// insert or edit
 	let comment_idx = document.querySelector("#edit_comment_idx").value;	// 수정할 답글 인덱스
@@ -325,7 +325,7 @@ document.querySelector('.response_btn').addEventListener('click', () => {
 			$.ajax({
 				url : "/qna_response_post",
 				type : "POST",
-				data : {content:content, find_id:find_id, response_to:response_to},
+				data : {content:content, qna_id:qna_id, response_to:response_to},
 				success : function(data) {
 					alert("답글이 등록 되었습니다")
 					window.location.reload();

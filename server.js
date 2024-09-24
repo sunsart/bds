@@ -67,6 +67,7 @@ app.use('/', require('./routes/calendar.route.js'));
 app.use('/', require('./routes/news.route.js'));
 app.use('/', require('./routes/find.route.js'));
 app.use('/', require('./routes/qna.route.js'));
+app.use('/', require('./routes/document.route.js'));
 
 app.get('/login', function(req, res) {
   res.render('login.ejs', {user:req.session.user});

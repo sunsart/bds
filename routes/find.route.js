@@ -13,7 +13,7 @@ conn.connect();
 
 //-----------------------------------------//
 
-//매물찾아요 리스트 페이지
+// 매물찾아요 리스트 페이지
 router.get('/find_list', function(req, res) {
   let currentPage = req.query.page; // 현재 보여지는 페이지
   if(!currentPage) currentPage = 1; // page 파라미터 값을 넘겨주지 않을 시, 1페이지로 설정
@@ -50,9 +50,6 @@ router.get('/find_list', function(req, res) {
     // console.log("현재 페이지의 시작 게시글 번호 = " + startPost);
     // console.log("============================");
     
-    //
-    // let sql2 = "SELECT * FROM find ORDER BY id DESC LIMIT ? OFFSET ? ";
-
     let sql2 = "SELECT id, title, content, user_id, user_name, post_date, hit, ( \
                 SELECT count(*) \
                 FROM find_comment AS fc \
@@ -90,6 +87,7 @@ router.get('/find_list', function(req, res) {
     })
   })
 })
+
 
 // 매물찾아요 게시물등록 페이지
 router.get('/find_write', function(req, res) {
@@ -133,13 +131,6 @@ router.get('/find_detail/:id', async function(req, res) {
       if(err) throw err;
     })
   }
-  // 쿠키에 client ip 저장값이 있으면 조회수 증가하지 않고, 내용을 보여줌
-  // let sql = "SELECT * FROM find WHERE id = ?";
-  // let params = req.params.id;
-  // conn.query(sql, params, function(err, rows) {
-  //   if(err) throw err;
-  //   res.render('find_detail.ejs', {data:rows, user:req.session.user});
-  // })
 
   // 쿠키에 client ip 저장값이 있으면 조회수 증가하지 않고, 내용을 보여줌
   let sql = " SELECT f.id, f.title, f.content, f.user_id, f.user_name, \
@@ -155,7 +146,7 @@ router.get('/find_detail/:id', async function(req, res) {
 })
 
 
-// 매물찾아요 수정
+// 매물찾아요 게시물 수정
 router.post('/find_edit', function(req, res) {
   let id = req.body.id;
   let title = req.body.title;
@@ -168,11 +159,12 @@ router.post('/find_edit', function(req, res) {
     if(err)
       res.status(500).send();
     else  
-      res.status(200).send("매물찾아요 수정 성공");
+      res.status(200).send("매물찾아요 게시물 수정 성공");
   })
 })
 
-// 매물찾아요 삭제
+
+// 매물찾아요 게시물 삭제
 router.post('/find_delete', function(req, res) {
   let id = req.body.id;
   let sql = "DELETE FROM find WHERE id = ?";
@@ -180,30 +172,12 @@ router.post('/find_delete', function(req, res) {
     if(err)
       res.status(500).send();
     else  
-      res.status(200).send("매물찾아요 삭제 성공");
+      res.status(200).send("매물찾아요 게시물 삭제 성공");
   })
 })
 
-// 매물찾아요 댓글 등록
-// router.post('/find_comment_post', function(req, res) {
-//   let comment = req.body.content; // 댓글 내용
-//   let find_id = req.body.find_id; // 댓글이 등록되는 게시물의 인덱스
-//   //let response_to = null;  // 상위 댓글의 인덱스
-//   let user_id = req.session.user.id;
-//   let user_name = req.session.user.name;
-//   let post_date = postDate();
 
-//   let sql = "INSERT INTO find_comment (comment, user_id, user_name, post_date, find_id) VALUES (?, ?, ?, ?, ?)";
-//   let params = [comment, user_id, user_name, post_date, find_id];
-//   conn.query(sql, params, function(err, result) {
-//     if(err)
-//       res.status(500).send();
-//     else  
-//       res.status(200).send("매물찾아요 댓글 등록성공");
-//   })
-// })
-
-// 매물찾아요 답글 등록 insert
+// 매물찾아요 댓글,답글 등록 insert
 router.post('/find_response_post', function(req, res) {
   let comment = req.body.content; // 댓글 내용
   let find_id = req.body.find_id; // 댓글이 등록되는 게시물의 인덱스
@@ -221,6 +195,7 @@ router.post('/find_response_post', function(req, res) {
   })
 })
 
+
 // 매물찾아요 답글 수정 edit
 router.post('/find_response_edit', function(req, res) {
   let idx = req.body.idx; // 답글 idx
@@ -234,6 +209,7 @@ router.post('/find_response_edit', function(req, res) {
       res.status(200).send("매물찾아요 답글 수정 성공");
   })
 })
+
 
 //현재 날짜 가져오기
 function postDate() {
