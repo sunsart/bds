@@ -201,6 +201,7 @@ ClassicEditor
 	console.error(error);
 });
 
+
 // 등록 버튼 클릭시
 document.querySelector('#post_btn').addEventListener('click', () => {
   let title = document.querySelector(".input_title").value;
@@ -213,15 +214,15 @@ document.querySelector('#post_btn').addEventListener('click', () => {
     alert("내용을 입력하세요");
   else {
     $.ajax({
-      url : "/find_post",
+      url : "/qna_post",
       type : "POST",
       data : {title:title, content:content},
       success : function(data) {
         alert("등록 되었습니다")
-        window.location.href = '/find_list';
+        window.location.href = '/qna_list';
       },
       error : function(xhr, textStatus, errorThrown) {
-        console.log("매물찾아요 등록실패");
+        console.log("질문답변 게시물 등록실패");
         console.log(xhr, textStatus, errorThrown);
       }
     })

@@ -13,18 +13,18 @@ conn.connect();
 
 //-----------------------------------------//
 
-//매물찾아요 리스트 페이지
-router.get('/find_list', function(req, res) {
+// 질문답변 리스트 페이지
+router.get('/qna_list', function(req, res) {
   let currentPage = req.query.page; // 현재 보여지는 페이지
   if(!currentPage) currentPage = 1; // page 파라미터 값을 넘겨주지 않을 시, 1페이지로 설정
   let postPerPage = 10; // 한 페이지에 보여질 게시물 수
   let btnPerPage = 5;  // 한 페이지에 보여질 페이지 버튼의 개수 
 
   let totalPostCnt = 0; // 전체 게시물 수
-  let sql = "SELECT COUNT(*) AS findCount FROM find";
+  let sql = "SELECT COUNT(*) AS qnaCount FROM qna";
   conn.query(sql, function(err, rows) {
     if(err) throw err;
-    totalPostCnt = rows[0].findCount;
+    totalPostCnt = rows[0].qnaCount;
     console.log("전체 게시물 개수 = " + totalPostCnt);
 
     if(totalPostCnt <= 0)
@@ -51,14 +51,14 @@ router.get('/find_list', function(req, res) {
     // console.log("============================");
     
     //
-    // let sql2 = "SELECT * FROM find ORDER BY id DESC LIMIT ? OFFSET ? ";
+    let sql2 = "SELECT * FROM qna ORDER BY id DESC LIMIT ? OFFSET ? ";
 
-    let sql2 = "SELECT id, title, content, user_id, user_name, post_date, hit, ( \
-                SELECT count(*) \
-                FROM find_comment AS fc \
-                WHERE fc.find_id = f.id) AS commentCount \
-                FROM find AS f \
-                ORDER BY id DESC LIMIT ? OFFSET ? ";
+    // let sql2 = "SELECT id, title, content, user_id, user_name, post_date, hit, ( \
+    //             SELECT count(*) \
+    //             FROM find_comment AS fc \
+    //             WHERE fc.find_id = f.id) AS commentCount \
+    //             FROM find AS f \
+    //             ORDER BY id DESC LIMIT ? OFFSET ? ";
 
     let params = [postPerPage, startPost];
     let data = []; 
@@ -71,7 +71,6 @@ router.get('/find_list', function(req, res) {
           'user_name' : rows[i].user_name,
           'post_date' : rows[i].post_date,
           'hit' : rows[i].hit,
-          'commentCount' : rows[i].commentCount
         };
         data.push(node);
       }
@@ -86,38 +85,38 @@ router.get('/find_list', function(req, res) {
         'isSearchResult' : 'false',
       }
 
-      res.render('find_list.ejs', {paging:paging, data:data, user:req.session.user})
+      res.render('qna_list.ejs', {paging:paging, data:data, user:req.session.user})
     })
   })
 })
 
-// 매물찾아요 게시물등록 페이지
-router.get('/find_write', function(req, res) {
-  res.render('find_write.ejs', {user:req.session.user});
+// 질문답변 게시물등록 페이지
+router.get('/qna_write', function(req, res) {
+  res.render('qna_write.ejs', {user:req.session.user});
 })
 
 
-// 매물찾아요 게시물 등록
-router.post('/find_post', function(req, res) {
+// 질문답변 게시물 등록
+router.post('/qna_post', function(req, res) {
   let title = req.body.title;
   let content = req.body.content;
   let user_id = req.session.user.id;
   let user_name = req.session.user.name;
   let post_date = postDate();
 
-  let sql = "INSERT INTO find (title, content, user_id, user_name, post_date) VALUES (?, ?, ?, ?, ?)";
+  let sql = "INSERT INTO qna (title, content, user_id, user_name, post_date) VALUES (?, ?, ?, ?, ?)";
   let params = [title, content, user_id, user_name, post_date];
   conn.query(sql, params, function(err, result) {
     if(err)
       res.status(500).send();
     else  
-      res.status(200).send("매물찾아요 게시물 등록성공");
+      res.status(200).send("질문답변 게시물 등록성공");
   })
 })
 
 
-// 매물찾아요 게시물 내용보기 페이지
-router.get('/find_detail/:id', async function(req, res) {
+// 질문답변 게시물 내용보기 페이지
+router.get('/qna_detail/:id', async function(req, res) {
   // 조회수 카운트, 쿠키에 저장되어있는 값이 있는지 확인 (없을시 undefined 반환)
   let keyVal = "f_" + req.params.id;
   if (req.cookies[keyVal] == undefined) {
@@ -127,7 +126,7 @@ router.get('/find_detail/:id', async function(req, res) {
       maxAge: 60000
     })
     // 쿠키에 저장값이 없으면 조회수 1 증가
-    let sql = "UPDATE find SET hit=find.hit+1 WHERE id=?";
+    let sql = "UPDATE qna SET hit=qna.hit+1 WHERE id=?";
     let params = [req.params.id];
     conn.query(sql, params, function(err, result) {
       if(err) throw err;
@@ -142,98 +141,18 @@ router.get('/find_detail/:id', async function(req, res) {
   // })
 
   // 쿠키에 client ip 저장값이 있으면 조회수 증가하지 않고, 내용을 보여줌
-  let sql = " SELECT f.id, f.title, f.content, f.user_id, f.user_name, \
-              fc.idx, fc.comment, fc.commenter_id, fc.commenter_name, fc.post_date, fc.find_id, fc.response_to \
-              FROM find AS f LEFT OUTER JOIN find_comment AS fc \
-              ON f.id = fc.find_id \
-              WHERE f.id = ? ";
+  let sql = " SELECT q.id, q.title, q.content, q.user_id, q.user_name, \
+              qc.idx, qc.comment, qc.commenter_id, qc.commenter_name, qc.post_date, qc.qna_id, qc.response_to \
+              FROM qna AS q LEFT OUTER JOIN qna_comment AS qc \
+              ON q.id = qc.qna_id \
+              WHERE q.id = ? ";
   let params = req.params.id;
   conn.query(sql, params, function(err, rows) {
     if(err) throw err;
-    res.render('find_detail.ejs', {data:rows, user:req.session.user});
+    res.render('qna_detail.ejs', {data:rows, user:req.session.user});
   })
 })
 
-
-// 매물찾아요 수정
-router.post('/find_edit', function(req, res) {
-  let id = req.body.id;
-  let title = req.body.title;
-  let content = req.body.content;
-  let post_date = postDate();
-
-  let sql = "UPDATE find SET title=?, content=?, post_date=? WHERE id=?";
-  let params = [title, content, post_date, id]
-  conn.query(sql, params, function(err, result) {
-    if(err)
-      res.status(500).send();
-    else  
-      res.status(200).send("매물찾아요 수정 성공");
-  })
-})
-
-// 매물찾아요 삭제
-router.post('/find_delete', function(req, res) {
-  let id = req.body.id;
-  let sql = "DELETE FROM find WHERE id = ?";
-  conn.query(sql, id, function(err, result) {
-    if(err)
-      res.status(500).send();
-    else  
-      res.status(200).send("매물찾아요 삭제 성공");
-  })
-})
-
-// 매물찾아요 댓글 등록
-// router.post('/find_comment_post', function(req, res) {
-//   let comment = req.body.content; // 댓글 내용
-//   let find_id = req.body.find_id; // 댓글이 등록되는 게시물의 인덱스
-//   //let response_to = null;  // 상위 댓글의 인덱스
-//   let user_id = req.session.user.id;
-//   let user_name = req.session.user.name;
-//   let post_date = postDate();
-
-//   let sql = "INSERT INTO find_comment (comment, user_id, user_name, post_date, find_id) VALUES (?, ?, ?, ?, ?)";
-//   let params = [comment, user_id, user_name, post_date, find_id];
-//   conn.query(sql, params, function(err, result) {
-//     if(err)
-//       res.status(500).send();
-//     else  
-//       res.status(200).send("매물찾아요 댓글 등록성공");
-//   })
-// })
-
-// 매물찾아요 답글 등록 insert
-router.post('/find_response_post', function(req, res) {
-  let comment = req.body.content; // 댓글 내용
-  let find_id = req.body.find_id; // 댓글이 등록되는 게시물의 인덱스
-  let response_to = req.body.response_to;  // 상위 댓글의 인덱스
-  let commenter_id = req.session.user.id;
-  let commenter_name = req.session.user.name;
-  let post_date = postDate();
-  let sql = "INSERT INTO find_comment (comment, commenter_id, commenter_name, post_date, find_id, response_to) VALUES (?, ?, ?, ?, ?, ?)";
-  let params = [comment, commenter_id, commenter_name, post_date, find_id, response_to];
-  conn.query(sql, params, function(err, result) {
-    if(err)
-      res.status(500).send();
-    else  
-      res.status(200).send("매물찾아요 답글 등록성공");
-  })
-})
-
-// 매물찾아요 답글 수정 edit
-router.post('/find_response_edit', function(req, res) {
-  let idx = req.body.idx; // 답글 idx
-  let comment = req.body.content; // 댓글 내용
-  let sql = "UPDATE find_comment SET comment=? WHERE idx=?";
-  let params = [comment, idx]
-  conn.query(sql, params, function(err, result) {
-    if(err)
-      res.status(500).send();
-    else  
-      res.status(200).send("매물찾아요 답글 수정 성공");
-  })
-})
 
 //현재 날짜 가져오기
 function postDate() {
@@ -249,7 +168,6 @@ function getUserIP(req) {
   const addr = req.headers['x-forwarded-for'] || req.connection.remoteAddress
   return addr
 }
-
 
 //router 변수를 외부 노출
 module.exports = router;

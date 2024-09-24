@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
   if(url == "/") {
     document.querySelector("#nav_clause").classList.add("selected");
   }
+  else if (url == "/qna_list") {
+    document.querySelector("#nav_qna").classList.add("selected");
+  }
   else if (url == "/find_list") {
     document.querySelector("#nav_find").classList.add("selected");
   }

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>부동산 도우미 - 매물찾아요 게시판 리스트 페이지</title>
+  <title>부동산 도우미 - 질문답변 게시판 리스트 페이지</title>
   <meta name="description" content="부동산 업무에 종사하는 분들에게 도움을 드립니다">
 
   <!-- 브라우저 css 기본스타일 초기화 -->
@@ -15,7 +15,7 @@
   <!-- css 링크  -->
   <link rel="stylesheet" href="../css/main.css">
   <link rel="stylesheet" href="../css/header.css">
-	<link rel="stylesheet" href="../css/find/find_list.css">
+	<link rel="stylesheet" href="../css/qna/qna_list.css">
 
   <!-- JS 링크 -->
 
@@ -30,11 +30,11 @@
   <div id="contents">
 
     <div class="table_head">
-      <p class="page_title">매물찾아요</p>
-      <p class="page_title_desc">찾고 있는 부동산 매물을 등록하세요</p>
+      <p class="page_title">질문답변</p>
+      <p class="page_title_desc">부동산에 관한 질문&답변</p>
     </div>
 
-    <!-- 매물찾아요 테이블 -->
+    <!-- 질문답변 테이블 -->
     <div class="container">
       <table>
         <thead>
@@ -50,12 +50,11 @@
           <% for(let i=0; i<data.length; i++) { %>
             <tr>
               <% if(data[i].commentCount > 0) { %>
-                <td class="td_title"> <a href="/find_detail/<%= data[i].id %>"><%= data[i].title %> <span id="comment_count">[<%=data[i].commentCount%>]</span></a></td>
+                <td class="td_title"> <a href="/qna_detail/<%= data[i].id %>"><%= data[i].title %> <span id="comment_count">[<%=data[i].commentCount%>]</span></a></td>
               <% } else { %>
-                <td class="td_title"> <a href="/find_detail/<%= data[i].id %>"><%= data[i].title %></a></td>
+                <td class="td_title"> <a href="/qna_detail/<%= data[i].id %>"><%= data[i].title %></a></td>
               <% } %>
 
-              
               <td class="td_center"> <label><%= data[i].user_name %></label> </td>
               <td class="td_center"> <label><%= data[i].post_date %></label> </td>
               <td class="td_center"> <label><%= data[i].hit %></label> </td>
@@ -71,7 +70,7 @@
         <!-- 뒤로가기 버튼 (1보다 작으면 무조건 뒤로가기 생성)-->
         <% if(paging.currentSet > 1) { %>
           <li class="page_arrow">
-            <a href="/find_list/?page=<%=paging.startPage-1%>">
+            <a href="/qna_list/?page=<%=paging.startPage-1%>">
               <span> < </span>
             </a>
           </li>
@@ -91,9 +90,9 @@
             <tr>
               <td>
                 <% if(paging.isSearchResult == 'true') { %>
-                  <li class="page_num"><a class="num" href='/find_search/?page=<%=i%>?search=<%=paging.isSearchQuery%>'><%=i%></a></li>
+                  <li class="page_num"><a class="num" href='/qna_search/?page=<%=i%>?search=<%=paging.isSearchQuery%>'><%=i%></a></li>
                 <% } else { %>
-                  <li class="page_num"><a class="num" href='/find_list/?page=<%=i%>'><%=i%></a></li>
+                  <li class="page_num"><a class="num" href='/qna_list/?page=<%=i%>'><%=i%></a></li>
                 <% } %>   
               </td>
             </tr>
@@ -103,7 +102,7 @@
         <!--앞으로 버튼 (현재 세트가 토탈보다 작으면 생성)-->
         <% if(paging.currentSet < paging.totalSet) { %>
           <li class="page_arrow">
-            <a href="/find_list/?page=<%=paging.endPage+1%>">
+            <a href="/qna_list/?page=<%=paging.endPage+1%>">
               <span> > </span>
             </a>
           </li>
@@ -115,11 +114,11 @@
     
     <div class="list_btns">
       <% if (user) { %>
-        <button class="btn" id="list_btn" style="visibility:visible;" onclick="location.href='/find_list'">목록</button>
-        <button class="btn" id="write_btn" style="visibility:visible;" onclick="location.href='./find_write'">글쓰기</button>
+        <button class="btn" id="list_btn" style="visibility:visible;" onclick="location.href='/qna_list'">목록</button>
+        <button class="btn" id="write_btn" style="visibility:visible;" onclick="location.href='./qna_write'">글쓰기</button>
       <% } else { %>
-        <button class="btn" id="list_btn" style="visibility:visible;" onclick="location.href='/find_list'">목록</button>
-        <button class="btn" id="write_btn" style="visibility:hidden;" onclick="location.href='./find_write'">글쓰기</button>
+        <button class="btn" id="list_btn" style="visibility:visible;" onclick="location.href='/qna_list'">목록</button>
+        <button class="btn" id="write_btn" style="visibility:hidden;" onclick="location.href='./qna_write'">글쓰기</button>
       <% } %>
     </div>
 

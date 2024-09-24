@@ -147,7 +147,7 @@ const editorConfig = {
 			'resizeImage'
 		]
 	},
-	initialData: document.querySelector(".find_content").value,
+	initialData: document.querySelector(".qna_content").value,
 	language: 'ko',
 	link: {
 		addTargetToExternalLinks: true,
@@ -206,7 +206,7 @@ ClassicEditor
 // 수정 버튼 클릭시
 document.querySelector('#edit_btn').addEventListener('click', () => {
 	// 게시물 제목 활성화, 포커스
-	const title = document.querySelector(".find_title");
+	const title = document.querySelector(".qna_title");
 	title.disabled = false;
 	title.focus();
 
@@ -225,18 +225,18 @@ document.querySelector('#edit_btn').addEventListener('click', () => {
 
 // 완료버튼 클릭시
 document.querySelector('#complete_btn').addEventListener('click', () => {
-	let title = document.querySelector(".find_title").value;
-	let id = document.querySelector(".find_no").value;
+	let title = document.querySelector(".qna_title").value;
+	let id = document.querySelector(".qna_no").value;
 	let content = editor.getData();
 	if(title == "")
 		alert("제목을 입력하세요");
-	else if(title.length >= 45) 
+  else if(title.length >= 45) 
 		alert("제목은 45자 이내로 입력해주세요");
 	else if(content == "")
 		alert("내용을 입력하세요");
 	else {
 		$.ajax({
-			url : "/find_edit",
+			url : "/qna_edit",
 			type : "POST",
 			data : {title:title, id:id, content:content},
 			success : function(data) {
@@ -244,7 +244,7 @@ document.querySelector('#complete_btn').addEventListener('click', () => {
 				window.location.reload();
 			},
 			error : function(xhr, textStatus, errorThrown) {
-				console.log("매물찾아요 게시물 수정 실패");
+				console.log("질문답변 게시물 수정 실패");
 				console.log(xhr, textStatus, errorThrown);
 			}
 		})
@@ -254,19 +254,19 @@ document.querySelector('#complete_btn').addEventListener('click', () => {
 
 // 삭제 버튼 클릭시
 document.querySelector('#delete_btn').addEventListener('click', () => {
-	let id = document.querySelector(".find_no").value;
+	let id = document.querySelector(".qna_no").value;
 	let result = confirm("게시글을 삭제할까요?");
 	if(result) {
 		$.ajax({
-			url : "/find_delete",
+			url : "/qna_delete",
 			type : "POST",
 			data : {id:id},
 			success : function() {
 				alert("게시글을 삭제했습니다!");
-				window.location.href = '/find_list';
+				window.location.href = '/qna_list';
 			},
 			error : function(xhr, textStatus, errorThrown) {
-				console.log("매물찾아요 게시물 삭제 실패");
+				console.log("질문답변 게시물 삭제 실패");
 				console.log(xhr, textStatus, errorThrown);
 			}
 		})
@@ -276,13 +276,13 @@ document.querySelector('#delete_btn').addEventListener('click', () => {
 // 댓글 입력창 등록 버튼 클릭시
 document.querySelector('.comment_btn').addEventListener('click', () => {
   let content = document.querySelector(".comment_box").value;	// 댓글 내용
-	let find_id = document.querySelector(".find_no").value;	// 댓글이 등록되는 게시물의 인덱스
+	let find_id = document.querySelector(".qna_no").value;	// 댓글이 등록되는 게시물의 인덱스
 	let response_to = 0;	// 상위 댓글 인덱스 없음
   if(content == "")
     alert("댓글을 입력하세요");
   else {
     $.ajax({
-      url : "/find_response_post",
+      url : "/qna_response_post",
       type : "POST",
       data : {content:content, find_id:find_id, response_to:response_to},
       success : function(data) {
@@ -290,7 +290,7 @@ document.querySelector('.comment_btn').addEventListener('click', () => {
 				window.location.reload();
       },
       error : function(xhr, textStatus, errorThrown) {
-        console.log("매물찾아요 댓글 등록실패");
+        console.log("질문답변 댓글 등록실패");
         console.log(xhr, textStatus, errorThrown);
       }
     })
@@ -300,7 +300,7 @@ document.querySelector('.comment_btn').addEventListener('click', () => {
 // 답글 입력창 등록 버튼 클릭시
 document.querySelector('.response_btn').addEventListener('click', () => {
 	let content = document.querySelector(".response_box").value;	// 답글 내용
-	let find_id = document.querySelector(".find_no").value;	// 댓글이 등록되는 게시물의 인덱스
+	let find_id = document.querySelector(".qna_no").value;	// 댓글이 등록되는 게시물의 인덱스
 	let response_to = document.querySelector(".comment_id").value;	// 최상위 댓글 인덱스
 	let is_edit = document.querySelector("#post_type_edit").value;	// insert or edit
 	let comment_idx = document.querySelector("#edit_comment_idx").value;	// 수정할 답글 인덱스
@@ -309,7 +309,7 @@ document.querySelector('.response_btn').addEventListener('click', () => {
   else {
 		if(is_edit == "true") {
 			$.ajax({
-				url : "/find_response_edit",
+				url : "/qna_response_edit",
 				type : "POST",
 				data : {content:content, idx:comment_idx},
 				success : function(data) {
@@ -317,13 +317,13 @@ document.querySelector('.response_btn').addEventListener('click', () => {
 					window.location.reload();
 				},
 				error : function(xhr, textStatus, errorThrown) {
-					console.log("매물찾아요 답글 수정 실패");
+					console.log("질문답변 답글 수정 실패");
 					console.log(xhr, textStatus, errorThrown);
 				}
 			})
 		} else {
 			$.ajax({
-				url : "/find_response_post",
+				url : "/qna_response_post",
 				type : "POST",
 				data : {content:content, find_id:find_id, response_to:response_to},
 				success : function(data) {
@@ -331,7 +331,7 @@ document.querySelector('.response_btn').addEventListener('click', () => {
 					window.location.reload();
 				},
 				error : function(xhr, textStatus, errorThrown) {
-					console.log("매물찾아요 답글 등록실패");
+					console.log("질문답변 답글 등록실패");
 					console.log(xhr, textStatus, errorThrown);
 				}
 			})
