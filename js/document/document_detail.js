@@ -275,22 +275,26 @@ document.querySelector('#delete_btn').addEventListener('click', () => {
 
 // 첨부파일 다운로드시
 document.querySelector('#original_name').addEventListener('click', () => {
+	let is_login = document.querySelector("#is_login").value;
 	let id = document.querySelector(".document_no").value;
 	let changed_name = document.querySelector("#changed_name").value;
-	$.ajax({
-		url : "/document_download",
-		type : "POST",
-		data : {id:id, changed_name:changed_name},
-		success : function() {
-			alert("첨부파일을 다운로드합니다");
-			window.location.href = '/upload_file/' + changed_name;
-		},
-		error : function(xhr, textStatus, errorThrown) {
-			console.log("서식자료실 게시물 다운로드 실패");
-			console.log(xhr, textStatus, errorThrown);
-		}
-	})
-		
+	if(is_login) {	// 로그인 되어 있으면 다운로드 가능
+		$.ajax({
+			url : "/document_download",
+			type : "POST",
+			data : {id:id, changed_name:changed_name},
+			success : function() {
+				alert("첨부파일을 다운로드합니다");
+				window.location.href = '/upload_file/' + changed_name;
+			},
+			error : function(xhr, textStatus, errorThrown) {
+				console.log("서식자료실 게시물 다운로드 실패");
+				console.log(xhr, textStatus, errorThrown);
+			}
+		})
+	} else {	// 로그인 되어 있지 않으면 다운로드 불가능
+		alert("로그인후 다운로드 가능합니다");
+	}	
 });
 
 

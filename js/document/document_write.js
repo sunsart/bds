@@ -201,6 +201,20 @@ ClassicEditor
 	console.error(error);
 });
 
+
+// 서식자료실 업로드 파일 용량 제한
+document.addEventListener('DOMContentLoaded', function() {
+	var fileInput = document.querySelector(".attach_btn")
+	fileInput.addEventListener('change', function() {
+		var file = fileInput.files[0];
+		if (file.size > 2 * 1024 * 1024) {
+			alert('첨부 파일의 크기는 2mb를 초과할 수 없습니다');
+			fileInput.value = '';
+		}
+	});
+});
+
+
 // 등록 버튼 클릭시
 document.querySelector('#post_btn').addEventListener('click', () => {
   let title = document.querySelector(".input_title").value;

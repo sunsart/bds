@@ -143,5 +143,6 @@ dist
 
 # add to .gitnore
 upload/
+upload_file/
 
 # End of https://www.toptal.com/developers/gitignore/api/node

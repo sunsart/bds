@@ -213,7 +213,7 @@ const upload = multer({
       done(null, changed_name);
     }
   }),
-  limits: {fileSize: 3 * 1024 * 1024} // 3 MB 제한
+  limits: {fileSize: 2 * 1024 * 1024} // 3 MB 제한
 });
 
 const uploadMiddleware = upload.fields([
@@ -223,14 +223,6 @@ const uploadMiddleware = upload.fields([
 ]);
 
 router.post("/document_post", uploadMiddleware, (req, res)=> {
-// router.post("/document_post", upload.single("attachment"), (req, res)=> {
-  // try {
-  //   if(!req.file)
-  //     return res.status(400).json({ 에러 : '파일을 첨부하세요' });
-  // } catch (error) {
-  //     return res.status(400).json({ 에러 : '파일의 크기는 3 MB를 초과할 수 없습니다' });
-  // }
-
   let title = req.body.title;
   let content = req.body.content;
   let user_id = req.session.user.id;
@@ -255,23 +247,25 @@ router.post("/document_post", uploadMiddleware, (req, res)=> {
 // 서식자료실 첨부파일 다운로드
 router.post('/document_download', function(req, res) {
   let id = req.body.id;
-  let changed_name = req.body.changed_name;
 
   // 다운로드수 카운트, 쿠키에 저장되어있는 값이 있는지 확인 (없을시 undefined 반환)
-  let keyVal = "f_" + id;
-  if (req.cookies[keyVal] == undefined) {
+  let keyVal = "doc_" + id;
+
+  if(req.cookies[keyVal] == undefined) {
     res.cookie(keyVal, getUserIP(req), {
       maxAge: 60000 // 유효시간 : 1분  *테스트용 1분 / 출시용 1시간 3600000 
     })
-    // 쿠키에 저장값이 없으면 다운로드수 1 증가
+    // 쿠키에 저장값이 없으면 다운로드 카운트 1 증가
     let sql = "UPDATE document SET download=document.download+1 WHERE id=?";
     let params = [id];
     conn.query(sql, params, function(err, result) {
       if(err)
         res.status(500).send();
       else  
-        res.status(200).send("서식자료실 다운로드수 체크 성공");
+        res.status(200).send("다운로드 카운트 증가");
     })
+  } else {  // 쿠키에 저장값이 있으면 다운로드 카운트 변동없음
+    res.status(200).send("다운로드 카운트 변동없음");
   }
 })
 // ==========================================
