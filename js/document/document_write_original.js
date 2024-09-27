@@ -205,28 +205,17 @@ ClassicEditor
 document.querySelector('#post_btn').addEventListener('click', () => {
   let title = document.querySelector(".input_title").value;
   let content = editor.getData();
-	let attach = document.querySelector(".attach_btn");
   if(title == "")
     alert("제목을 입력하세요");
 	else if(title.length >= 45) 
 		alert("제목은 45자 이내로 입력해주세요");
   else if(content == "")
     alert("내용을 입력하세요");
-	else if(attach.files.length == 0)
-    alert("파일을 첨부하세요");
   else {
-    let formData = new FormData();
-    formData.append("attachment", attach.files[0]);
-		formData.append("title", title);
-		formData.append("content", content);
-
     $.ajax({
       url : "/document_post",
       type : "POST",
-			enctype :"multipart/form-data",
-      data: formData,
-      contentType: false, // 필수 : x-www-form-urlencoded로 파싱되는 것을 방지
-      processData: false,  // 필수: contentType을 false로 줬을 때 QueryString 자동 설정됨. 해제
+      data : {title:title, content:content},
       success : function(data) {
         alert("등록 되었습니다")
         window.location.href = '/document_list';

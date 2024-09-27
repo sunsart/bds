@@ -31,36 +31,36 @@
   </header>
 
   <div id="contents"> 
+
     <div class="table_head">
       <p class="page_title">서식자료실</p>
       <p class="page_title_desc">다양한 부동산 업무 서식을 공유하세요</p>
     </div>
 
-    <form action="" method="POST" enctype="multipart/form-data">
-      <div class="table_title">
-        <input type="text" class="input_title" placeholder="제목을 입력하세요">
-      </div>
-  
-      <div>
-        <div class="main-container">
-          <div class="editor-container editor-container_classic-editor" id="editor-container">
-            <div class="editor-container__editor"><div id="editor"></div></div>
-          </div>
-        </div>
-      </div>
-  
-      <!-- 파일첨부 -->
-      <div class="file_attach">
-        <input type="file" name="attachment" class="attach_btn">
-        <p class="file_limit"> 첨부파일의 크기는 3 mb를 초과할 수 없습니다 </p>
-      </div>
-  
-      <div class="buttons">
-        <input type="button" value="목록" onclick="location.href='/document_list'">
-        <input type="button" id="post_btn" value="등록">
-      </div>
-    </form>
+    <div class="table_title">
+      <input type="text" class="input_title" placeholder="제목을 입력하세요">
+    </div>
 
+    <div>
+			<div class="main-container">
+				<div class="editor-container editor-container_classic-editor" id="editor-container">
+					<div class="editor-container__editor"><div id="editor"></div></div>
+				</div>
+			</div>
+		</div>
+
+    <!-- 파일첨부 -->
+    <div class="file_attach">
+      <input type="file" class="attach_btn">
+      <p class="file_limit"> 첨부파일의 크기는 2 mb를 초과할 수 없습니다 </p>
+      <!-- <span class="file_limit"> *첨부파일의 크기는 2 mb를 초과할 수 없습니다 </span> -->
+    </div>
+
+
+    <div class="buttons">
+      <input type="button" value="목록" onclick="location.href='/document_list'">
+      <input type="button" id="post_btn" value="등록">
+    </div>
   </div> 
 
   <!-- ckeditor5 -->

@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+@media print {
+	body {
+		margin: 0 !important;
+	}
+}
+
+#contents {
+  margin: 0 auto; /* 화면 중앙에 배치 */
+  width: 1000px;  /* 화면 너비 지정 */
+}
+
+
+/* 게시판 제목 */
+.table_head {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  line-height: 30px;
+}
+.page_title {
+  font-size:22px;
+  font-weight: bold;
+}
+.page_title_desc {
+  font-size:14px;
+  color: darkgray;
+}
+
+
+/* 게시물 제목 */
+.title_container {
+  border: 1px solid darkgray;
+  margin-bottom: 10px;
+}
+.document_title {
+  padding: 5px 10px;
+  font-size: 17px;
+  font-weight: bold;
+  width: 100%;
+  box-sizing: border-box;
+  border-style: none;
+  background-color: rgb(242, 242, 242);
+}
+
+
+/* ckeditor5 */
+.main-container {
+	font-family: 'Lato';
+  width: 100%;
+}
+.editor-container_classic-editor .editor-container__editor {
+  min-width: 100%;
+	max-width: 100%;
+}
+.ck-editor__editable { 
+  height: fit-content;
+}
+.ck-content { 
+  font-family: 'Lato';
+	line-height: 1.6;
+	word-break: break-word;
+  font-size: 16px; 
+  height:500px;
+}
+.ck.ck-editor{
+  min-width: 100%;
+  max-width: 100%;
+}
+.ck.ck-content li { 
+  margin-left: 24px; 
+}
+
+
+/* 첨부파일 다운로드 */
+.attach {
+  width: 100%;
+  height: 60px;
+  border: 1px solid darkgray;
+  margin-top: 10px;
+}
+.attach_box {
+  padding-left: 10px;
+  padding-top: 20px;
+}
+#original_name {
+  width: 300px;
+  border: none;
+  color: blue;
+  /* font-weight: bold; */
+  cursor: pointer;
+}
+
+/* 수정,완료,삭제 버튼 */
+.buttons {
+  display: flex;
+  justify-content:space-between;
+}
+input[type=button] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+}
+input[type=button]:hover {
+  background-color: #45a049;
+}
+#edit_btn, #delete_btn, #complete_btn {
+  background-color: darkgoldenrod
+}
+
+
+/* 댓글 리스트 */
+.container_comment_list {
+  width: 100%;
+  margin-top: 20px;
+}
+.comment {
+  width: 100%;
+  height: 90px;
+  border: 1px solid gray;
+  margin-bottom: 10px;
+}
+.comment.off {
+  display: none;
+}
+.comment_name {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  padding-left: 5px;
+  padding-top: 10px;
+}
+.comment_content {
+  font-size: 16px;
+  padding-left: 10px;
+  line-height: 150%;
+  margin-bottom: 5px;
+}
+.comment_date {
+  display: inline;
+  font-size: 14px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  color: darkgray;
+}
+.response_open_btn {
+  font-size: 14px;
+  color: darkgray;
+  padding-left: 10px;
+  cursor: pointer;
+}
+.response_edit_btn {
+  font-size: 14px;
+  color: darkgray;
+  padding-left: 10px;
+  cursor: pointer;
+}
+.re_comment {
+  width: 95%;
+  height: 90px;
+  border: 1px solid gray;
+  margin-left: auto;
+  margin-bottom: 10px;
+}
+.re_comment.off{
+  display: none;
+}
+
+
+/* on/off 되는 답글 입력창 */
+.container_response {
+  width: 95%;
+  height: 120px;
+  border: 1px solid darkgray; 
+  margin-bottom: 20px;
+  margin-left: auto;
+  display: none;
+}
+.container_response.on {
+  display: block;
+  transition: all .5s;
+}
+.response_box {
+  width: 97%;
+  height: 50px;
+  background-color: rgb(241, 241, 241);
+  resize: none;
+  border-style: hidden;
+  font-size: 16px;
+  line-height: 140%;
+  margin-left: 10px;
+}
+.btn_container {
+  width: 97%;
+  margin-left: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+.cancel_btn {
+  font-size: 14px;
+  cursor: pointer;
+  display: inline;
+}
+.response_btn {
+  font-size: 14px;
+  cursor: pointer;
+  display: inline;
+  margin-left: 15px;
+}
+
+
+/* 가장 아래쪽 고정되어 있는 댓글 입력창 */
+.container_comment {
+  width: 100%;
+  height: 120px;
+  border: 1px solid darkgray; 
+  margin: 20px auto;
+}
+.comment_name {
+  margin-left: 10px;
+}
+.comment_box {
+  width: 97%;
+  height: 50px;
+  background-color: rgb(241, 241, 241);
+  resize: none;
+  border-style: hidden;
+  font-size: 16px;
+  line-height: 140%;
+  margin-left: 10px;
+}
+.comment_btn {
+  cursor: pointer;
+  margin-right: 15px;
+}
+.login_btn {
+  cursor: pointer;
+  margin-left: 10px;
+  margin-top: 20px;
+}

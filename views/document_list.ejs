@@ -42,7 +42,7 @@
             <th style="width: 70%;">제목</th>
             <th style="width: 12%;">작성자</th>
             <th style="width: 10%;">작성일</th>
-            <th style="width: 8%;">조회수</th>
+            <th style="width: 8%;">다운로드</th>
           </tr>
         </thead>
 
@@ -57,7 +57,7 @@
               
               <td class="td_center"> <label><%= data[i].user_name %></label> </td>
               <td class="td_center"> <label><%= data[i].post_date %></label> </td>
-              <td class="td_center"> <label><%= data[i].hit %></label> </td>
+              <td class="td_center"> <label><%= data[i].download %></label> </td>
             </tr> 
           <% } %>
         </tbody>
