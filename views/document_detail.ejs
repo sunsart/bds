@@ -53,10 +53,22 @@
     <!-- 첨부파일 다운로드 -->
     <div class="attach">
       <div class="attach_box">
-        <label for="original_name">첨부파일 : </label>
-        <input type="hidden" id="changed_name" value="<%= data[0].changed_name %>">
+        
         <input type="hidden" id="is_login" value="<%= user %>">
-        <input type="text" id="original_name" name="original_name" value="<%= data[0].original_name %>"> 
+        <input type="hidden" id="original_name" value="<%= data[0].original_name %>">
+        <input type="hidden" id="changed_name" value="<%= data[0].changed_name %>">
+
+        <div class="attach_name">
+          <label> 첨부파일 : </label>
+          <span id="attach_file"><%= data[0].original_name %></span>
+          <span class="delete_attach" style="display:none;">삭제</span>
+        </div>
+        
+        <div class="file_attach" style="display: none;">
+          <input type="file" name="attachment" class="attach_btn">
+          <p class="file_limit"> 첨부파일의 크기는 2 mb를 초과할 수 없습니다 </p>
+        </div>
+
       </div>
     </div>
 

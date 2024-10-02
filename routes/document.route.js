@@ -132,22 +132,7 @@ router.get('/document_detail/:id', async function(req, res) {
 })
 
 
-// 서식자료실 게시물 수정
-router.post('/document_edit', function(req, res) {
-  let id = req.body.id;
-  let title = req.body.title;
-  let content = req.body.content;
-  let post_date = postDate();
 
-  let sql = "UPDATE document SET title=?, content=?, post_date=? WHERE id=?";
-  let params = [title, content, post_date, id]
-  conn.query(sql, params, function(err, result) {
-    if(err)
-      res.status(500).send();
-    else  
-      res.status(200).send("서식자료실 게시물 수정 성공");
-  })
-})
 
 
 // 서식자료실 게시물 삭제
@@ -213,11 +198,17 @@ const upload = multer({
       done(null, changed_name);
     }
   }),
-  limits: {fileSize: 2 * 1024 * 1024} // 3 MB 제한
+  limits: {fileSize: 2 * 1024 * 1024} // 2 MB 제한
 });
 
 const uploadMiddleware = upload.fields([
   { name: "attachment" },
+  { name: "title" },
+  { name: "content" }
+]);
+const uploadMiddleware2 = upload.fields([
+  { name: "attachment" },
+  { name: "id" },
   { name: "title" },
   { name: "content" }
 ]);
@@ -236,8 +227,10 @@ router.post("/document_post", uploadMiddleware, (req, res)=> {
             VALUES (?, ?, ?, ?, ?, ?, ?)";
   let params = [title, content, user_id, user_name, post_date, original_name, changed_name];
   conn.query(sql, params, function(err, result) {
-    if(err)
+    if(err) {
       res.status(500).send();
+      console.log(err);
+    }
     else  
       res.status(200).send("서식자료실 게시물등록+파일첨부 성공");
   })
@@ -267,6 +260,42 @@ router.post('/document_download', function(req, res) {
   } else {  // 쿠키에 저장값이 있으면 다운로드 카운트 변동없음
     res.status(200).send("다운로드 카운트 변동없음");
   }
+})
+
+
+// 서식자료실 게시물 수정 + 첨부파일 수정없음
+router.post('/document_edit_without_attach', function(req, res) {
+  let id = req.body.id;
+  let title = req.body.title;
+  let content = req.body.content;
+  let post_date = postDate();
+
+  let sql = "UPDATE document SET title=?, content=?, post_date=? WHERE id=?";
+  let params = [title, content, post_date, id]
+  conn.query(sql, params, function(err, result) {
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send("서식자료실 게시물 without 첨부파일 수정 성공");
+  })
+})
+// 서식자료실 게시물 수정 + 첨부파일 수정함
+router.post("/document_edit_with_attach", uploadMiddleware2, (req, res)=> {
+  let id = req.body.id;
+  let title = req.body.title;
+  let content = req.body.content;
+  let post_date = postDate();
+  let original_name = Buffer.from(req.files['attachment'][0].originalname, "latin1").toString("utf8");
+  let changed_name = req.files['attachment'][0].filename;
+
+  let sql = "UPDATE document SET title=?, content=?, post_date=?, original_name=?, changed_name=? WHERE id=?";
+  let params = [title, content, post_date, original_name, changed_name, id]
+  conn.query(sql, params, function(err, result) {
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send("서식자료실 게시물 with 첨부파일 수정 성공");
+  })
 })
 // ==========================================
 

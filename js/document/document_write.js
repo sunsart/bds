@@ -192,9 +192,7 @@ const editorConfig = {
 };
 
 let editor;
-ClassicEditor
-.create(document.querySelector('#editor'), editorConfig)
-.then(newEditor => {
+ClassicEditor.create(document.querySelector('#editor'), editorConfig).then(newEditor => {
 	editor = newEditor;
 })
 .catch(error => {

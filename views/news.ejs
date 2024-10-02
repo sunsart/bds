@@ -52,6 +52,12 @@
     <!-- news table -->
     <table class="table-news">
       <% for(let i=0; i<data.length; i++) { %>
+
+        <!-- 가져오려는 항목은 페이지당 10개인데 14개가 가져옴. 비어있는 4개는 표시제거 -->
+        <% if(data[i].title == "") { %>
+          <% continue; %>
+        <% } %>
+
         <tr>
           <td style="width: 84%;">
             <a class="table-title" href="<%= data[i].url %>" target="_blank"> 

@@ -81,13 +81,21 @@
 }
 .attach_box {
   padding-left: 10px;
-  padding-top: 20px;
+  padding-top: 10px;
 }
-#original_name {
+.attach_name {
+  padding-top: 10px;
+}
+#attach_file {
   width: 300px;
   border: none;
   color: blue;
-  /* font-weight: bold; */
+  cursor: pointer;
+}
+.delete_attach {
+  border: 1px solid black;
+  padding: 3px 3px;
+  margin-left: 5px;
   cursor: pointer;
 }
 

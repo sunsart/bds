@@ -192,15 +192,26 @@ const editorConfig = {
 };
 
 let editor;
-ClassicEditor
-  .create(document.querySelector('#editor'), editorConfig)
-  .then(newEditor => {
-    editor = newEditor;
-		editor.enableReadOnlyMode('#editor');
-  })
-  .catch(error => {
-    console.error(error);
-  });
+ClassicEditor.create(document.querySelector('#editor'), editorConfig).then(newEditor => {
+  editor = newEditor;
+	editor.enableReadOnlyMode('#editor');
+})
+.catch(error => {
+  console.error(error);
+});
+
+
+// 서식자료실 업로드 파일 용량 제한
+document.addEventListener('DOMContentLoaded', function() {
+	var fileInput = document.querySelector(".attach_btn")
+	fileInput.addEventListener('change', function() {
+		var file = fileInput.files[0];
+		if (file.size > 2 * 1024 * 1024) {
+			alert('첨부 파일의 크기는 2mb를 초과할 수 없습니다');
+			fileInput.value = '';
+		}
+	});
+});
 
 
 // 수정 버튼 클릭시
@@ -213,6 +224,10 @@ document.querySelector('#edit_btn').addEventListener('click', () => {
 	// 게시물 본문 활성화
 	editor.disableReadOnlyMode('#editor');
 
+	// 첨부파일 삭제버튼 활성화
+	let delete_attach = document.querySelector(".delete_attach");
+	delete_attach.style.display = 'inline';
+
 	// 완료버튼 활성화, 수정버튼/삭제버튼 비활성화
 	const complete_btn = document.querySelector("#complete_btn");
 	complete_btn.style.display = 'inline';
@@ -223,31 +238,81 @@ document.querySelector('#edit_btn').addEventListener('click', () => {
 });
 
 
+// 첨부파일 삭제버튼 클릭시
+document.querySelector('.delete_attach').addEventListener('click', () => {
+	// 기존 첨부파일 내용 보이지 않게
+	let attach_name = document.querySelector(".attach_name");
+	attach_name.style.display = 'none';
+
+	// 첨부파일 양식 보이게
+	const file_attach = document.querySelector(".file_attach");
+	file_attach.style.display = 'block';
+});
+
+
 // 완료버튼 클릭시
 document.querySelector('#complete_btn').addEventListener('click', () => {
-	let title = document.querySelector(".document_title").value;
 	let id = document.querySelector(".document_no").value;
+	let title = document.querySelector(".document_title").value;
 	let content = editor.getData();
-	if(title == "")
-		alert("제목을 입력하세요");
-	else if(title.length >= 45) 
-		alert("제목은 45자 이내로 입력해주세요");
-	else if(content == "")
-		alert("내용을 입력하세요");
-	else {
-		$.ajax({
-			url : "/document_edit",
-			type : "POST",
-			data : {title:title, id:id, content:content},
-			success : function(data) {
-				alert("수정했습니다")
-				window.location.reload();
-			},
-			error : function(xhr, textStatus, errorThrown) {
-				console.log("서식자료실 게시물 수정 실패");
-				console.log(xhr, textStatus, errorThrown);
-			}
-		})
+	let attach = document.querySelector(".attach_btn"); 
+
+	if($(".file_attach").css("display")=="block") {	// 기존 첨부파일을 삭제하고 새로 파일을 첨부
+		if(title == "")
+			alert("제목을 입력하세요");
+		else if(title.length >= 45) 
+			alert("제목은 45자 이내로 입력해주세요");
+		else if(content == "")
+			alert("내용을 입력하세요");
+		else if(attach.files.length == 0)
+			alert("파일을 첨부하세요");
+		else {
+			let formData = new FormData();
+			formData.append("attachment", attach.files[0]);
+			formData.append("id", id);
+			formData.append("title", title);
+			formData.append("content", content);
+			$.ajax({
+				url : "/document_edit_with_attach",
+				type : "POST",
+				enctype :"multipart/form-data",
+				data : formData,
+				contentType: false,
+      	processData: false, 
+				success : function(data) {
+					alert("수정했습니다")
+					window.location.reload();
+				},
+				error : function(xhr, textStatus, errorThrown) {
+					console.log(error);
+					console.log("서식자료실 게시물 수정 실패");
+					console.log(xhr, textStatus, errorThrown);
+				}
+			})
+		}
+	} 
+	else {	// 첨부파일은 그대로, 제목과 내용만 수정함
+		if(title == "")
+			alert("제목을 입력하세요");
+		else if(title.length >= 45) 
+			alert("제목은 45자 이내로 입력해주세요");
+		else if(content == "")
+			alert("내용을 입력하세요");
+		else {
+			$.ajax({
+				url : "/document_edit_without_attach",
+				type : "POST",
+				data : {id:id, title:title, content:content},
+				success : function(data) {
+					alert("수정했습니다")
+					window.location.reload();
+				},
+				error : function(xhr, textStatus, errorThrown) {
+					console.log("서식자료실 게시물 수정 실패");
+					console.log(xhr, textStatus, errorThrown);
+				}
+			})
+		}
 	}
 });
 
@@ -274,18 +339,23 @@ document.querySelector('#delete_btn').addEventListener('click', () => {
 });
 
 // 첨부파일 다운로드시
-document.querySelector('#original_name').addEventListener('click', () => {
-	let is_login = document.querySelector("#is_login").value;
+document.querySelector('#attach_file').addEventListener('click', () => {
 	let id = document.querySelector(".document_no").value;
+	let is_login = document.querySelector("#is_login").value;
+	let original_name = document.querySelector("#original_name").value;
 	let changed_name = document.querySelector("#changed_name").value;
 	if(is_login) {	// 로그인 되어 있으면 다운로드 가능
 		$.ajax({
 			url : "/document_download",
 			type : "POST",
-			data : {id:id, changed_name:changed_name},
+			data : {id:id},
 			success : function() {
-				alert("첨부파일을 다운로드합니다");
-				window.location.href = '/upload_file/' + changed_name;
+				const element = document.createElement('a');
+        element.setAttribute('href', '/upload_file/'+ changed_name);
+        element.setAttribute('download', original_name);
+        element.click();
+				element.remove();
+				alert("다운로드를 완료하였습니다");
 			},
 			error : function(xhr, textStatus, errorThrown) {
 				console.log("서식자료실 게시물 다운로드 실패");

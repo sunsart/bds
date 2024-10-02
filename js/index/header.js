@@ -11,12 +11,16 @@ document.addEventListener('DOMContentLoaded', function() {
   else if (url == "/find_list") {
     document.querySelector("#nav_find").classList.add("selected");
   }
-  else if (url == "/bookmark") {
-    document.querySelector("#nav_bookmark").classList.add("selected");
-  }
   else if (url == "/news") {
     document.querySelector("#nav_news").classList.add("selected");
   }
+  else if (url == "/document_list") {
+    document.querySelector("#nav_document").classList.add("selected");
+  }
+  else if (url == "/bookmark") {
+    document.querySelector("#nav_bookmark").classList.add("selected");
+  }
+  
   else if (url == "/calendar") {
     document.querySelector("#nav_calendar").classList.add("selected");
   }
