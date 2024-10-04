@@ -31,6 +31,7 @@ router.post('/login', function(req, res){
         req.session.user = req.body;
         req.session.user.id = result[0].id;     //회원 고유 id 번호
         req.session.user.name = result[0].name; //회원 아이디
+        req.session.user.nickname = result[0].nickname; //회원 별명
         req.session.save(function() {
           res.status(200).send("로그인성공");
         })
@@ -45,31 +46,32 @@ router.post('/login', function(req, res){
 router.post('/signup', function(req, res) {
   let name = req.body.name;
   let pw = sha(req.body.pw);
+  let nickname = req.body.nickname;
   let email = req.body.email;
-  let sql = "SELECT name, email FROM account WHERE name=? OR email=?";
-  conn.query(sql, [name, email], function(err, rows) {
+  let sql = "SELECT name, email, nickname FROM account WHERE name=? OR email=? OR nickname=?";
+  conn.query(sql, [name, email, nickname], function(err, rows) {
     if(err)
       res.status(500).send();
     else {
       if(rows.length == 0) { // 아이디 중복 없음
-        let sql = "INSERT INTO account (name, pw, email, date) VALUES (?, ?, ?, curdate())";
-        let params = [name, pw, email];
+        let sql = "INSERT INTO account (name, pw, nickname, email, date) VALUES (?, ?, ?, ?, curdate())";
+        let params = [name, pw, nickname, email];
         conn.query(sql, params, function(err, result) {
           if(err) {
             res.status(500).send();
           } else {
-            let bags = [];
-            bags[0] = "가입성공";
-            bags[1] = result.insertId;
-            res.status(200).send(bags);
+            let bag = [];
+            bag[0] = "가입성공";
+            bag[1] = result.insertId;
+            res.status(200).send(bag);
           }
         })
       } 
       else {
-        let bags = [];
-        bags[0] = "가입실패";
-        bags[1] = "";
-        res.status(200).send(bags);
+        let bag = [];
+        bag[0] = "가입실패";
+        bag[1] = "";
+        res.status(200).send(bag);
       }
     }
   })

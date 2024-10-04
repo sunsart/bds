@@ -50,7 +50,7 @@ router.get('/qna_list', function(req, res) {
     // console.log("현재 페이지의 시작 게시글 번호 = " + startPost);
     // console.log("============================");
     
-    let sql2 = "SELECT id, title, content, user_id, user_name, post_date, hit, ( \
+    let sql2 = "SELECT id, title, content, user_id, user_nickname, post_date, hit, ( \
                 SELECT count(*) \
                 FROM qna_comment AS qc \
                 WHERE qc.qna_id = q.id) AS commentCount \
@@ -65,7 +65,7 @@ router.get('/qna_list', function(req, res) {
         let node = {
           'id' : rows[i].id,
           'title' : rows[i].title,
-          'user_name' : rows[i].user_name,
+          'user_nickname' : rows[i].user_nickname,
           'post_date' : rows[i].post_date,
           'hit' : rows[i].hit,
           'commentCount' : rows[i].commentCount
@@ -100,11 +100,11 @@ router.post('/qna_post', function(req, res) {
   let title = req.body.title;
   let content = req.body.content;
   let user_id = req.session.user.id;
-  let user_name = req.session.user.name;
+  let user_nickname = req.session.user.nickname;
   let post_date = postDate();
 
-  let sql = "INSERT INTO qna (title, content, user_id, user_name, post_date) VALUES (?, ?, ?, ?, ?)";
-  let params = [title, content, user_id, user_name, post_date];
+  let sql = "INSERT INTO qna (title, content, user_id, user_nickname, post_date) VALUES (?, ?, ?, ?, ?)";
+  let params = [title, content, user_id, user_nickname, post_date];
   conn.query(sql, params, function(err, result) {
     if(err)
       res.status(500).send();
@@ -117,7 +117,7 @@ router.post('/qna_post', function(req, res) {
 // 질문답변 게시물 내용보기 페이지
 router.get('/qna_detail/:id', async function(req, res) {
   // 조회수 카운트, 쿠키에 저장되어있는 값이 있는지 확인 (없을시 undefined 반환)
-  let keyVal = "f_" + req.params.id;
+  let keyVal = "q_" + req.params.id;
   if (req.cookies[keyVal] == undefined) {
     // key, value, 옵션을 설정해준다.
     res.cookie(keyVal, getUserIP(req), {
@@ -133,8 +133,8 @@ router.get('/qna_detail/:id', async function(req, res) {
   }
 
   // 쿠키에 client ip 저장값이 있으면 조회수 증가하지 않고, 내용을 보여줌
-  let sql = " SELECT q.id, q.title, q.content, q.user_id, q.user_name, \
-              qc.idx, qc.comment, qc.commenter_id, qc.commenter_name, qc.post_date, qc.qna_id, qc.response_to \
+  let sql = " SELECT q.id, q.title, q.content, q.user_id, q.user_nickname, \
+              qc.idx, qc.comment, qc.commenter_id, qc.commenter_nickname, qc.post_date, qc.qna_id, qc.response_to \
               FROM qna AS q LEFT OUTER JOIN qna_comment AS qc \
               ON q.id = qc.qna_id \
               WHERE q.id = ? ";
@@ -183,10 +183,10 @@ router.post('/qna_response_post', function(req, res) {
   let qna_id = req.body.qna_id; // 댓글이 등록되는 게시물의 인덱스
   let response_to = req.body.response_to;  // 상위 댓글의 인덱스
   let commenter_id = req.session.user.id;
-  let commenter_name = req.session.user.name;
+  let commenter_nickname = req.session.user.nickname;
   let post_date = postDate();
-  let sql = "INSERT INTO qna_comment (comment, commenter_id, commenter_name, post_date, qna_id, response_to) VALUES (?, ?, ?, ?, ?, ?)";
-  let params = [comment, commenter_id, commenter_name, post_date, qna_id, response_to];
+  let sql = "INSERT INTO qna_comment (comment, commenter_id, commenter_nickname, post_date, qna_id, response_to) VALUES (?, ?, ?, ?, ?, ?)";
+  let params = [comment, commenter_id, commenter_nickname, post_date, qna_id, response_to];
   conn.query(sql, params, function(err, result) {
     if(err)
       res.status(500).send();
@@ -207,6 +207,19 @@ router.post('/qna_response_edit', function(req, res) {
       res.status(500).send();
     else  
       res.status(200).send("질문답변 답글 수정 성공");
+  })
+})
+
+
+// 질문답변 댓글&답글 삭제
+router.post('/qna_comment_delete', function(req, res) {
+  let idx = req.body.idx;
+  let sql = "DELETE FROM qna_comment WHERE idx = ?";
+  conn.query(sql, idx, function(err, result) {
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send("질문답변 댓글답글 삭제 성공");
   })
 })
 

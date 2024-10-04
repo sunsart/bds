@@ -88,29 +88,6 @@ app.get('/bookmark', function(req, res) {
 })
 
 
-//==========
-// let imageName = '';
-// const storage = multer.diskStorage({
-//   destination: path.resolve(__dirname, 'upload/'),
-//   filename: function(req, file, done){
-//     const ext = path.extname(file.originalname); // 확장자명 : hwp
-//     const baseName = path.basename(file.originalname, ext);  // 파일명 : 정산양식
-//     let changed_name = baseName + "_" + Date.now() + ext; // 정산양식_2324343.hwp  
-//     imageName = Buffer.from(changed_name, "latin1").toString("utf8");      
-//     done(null, imageName);
-//   }
-// });
-// const upload = multer({storage: storage}).single('upload');
-
-// app.post('/upload', (req, res) => {
-//   upload(req, res, (err) => {
-//     if (err) return res.json({error:{message:"2MB image upload failed ~~!"}});
-//     res.json({
-//       url: `http://localhost:8080/upload/${imageName}`,
-//     });
-//   });
-// });
-
 let imageName = '';
 const storage = multer.diskStorage({
   destination: path.resolve(__dirname, 'upload/'),

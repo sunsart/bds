@@ -50,7 +50,7 @@ router.get('/find_list', function(req, res) {
     // console.log("현재 페이지의 시작 게시글 번호 = " + startPost);
     // console.log("============================");
     
-    let sql2 = "SELECT id, title, content, user_id, user_name, post_date, hit, ( \
+    let sql2 = "SELECT id, title, content, user_id, user_nickname, post_date, hit, ( \
                 SELECT count(*) \
                 FROM find_comment AS fc \
                 WHERE fc.find_id = f.id) AS commentCount \
@@ -65,7 +65,7 @@ router.get('/find_list', function(req, res) {
         let node = {
           'id' : rows[i].id,
           'title' : rows[i].title,
-          'user_name' : rows[i].user_name,
+          'user_nickname' : rows[i].user_nickname,
           'post_date' : rows[i].post_date,
           'hit' : rows[i].hit,
           'commentCount' : rows[i].commentCount
@@ -100,11 +100,11 @@ router.post('/find_post', function(req, res) {
   let title = req.body.title;
   let content = req.body.content;
   let user_id = req.session.user.id;
-  let user_name = req.session.user.name;
+  let user_nickname = req.session.user.nickname;
   let post_date = postDate();
 
-  let sql = "INSERT INTO find (title, content, user_id, user_name, post_date) VALUES (?, ?, ?, ?, ?)";
-  let params = [title, content, user_id, user_name, post_date];
+  let sql = "INSERT INTO find (title, content, user_id, user_nickname, post_date) VALUES (?, ?, ?, ?, ?)";
+  let params = [title, content, user_id, user_nickname, post_date];
   conn.query(sql, params, function(err, result) {
     if(err)
       res.status(500).send();
@@ -133,8 +133,8 @@ router.get('/find_detail/:id', async function(req, res) {
   }
 
   // 쿠키에 client ip 저장값이 있으면 조회수 증가하지 않고, 내용을 보여줌
-  let sql = " SELECT f.id, f.title, f.content, f.user_id, f.user_name, \
-              fc.idx, fc.comment, fc.commenter_id, fc.commenter_name, fc.post_date, fc.find_id, fc.response_to \
+  let sql = " SELECT f.id, f.title, f.content, f.user_id, f.user_nickname, \
+              fc.idx, fc.comment, fc.commenter_id, fc.commenter_nickname, fc.post_date, fc.find_id, fc.response_to \
               FROM find AS f LEFT OUTER JOIN find_comment AS fc \
               ON f.id = fc.find_id \
               WHERE f.id = ? ";
@@ -183,10 +183,10 @@ router.post('/find_response_post', function(req, res) {
   let find_id = req.body.find_id; // 댓글이 등록되는 게시물의 인덱스
   let response_to = req.body.response_to;  // 상위 댓글의 인덱스
   let commenter_id = req.session.user.id;
-  let commenter_name = req.session.user.name;
+  let commenter_nickname = req.session.user.nickname;
   let post_date = postDate();
-  let sql = "INSERT INTO find_comment (comment, commenter_id, commenter_name, post_date, find_id, response_to) VALUES (?, ?, ?, ?, ?, ?)";
-  let params = [comment, commenter_id, commenter_name, post_date, find_id, response_to];
+  let sql = "INSERT INTO find_comment (comment, commenter_id, commenter_nickname, post_date, find_id, response_to) VALUES (?, ?, ?, ?, ?, ?)";
+  let params = [comment, commenter_id, commenter_nickname, post_date, find_id, response_to];
   conn.query(sql, params, function(err, result) {
     if(err)
       res.status(500).send();
@@ -207,6 +207,19 @@ router.post('/find_response_edit', function(req, res) {
       res.status(500).send();
     else  
       res.status(200).send("매물찾아요 답글 수정 성공");
+  })
+})
+
+
+// 질문답변 댓글&답글 삭제
+router.post('/find_comment_delete', function(req, res) {
+  let idx = req.body.idx;
+  let sql = "DELETE FROM find_comment WHERE idx = ?";
+  conn.query(sql, idx, function(err, result) {
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send("매물찾아요 댓글답글 삭제 성공");
   })
 })
 

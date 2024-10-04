@@ -192,15 +192,12 @@ const editorConfig = {
 };
 
 let editor;
-ClassicEditor
-  .create(document.querySelector('#editor'), editorConfig)
-  .then(newEditor => {
-    editor = newEditor;
-		editor.enableReadOnlyMode('#editor');
-  })
-  .catch(error => {
-    console.error(error);
-  });
+ClassicEditor.create(document.querySelector('#editor'), editorConfig).then(newEditor => {
+  editor = newEditor;
+	editor.enableReadOnlyMode('#editor');
+}).catch(error => {
+  console.error(error);
+});
 
 
 // 수정 버튼 클릭시
@@ -252,7 +249,7 @@ document.querySelector('#complete_btn').addEventListener('click', () => {
 });
 
 
-// 삭제 버튼 클릭시
+// 게시물 삭제 버튼 클릭시
 document.querySelector('#delete_btn').addEventListener('click', () => {
 	let id = document.querySelector(".qna_no").value;
 	let result = confirm("게시글을 삭제할까요?");
@@ -280,6 +277,8 @@ document.querySelector('.comment_btn').addEventListener('click', () => {
 	let response_to = 0;	// 상위 댓글 인덱스 없음
   if(content == "")
     alert("댓글을 입력하세요");
+	else if(content.length >= 500)
+		alert("댓글은 500자 이내로 입력해주세요");
   else {
     $.ajax({
       url : "/qna_response_post",
@@ -297,7 +296,7 @@ document.querySelector('.comment_btn').addEventListener('click', () => {
   }
 });
 
-// 답글 입력창 등록 버튼 클릭시
+// 답글 입력창 등록 버튼 클릭시 post or edit
 document.querySelector('.response_btn').addEventListener('click', () => {
 	let content = document.querySelector(".response_box").value;	// 답글 내용
 	let qna_id = document.querySelector(".qna_no").value;	// 댓글이 등록되는 게시물의 인덱스
@@ -306,6 +305,8 @@ document.querySelector('.response_btn').addEventListener('click', () => {
 	let comment_idx = document.querySelector("#edit_comment_idx").value;	// 수정할 답글 인덱스
   if(content == "")
     alert("답글을 입력하세요");
+	else if(content.length >= 500)
+		alert("답글은 500자 이내로 입력해주세요");
   else {
 		if(is_edit == "true") {
 			$.ajax({
@@ -338,10 +339,12 @@ document.querySelector('.response_btn').addEventListener('click', () => {
 		}
   }
 });
+	
 
 // 페이지 로드 후 작업
+// 수정, 삭제버튼이 다수 존재하기 때문에
 document.addEventListener('DOMContentLoaded', function() {
-	// 답글쓰기 버튼 클릭시
+	// 1.답글쓰기 버튼 클릭시 --> 답글창 on
 	const btns = document.querySelectorAll(".response_open_btn");
 	btns.forEach(btn => { 
     btn.addEventListener('click', () => {
@@ -362,7 +365,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		})
 	});
 
-	// 취소버튼 클릭시 답글 입력창 off
+	// 2.취소버튼 클릭시 답글 --> 답글창 off
 	const cancel = document.querySelector(".cancel_btn");
 	cancel.addEventListener('click', () => {
 		// 수정할 답글을 보이게 함
@@ -371,7 +374,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		cancel.parentElement.parentElement.classList.remove("on");
 	})
 
-	// 댓글&답글 수정 버튼 클릭시
+	// 3. 댓글&답글 수정 버튼 클릭시 --> 답글창 on
 	const edit_btns = document.querySelectorAll(".response_edit_btn");
 	edit_btns.forEach(btn => { 
     btn.addEventListener('click', () => {
@@ -403,5 +406,43 @@ document.addEventListener('DOMContentLoaded', function() {
 			eidt_comment.classList.add("off");
 		})
 	});
-	
+
+	// 4. 댓글&답글 삭제 index
+	const delete_btns = document.querySelectorAll(".response_delete_btn");
+	delete_btns.forEach(btn => { 
+		// 삭제할 답글의 idx 가져오기
+		const idx = btn.previousElementSibling
+										.previousElementSibling
+										.previousElementSibling
+										.previousElementSibling
+										.previousElementSibling
+										.previousElementSibling.value;
+		btn.nextElementSibling.value = idx;
+		// console.log("idx =" + idx); 현재 삭제버튼들의 각자 삭제용 comment index
+	});
 });
+
+// 댓글&답글 삭제버튼 클릭시
+const delete_btns = document.querySelectorAll(".response_delete_btn");
+for(let i=0; i<delete_btns.length; i++) {
+	delete_btns[i].addEventListener('click', function() {
+		let result = confirm("댓글을 삭제할까요?");
+		let idx = delete_btns[i].nextElementSibling.value;
+		// console.log("clicked idx = " + idx);
+		if(result) {
+			$.ajax({
+				url : "/qna_comment_delete",
+				type : "POST",
+				data : {idx:idx},
+				success : function() {
+					alert("댓글을 삭제했습니다!");
+					window.location.reload();
+				},
+				error : function(xhr, textStatus, errorThrown) {
+					console.log("질문답변 댓글답글 삭제 실패");
+					console.log(xhr, textStatus, errorThrown);
+				}
+			})
+		}
+	});
+}

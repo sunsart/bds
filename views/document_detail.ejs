@@ -53,7 +53,7 @@
     <!-- 첨부파일 다운로드 -->
     <div class="attach">
       <div class="attach_box">
-        
+
         <input type="hidden" id="is_login" value="<%= user %>">
         <input type="hidden" id="original_name" value="<%= data[0].original_name %>">
         <input type="hidden" id="changed_name" value="<%= data[0].changed_name %>">
@@ -98,13 +98,15 @@
             <div class="comment">
               <input type="hidden" class="response_to" value="<%= data[i].response_to %>">
               <input type="hidden" class="comment_id" value="<%= data[i].idx %>">
-              <p class="comment_name"> <%= data[i].commenter_name %> </p>
+              <p class="comment_name"> <%= data[i].commenter_nickname %> </p>
               <p class="comment_content"> <%= data[i].comment %> </p>
               <p class="comment_date"> <%= data[i].post_date %> </p>
               <% if(user) { %>
                 <span class="response_open_btn">답글쓰기</span>
                 <% if(user.id == data[i].commenter_id) { %>
                   <span class="response_edit_btn">수정</span>
+                  <span class="response_delete_btn">삭제</span>
+                  <input type="hidden" id="delete_comment_idx" value="">  <!-- 삭제할 comment 인덱스 -->
                 <% } %>
               <% } %>
             </div>
@@ -116,13 +118,15 @@
               <div class="re_comment">
                 <input type="hidden" class="response_to" value="<%= data[j].response_to %>">
                 <input type="hidden" class="re_comment_id" value="<%= data[j].idx %>">
-                <p class="comment_name"> <%= data[j].commenter_name %> </p>
+                <p class="comment_name"> <%= data[j].commenter_nickname %> </p>
                 <p class="comment_content"> <%= data[j].comment %> </p>
                 <p class="comment_date"> <%= data[j].post_date %> </p>
                 <% if(user) { %>
                   <span class="response_open_btn">답글쓰기</span>
                   <% if(user.id == data[j].commenter_id) { %>
                     <span class="response_edit_btn">수정</span>
+                    <span class="response_delete_btn">삭제</span>
+                    <input type="hidden" id="delete_comment_idx" value="">  <!-- 삭제할 comment 인덱스 -->
                   <% } %>
                 <% } %>
               </div>
@@ -137,11 +141,11 @@
     <!-- on/off 되는 답글 입력창 -->
     <div class="container_response">
       <% if(user) { %>
-        <p class="comment_name"><%= user.name %></p>
+        <p class="comment_name"><%= user.nickname %></p>
       <% } %>
       <textarea class="response_box" placeholder="답글을 남겨보세요."></textarea>
       <input type="hidden" id="post_type_edit" value="false">
-      <input type="hidden" id="edit_comment_idx" value="">
+      <input type="hidden" id="edit_comment_idx" value=""> <!-- 수정할 comment 인덱스 --> 
       <div class="btn_container">
         <p class="cancel_btn">취소</p>
         <p class="response_btn">등록</p>
@@ -151,7 +155,7 @@
     <!-- 가장 아래쪽 고정되어 있는 댓글 입력창 -->
       <% if(user) { %>
         <div class="container_comment">
-          <p class="comment_name"><%= user.name %></p>
+          <p class="comment_name"><%= user.nickname %></p>
           <textarea class="comment_box" placeholder="댓글을 남겨보세요."></textarea>
           <p class="comment_btn" align='right'>등록</p>
         </div>

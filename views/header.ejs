@@ -15,7 +15,7 @@
       <li class="space_line"><a href="#">|</a></li>
 
       <% if (user) { %>
-        <li><a href="/logout"><%= user.name %> 님, 환영합니다 [로그아웃]</a></li>
+        <li><strong><%= user.nickname %></strong> 님, 환영합니다 <a href="/logout"> [로그아웃]</a></li>
       <% } else { %>
         <li><a href="/login">로그인</a></li>
       <% } %>

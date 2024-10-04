@@ -55,7 +55,7 @@ router.get('/document_list', function(req, res) {
     // console.log("현재 페이지의 시작 게시글 번호 = " + startPost);
     // console.log("============================");
     
-    let sql2 = "SELECT id, title, content, user_id, user_name, post_date, download, ( \
+    let sql2 = "SELECT id, title, content, user_id, user_nickname, post_date, download, ( \
                 SELECT count(*) \
                 FROM document_comment AS dc \
                 WHERE dc.document_id = d.id) AS commentCount \
@@ -70,7 +70,7 @@ router.get('/document_list', function(req, res) {
         let node = {
           'id' : rows[i].id,
           'title' : rows[i].title,
-          'user_name' : rows[i].user_name,
+          'user_nickname' : rows[i].user_nickname,
           'post_date' : rows[i].post_date,
           'download' : rows[i].download,
           'commentCount' : rows[i].commentCount
@@ -102,25 +102,9 @@ router.get('/document_write', function(req, res) {
 
 // 서식자료실 게시물 내용보기 페이지
 router.get('/document_detail/:id', async function(req, res) {
-  // 조회수 카운트, 쿠키에 저장되어있는 값이 있는지 확인 (없을시 undefined 반환)
-  // let keyVal = "f_" + req.params.id;
-  // if (req.cookies[keyVal] == undefined) {
-  //   // key, value, 옵션을 설정해준다.
-  //   res.cookie(keyVal, getUserIP(req), {
-  //     // 유효시간 : 1분  **테스트용 1분 / 출시용 1시간 3600000  
-  //     maxAge: 60000
-  //   })
-  //   // 쿠키에 저장값이 없으면 조회수 1 증가
-  //   let sql = "UPDATE document SET hit=document.hit+1 WHERE id=?";
-  //   let params = [req.params.id];
-  //   conn.query(sql, params, function(err, result) {
-  //     if(err) throw err;
-  //   })
-  // }
-
-  // 쿠키에 client ip 저장값이 있으면 조회수 증가하지 않고, 내용을 보여줌
-  let sql = " SELECT d.id, d.title, d.content, d.user_id, d.user_name, d.original_name, d.changed_name, \
-              dc.idx, dc.comment, dc.commenter_id, dc.commenter_name, dc.post_date, dc.document_id, dc.response_to \
+  // 서식자료실 조회수 -> 다운수
+  let sql = " SELECT d.id, d.title, d.content, d.user_id, d.user_nickname, d.original_name, d.changed_name, \
+              dc.idx, dc.comment, dc.commenter_id, dc.commenter_nickname, dc.post_date, dc.document_id, dc.response_to \
               FROM document AS d LEFT OUTER JOIN document_comment AS dc \
               ON d.id = dc.document_id \
               WHERE d.id = ? ";
@@ -130,9 +114,6 @@ router.get('/document_detail/:id', async function(req, res) {
     res.render('document_detail.ejs', {data:rows, user:req.session.user});
   })
 })
-
-
-
 
 
 // 서식자료실 게시물 삭제
@@ -154,10 +135,10 @@ router.post('/document_response_post', function(req, res) {
   let document_id = req.body.document_id; // 댓글이 등록되는 게시물의 인덱스
   let response_to = req.body.response_to;  // 상위 댓글의 인덱스
   let commenter_id = req.session.user.id;
-  let commenter_name = req.session.user.name;
+  let commenter_nickname = req.session.user.nickname;
   let post_date = postDate();
-  let sql = "INSERT INTO document_comment (comment, commenter_id, commenter_name, post_date, document_id, response_to) VALUES (?, ?, ?, ?, ?, ?)";
-  let params = [comment, commenter_id, commenter_name, post_date, document_id, response_to];
+  let sql = "INSERT INTO document_comment (comment, commenter_id, commenter_nickname, post_date, document_id, response_to) VALUES (?, ?, ?, ?, ?, ?)";
+  let params = [comment, commenter_id, commenter_nickname, post_date, document_id, response_to];
   conn.query(sql, params, function(err, result) {
     if(err)
       res.status(500).send();
@@ -181,6 +162,18 @@ router.post('/document_response_edit', function(req, res) {
   })
 })
 
+
+// 질문답변 댓글&답글 삭제
+router.post('/document_comment_delete', function(req, res) {
+  let idx = req.body.idx;
+  let sql = "DELETE FROM document_comment WHERE idx = ?";
+  conn.query(sql, idx, function(err, result) {
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send("서식자료실 댓글답글 삭제 성공");
+  })
+})
 
 
 // ========== 서식자료실 게시물 등록 ==========
@@ -217,22 +210,22 @@ router.post("/document_post", uploadMiddleware, (req, res)=> {
   let title = req.body.title;
   let content = req.body.content;
   let user_id = req.session.user.id;
-  let user_name = req.session.user.name;
+  let user_nickname = req.session.user.nickname;
   let post_date = postDate();
   let original_name = Buffer.from(req.files['attachment'][0].originalname, "latin1").toString("utf8");
   let changed_name = req.files['attachment'][0].filename;
 
   let sql = "INSERT INTO document \
-            (title, content, user_id, user_name, post_date, original_name, changed_name) \
+            (title, content, user_id, user_nickname, post_date, original_name, changed_name) \
             VALUES (?, ?, ?, ?, ?, ?, ?)";
-  let params = [title, content, user_id, user_name, post_date, original_name, changed_name];
+  let params = [title, content, user_id, user_nickname, post_date, original_name, changed_name];
   conn.query(sql, params, function(err, result) {
     if(err) {
       res.status(500).send();
       console.log(err);
     }
     else  
-      res.status(200).send("서식자료실 게시물등록+파일첨부 성공");
+      res.status(200).send("서식자료실 게시물등록 + 파일첨부 성공");
   })
 })
 
@@ -242,8 +235,7 @@ router.post('/document_download', function(req, res) {
   let id = req.body.id;
 
   // 다운로드수 카운트, 쿠키에 저장되어있는 값이 있는지 확인 (없을시 undefined 반환)
-  let keyVal = "doc_" + id;
-
+  let keyVal = "d_" + id;
   if(req.cookies[keyVal] == undefined) {
     res.cookie(keyVal, getUserIP(req), {
       maxAge: 60000 // 유효시간 : 1분  *테스트용 1분 / 출시용 1시간 3600000 
@@ -271,7 +263,7 @@ router.post('/document_edit_without_attach', function(req, res) {
   let post_date = postDate();
 
   let sql = "UPDATE document SET title=?, content=?, post_date=? WHERE id=?";
-  let params = [title, content, post_date, id]
+  let params = [title, content, post_date, id];
   conn.query(sql, params, function(err, result) {
     if(err)
       res.status(500).send();

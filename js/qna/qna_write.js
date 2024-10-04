@@ -169,7 +169,7 @@ const editorConfig = {
 			reversed: true
 		}
 	},
-	placeholder: '    아래와 같은 게시물은 알림없이 삭제하니 주의바랍니다\n - 게시판 성격과 맞지 않는 내용\n - 광고/홍보성 내용\n - 비방, 욕설, 정치글',
+	placeholder: '아래와 같은 게시물은 알림없이 삭제하니 주의바랍니다\n-게시판 성격과 맞지 않는 내용\n-광고/홍보성 내용\n-비방, 욕설, 정치글',
 	table: {
 		contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
 	},
@@ -192,12 +192,9 @@ const editorConfig = {
 };
 
 let editor;
-ClassicEditor
-.create(document.querySelector('#editor'), editorConfig)
-.then(newEditor => {
+ClassicEditor.create(document.querySelector('#editor'), editorConfig).then(newEditor => {
 	editor = newEditor;
-})
-.catch(error => {
+}).catch(error => {
 	console.error(error);
 });
 

@@ -2,6 +2,7 @@ function checkSignup() {
   let name = document.querySelector("#name").value;
   let pw1 = document.querySelector("#pw1").value;
   let pw2 = document.querySelector("#pw2").value;
+  let nickname = document.querySelector("#nickname").value;
   let email = document.querySelector("#email").value;
   let terms = document.querySelector("#terms");
 
@@ -13,6 +14,8 @@ function checkSignup() {
     alert("비밀번호는 6글자 이상 입력해주세요");
   else if (pw1 != pw2)
     alert("비밀번호가 서로 일치하지 않습니다");
+  else if (nickname.length < 2 || nickname.length >= 10)
+    alert("별명은 2글자 ~ 10글자 이내로 입력해주세요");
   else if (email == "")
     alert("이메일주소를 입력해주세요");
   else if (pattern.test(email) === false) 
@@ -23,17 +26,17 @@ function checkSignup() {
     $.ajax({
       url : "/signup",
       type : "POST",
-      data : {name:name, pw:pw1, email:email},
+      data : {name:name, pw:pw1, nickname:nickname, email:email},
       success : function(data) {
         if(data[0] == "가입실패") 
-          alert("아이디, 이메일주소가 이미 존재합니다");
+          alert("아이디, 이메일주소, 별명이 이미 존재합니다");
         else if(data[0] == "가입성공") {
           alert("정상적으로 회원가입 되었습니다.");
           window.location.href = '/login';
         }
       },
       error : function(xhr, textStatus, errorThrown) {
-        console.log("signup 실패, 서버에러");
+        console.log("회원가입 실패");
         console.log(xhr, textStatus, errorThrown);
       }
     })
