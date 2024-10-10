@@ -71,6 +71,9 @@ th {
   color: blue;
   font-weight: bold;
 }
+.page_num a.deactive {
+  color: black;
+}
 .page_arrow {
   display: inline;
 }

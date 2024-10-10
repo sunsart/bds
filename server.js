@@ -52,6 +52,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 // 뷰엔진 설정, 동적인 결과를 정적인 파일에 담기 위해
 app.set('view engine', 'ejs');
+//app.set("views", path.join(__dirname, "views"));
 
 // 서버가 정적파일을 제공하도록 하기 위한 설정
 app.use(express.static(__dirname + ''));

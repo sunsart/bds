@@ -134,7 +134,7 @@ router.get('/find_detail/:id', async function(req, res) {
 
   // 쿠키에 client ip 저장값이 있으면 조회수 증가하지 않고, 내용을 보여줌
   let sql = " SELECT f.id, f.title, f.content, f.user_id, f.user_nickname, \
-              fc.idx, fc.comment, fc.commenter_id, fc.commenter_nickname, fc.post_date, fc.find_id, fc.response_to \
+              fc.idx, fc.comment, fc.commenter_id, fc.commenter_nickname, fc.post_date, fc.find_id, fc.response_to, fc.deleted \
               FROM find AS f LEFT OUTER JOIN find_comment AS fc \
               ON f.id = fc.find_id \
               WHERE f.id = ? ";
@@ -185,8 +185,9 @@ router.post('/find_response_post', function(req, res) {
   let commenter_id = req.session.user.id;
   let commenter_nickname = req.session.user.nickname;
   let post_date = postDate();
-  let sql = "INSERT INTO find_comment (comment, commenter_id, commenter_nickname, post_date, find_id, response_to) VALUES (?, ?, ?, ?, ?, ?)";
-  let params = [comment, commenter_id, commenter_nickname, post_date, find_id, response_to];
+  let deleted = 0;
+  let sql = "INSERT INTO find_comment (comment, commenter_id, commenter_nickname, post_date, find_id, response_to, deleted) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  let params = [comment, commenter_id, commenter_nickname, post_date, find_id, response_to, deleted];
   conn.query(sql, params, function(err, result) {
     if(err)
       res.status(500).send();
@@ -211,8 +212,23 @@ router.post('/find_response_edit', function(req, res) {
 })
 
 
-// 질문답변 댓글&답글 삭제
+// 매물찾아요 댓글 삭제 --> 댓글 삭제하지 않고 "삭제된 댓글입니다" 변경함
 router.post('/find_comment_delete', function(req, res) {
+  let idx = req.body.idx; 
+  let comment = "삭제된 댓글입니다";
+  let deleted = 1;
+  let sql = "UPDATE find_comment SET comment=?, deleted=? WHERE idx=?";
+  let params = [comment, deleted, idx];
+  conn.query(sql, params, function(err, result) {
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send("매물찾아요 댓글 삭제 성공");
+  })
+})
+
+// 매물찾아요 답글 삭제
+router.post('/find_response_delete', function(req, res) {
   let idx = req.body.idx;
   let sql = "DELETE FROM find_comment WHERE idx = ?";
   conn.query(sql, idx, function(err, result) {

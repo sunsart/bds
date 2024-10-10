@@ -406,9 +406,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		})
 	});
 
-	// 4. 댓글&답글 삭제 index
-	const delete_btns = document.querySelectorAll(".response_delete_btn");
-	delete_btns.forEach(btn => { 
+	// 4. 댓글 삭제 index
+	const c_btns = document.querySelectorAll(".comment_delete_btn");
+	c_btns.forEach(btn => { 
 		// 삭제할 답글의 idx 가져오기
 		const idx = btn.previousElementSibling
 										.previousElementSibling
@@ -419,14 +419,28 @@ document.addEventListener('DOMContentLoaded', function() {
 		btn.nextElementSibling.value = idx;
 		// console.log("idx =" + idx); 현재 삭제버튼들의 각자 삭제용 comment index
 	});	
+
+	// 5. 답글 삭제 index
+	const r_btns = document.querySelectorAll(".response_delete_btn");
+	r_btns.forEach(btn => { 
+		// 삭제할 답글의 idx 가져오기
+		const idx = btn.previousElementSibling
+										.previousElementSibling
+										.previousElementSibling
+										.previousElementSibling
+										.previousElementSibling
+										.previousElementSibling.value;
+		btn.nextElementSibling.value = idx;
+		// console.log("idx =" + idx); 현재 삭제버튼들의 각자 삭제용 comment index
+	});
 });
 
-// 댓글&답글 삭제버튼 클릭시
-const delete_btns = document.querySelectorAll(".response_delete_btn");
-for(let i=0; i<delete_btns.length; i++) {
-	delete_btns[i].addEventListener('click', function() {
+// 댓글 삭제버튼 클릭시 --> 댓글 삭제하지 않고 "삭제된 댓글입니다" 표시함
+const c_btns = document.querySelectorAll(".comment_delete_btn");
+for(let i=0; i<c_btns.length; i++) {
+	c_btns[i].addEventListener('click', function() {
 		let result = confirm("댓글을 삭제할까요?");
-		let idx = delete_btns[i].nextElementSibling.value;
+		let idx = c_btns[i].nextElementSibling.value;
 		// console.log("clicked idx = " + idx);
 		if(result) {
 			$.ajax({
@@ -438,10 +452,60 @@ for(let i=0; i<delete_btns.length; i++) {
 					window.location.reload();
 				},
 				error : function(xhr, textStatus, errorThrown) {
-					console.log("질문답변 댓글답글 삭제 실패");
+					console.log("매물찾아요 댓글 삭제 실패");
 					console.log(xhr, textStatus, errorThrown);
 				}
 			})
 		}
 	});
 }
+
+// 답글 삭제버튼 클릭시 --> 답글 삭제함
+const r_btns = document.querySelectorAll(".response_delete_btn");
+for(let i=0; i<r_btns.length; i++) {
+	r_btns[i].addEventListener('click', function() {
+		let result = confirm("댓글을 삭제할까요?");
+		let idx = r_btns[i].nextElementSibling.value;
+		// console.log("clicked idx = " + idx);
+		if(result) {
+			$.ajax({
+				url : "/find_response_delete",
+				type : "POST",
+				data : {idx:idx},
+				success : function() {
+					alert("댓글을 삭제했습니다!");
+					window.location.reload();
+				},
+				error : function(xhr, textStatus, errorThrown) {
+					console.log("매물찾아요 답글 삭제 실패");
+					console.log(xhr, textStatus, errorThrown);
+				}
+			})
+		}
+	});
+}
+
+// 댓글&답글 삭제버튼 클릭시
+// const delete_btns = document.querySelectorAll(".response_delete_btn");
+// for(let i=0; i<delete_btns.length; i++) {
+// 	delete_btns[i].addEventListener('click', function() {
+// 		let result = confirm("댓글을 삭제할까요?");
+// 		let idx = delete_btns[i].nextElementSibling.value;
+// 		// console.log("clicked idx = " + idx);
+// 		if(result) {
+// 			$.ajax({
+// 				url : "/find_comment_delete",
+// 				type : "POST",
+// 				data : {idx:idx},
+// 				success : function() {
+// 					alert("댓글을 삭제했습니다!");
+// 					window.location.reload();
+// 				},
+// 				error : function(xhr, textStatus, errorThrown) {
+// 					console.log("질문답변 댓글답글 삭제 실패");
+// 					console.log(xhr, textStatus, errorThrown);
+// 				}
+// 			})
+// 		}
+// 	});
+// }

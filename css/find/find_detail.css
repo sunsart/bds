@@ -133,7 +133,7 @@ input[type=button]:hover {
   padding-left: 10px;
   cursor: pointer;
 }
-.response_edit_btn, .response_delete_btn {
+.response_edit_btn, .response_delete_btn, .comment_delete_btn {
   font-size: 14px;
   color: darkgray;
   padding-left: 10px;

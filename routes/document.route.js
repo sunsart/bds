@@ -104,7 +104,7 @@ router.get('/document_write', function(req, res) {
 router.get('/document_detail/:id', async function(req, res) {
   // 서식자료실 조회수 -> 다운수
   let sql = " SELECT d.id, d.title, d.content, d.user_id, d.user_nickname, d.original_name, d.changed_name, \
-              dc.idx, dc.comment, dc.commenter_id, dc.commenter_nickname, dc.post_date, dc.document_id, dc.response_to \
+              dc.idx, dc.comment, dc.commenter_id, dc.commenter_nickname, dc.post_date, dc.document_id, dc.response_to, dc.deleted \
               FROM document AS d LEFT OUTER JOIN document_comment AS dc \
               ON d.id = dc.document_id \
               WHERE d.id = ? ";
@@ -137,8 +137,9 @@ router.post('/document_response_post', function(req, res) {
   let commenter_id = req.session.user.id;
   let commenter_nickname = req.session.user.nickname;
   let post_date = postDate();
-  let sql = "INSERT INTO document_comment (comment, commenter_id, commenter_nickname, post_date, document_id, response_to) VALUES (?, ?, ?, ?, ?, ?)";
-  let params = [comment, commenter_id, commenter_nickname, post_date, document_id, response_to];
+  let deleted = 0;
+  let sql = "INSERT INTO document_comment (comment, commenter_id, commenter_nickname, post_date, document_id, response_to, deleted) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  let params = [comment, commenter_id, commenter_nickname, post_date, document_id, response_to, deleted];
   conn.query(sql, params, function(err, result) {
     if(err)
       res.status(500).send();
@@ -163,8 +164,23 @@ router.post('/document_response_edit', function(req, res) {
 })
 
 
-// 질문답변 댓글&답글 삭제
+// 서식자료실 댓글 삭제 --> 댓글 삭제하지 않고 "삭제된 댓글입니다" 변경함
 router.post('/document_comment_delete', function(req, res) {
+  let idx = req.body.idx;
+  let comment = "삭제된 댓글입니다";
+  let deleted = 1;
+  let sql = "UPDATE document_comment SET comment=?, deleted=? WHERE idx=?";
+  let params = [comment, deleted, idx];
+  conn.query(sql, params, function(err, result) {
+    if(err)
+      res.status(500).send();
+    else  
+      res.status(200).send("서식자료실 댓글답글 삭제 성공");
+  })
+})
+
+// 서식자료실 답글 삭제
+router.post('/document_response_delete', function(req, res) {
   let idx = req.body.idx;
   let sql = "DELETE FROM document_comment WHERE idx = ?";
   conn.query(sql, idx, function(err, result) {

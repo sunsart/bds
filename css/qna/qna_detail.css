@@ -43,6 +43,22 @@
   background-color: rgb(242, 242, 242);
 }
 
+/* 게시물 작성자 + 날짜 */
+.nickname_container {
+  border: 1px solid white;
+  margin-bottom: 10px;
+}
+.qna_nickname {
+  padding: 5px 0px;
+  font-size: 15px;
+  /* font-weight: bold; */
+  /* width: 100%; */
+  width: auto;
+  box-sizing: border-box;
+  border-style: none;
+  background-color: rgb(242, 242, 242);
+}
+
 
 /* ckeditor5 */
 .main-container {
@@ -132,7 +148,7 @@ input[type=button]:hover {
   padding-left: 10px;
   cursor: pointer;
 }
-.response_edit_btn, .response_delete_btn {
+.response_edit_btn, .response_delete_btn, .comment_delete_btn {
   font-size: 14px;
   color: darkgray;
   padding-left: 10px;

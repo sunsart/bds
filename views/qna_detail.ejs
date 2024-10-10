@@ -42,6 +42,10 @@
       <input type="hidden" class="qna_content" value="<%= data[0].content %>">
     </div>
 
+    <div class="nickname_container">
+      <input type="text" class="qna_nickname" value="<%= data[0].user_nickname %>" disabled>
+    </div>
+
 		<div>
 			<div class="main-container">
 				<div class="editor-container editor-container_classic-editor" id="editor-container">
@@ -68,7 +72,7 @@
     </div>
 
 
-    <!-- 댓글 리스트 -->
+    <!-- 댓글 + 답글 리스트 -->
     <% if(data[0].comment) { %> <!-- 해당게시물에 댓글이 있을때 -->
       <div class="container_comment_list">
         <% for(let i=0; i<data.length; i++) { %>
@@ -79,11 +83,11 @@
               <p class="comment_name"> <%= data[i].commenter_nickname %> </p>
               <p class="comment_content"> <%= data[i].comment %> </p>
               <p class="comment_date"> <%= data[i].post_date %> </p>
-              <% if(user) { %>
+              <% if(user && data[i].deleted == 0) { %>
                 <span class="response_open_btn">답글쓰기</span>
                 <% if(user.id == data[i].commenter_id) { %>
                   <span class="response_edit_btn">수정</span>
-                  <span class="response_delete_btn">삭제</span>
+                  <span class="comment_delete_btn">삭제</span>
                   <input type="hidden" id="delete_comment_idx" value="">  <!-- 삭제할 comment 인덱스 -->
                 <% } %>
               <% } %>
