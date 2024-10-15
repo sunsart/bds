@@ -219,8 +219,10 @@ document.querySelector('#post_btn').addEventListener('click', () => {
         window.location.href = '/qna_list';
       },
       error : function(xhr, textStatus, errorThrown) {
-        console.log("질문답변 게시물 등록실패");
-        console.log(xhr, textStatus, errorThrown);
+				alert("로그인이 필요합니다");
+				window.location.href = '/login';
+        //console.log("질문답변 게시물 등록실패");
+        //console.log(xhr, textStatus, errorThrown);
       }
     })
   }

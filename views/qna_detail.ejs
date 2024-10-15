@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>부동산 도우미 - 질문답변 내용보기</title>
-  <meta name="description" content="부동산 업무에 종사하는 분들에게 도움을 드립니다">
+  <title>부동산 도우미</title>
+  <meta name="keywords" content="부동산 도우미" />
+  <meta name="description" content="부동산 업무에 도움을 드립니다. 특약사항, 질문답변, 매물찾기, 부동산뉴스, 일정관리..." />
 
   <!-- 브라우저 css 기본스타일 초기화 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css">
@@ -36,16 +37,28 @@
       <p class="page_title_desc">부동산 업무에 관한 질문&답변</p>
     </div>
 
+    <!-- 작성자 -->
+    <div style="display:flex; justify-content: space-between;">
+      <div>
+        <p style="visibility:hidden;">empty</p>
+      </div>
+      <div class="writer_container" >
+        <a href=""><img class="person_image" src="../images/person.png" ></a>
+        <div>
+          <p class="nickname_text"><%= data[0].user_nickname %></p>
+          <p class="created_at"><%= data[0].post_date %></p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 게시물 제목 -->
     <div class="title_container">
       <input type="text" class="qna_title" value="<%= data[0].title %>" disabled>
       <input type="hidden" class="qna_no" value="<%= data[0].id %>">
       <input type="hidden" class="qna_content" value="<%= data[0].content %>">
     </div>
 
-    <div class="nickname_container">
-      <input type="text" class="qna_nickname" value="<%= data[0].user_nickname %>" disabled>
-    </div>
-
+    <!-- 게시물 내용 -->
 		<div>
 			<div class="main-container">
 				<div class="editor-container editor-container_classic-editor" id="editor-container">
@@ -82,7 +95,7 @@
               <input type="hidden" class="comment_id" value="<%= data[i].idx %>">
               <p class="comment_name"> <%= data[i].commenter_nickname %> </p>
               <p class="comment_content"> <%= data[i].comment %> </p>
-              <p class="comment_date"> <%= data[i].post_date %> </p>
+              <p class="comment_date"> <%= data[i].created_at %> </p>
               <% if(user && data[i].deleted == 0) { %>
                 <span class="response_open_btn">답글쓰기</span>
                 <% if(user.id == data[i].commenter_id) { %>
@@ -102,7 +115,7 @@
                 <input type="hidden" class="re_comment_id" value="<%= data[j].idx %>">
                 <p class="comment_name"> <%= data[j].commenter_nickname %> </p>
                 <p class="comment_content"> <%= data[j].comment %> </p>
-                <p class="comment_date"> <%= data[j].post_date %> </p>
+                <p class="comment_date"> <%= data[j].created_at %> </p>
                 <% if(user) { %>
                   <span class="response_open_btn">답글쓰기</span>
                   <% if(user.id == data[j].commenter_id) { %>

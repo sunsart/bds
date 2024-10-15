@@ -169,7 +169,7 @@ const editorConfig = {
 			reversed: true
 		}
 	},
-	placeholder: '내용을 입력하세요',
+	placeholder: '아래와 같은 게시물은 알림없이 삭제하니 주의바랍니다\n-게시판 성격과 맞지 않는 내용\n-광고/홍보성 내용\n-비방, 욕설, 정치글',
 	table: {
 		contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
 	},
@@ -218,8 +218,10 @@ document.querySelector('#post_btn').addEventListener('click', () => {
         window.location.href = '/find_list';
       },
       error : function(xhr, textStatus, errorThrown) {
-        console.log("매물찾아요 등록실패");
-        console.log(xhr, textStatus, errorThrown);
+				alert("로그인이 필요합니다");
+				window.location.href = '/login';
+        //console.log("매물찾아요 등록실패");
+        //console.log(xhr, textStatus, errorThrown);
       }
     })
   }

@@ -3,8 +3,9 @@
 <head>
 	<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>부동산 도우미 - 질문답변 게시판 리스트 페이지</title>
-  <meta name="description" content="부동산 업무에 종사하는 분들에게 도움을 드립니다">
+  <title>부동산 도우미</title>
+  <meta name="keywords" content="부동산 도우미" />
+  <meta name="description" content="부동산 업무에 도움을 드립니다. 특약사항, 질문답변, 매물찾기, 부동산뉴스, 일정관리..." />
 
   <!-- 브라우저 css 기본스타일 초기화 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css">
@@ -34,7 +35,7 @@
       <p class="page_title_desc">부동산 업무에 관한 질문&답변</p>
     </div>
 
-    <div class="qna_search">
+    <div class="qna_search" align="right">
       <input type="text" class="qna_search_text" placeholder="검색어를 입력하세요">
       <button class="qna_search_btn" onclick="search()">검색</button>
     </div>
@@ -94,7 +95,7 @@
           <% } else { %> 
             <tr>
               <td>
-                <li class="page_num"><a class="deactive" href='/qna_list/?page=<%=i%>'><%=i%></a></li>
+                <li class="page_num"><a class="deactive" href="/qna_list/?page=<%=i%>"><%=i%></a></li>
               </td>
             </tr>
           <% } 

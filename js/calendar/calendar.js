@@ -100,8 +100,10 @@ document.addEventListener('DOMContentLoaded', function() {
           alert("일정을 삭제했습니다");
         },
         error : function(xhr, textStatus, errorThrown) {
-          console.log("schedule delete 일정삭제실패, 서버에러");
-          console.log(xhr, textStatus, errorThrown);
+          alert("로그인이 필요합니다");
+				  window.location.href = '/login';
+          //console.log("schedule delete 일정삭제실패, 서버에러");
+          //console.log(xhr, textStatus, errorThrown);
         }
       })
     }
@@ -137,7 +139,7 @@ function addCalendar() {
   let title = document.querySelector("#title").value;
   let start_date = document.querySelector("#start_date").value;
   let end_date = document.querySelector("#end_date").value;
-  let color = document.querySelector("#select").value;
+  let color = document.querySelector(".color_text");
   if(title == null || title == "") {
     alert("일정내용을 입력하세요");
   } else if(title.length > 45) {
@@ -148,12 +150,15 @@ function addCalendar() {
     alert("종료날짜를 입력하세요");
   } else if(new Date(end_date)- new Date(start_date) < 0) { // date 타입으로 변경 후 확인
     alert("종료날짜가 시작날짜보다 먼저입니다!");
-  } else { 
+  } else if(color.innerText == "색상을 선택하세요") {
+    alert("일정의 색상을 선택하세요")
+  } 
+  else { 
     let obj = {
       "title" : title,
       "start" : start_date + " 00:00:00", // 2일 이상 일정추가시 캘린더에 하루 적게 표시되는 것을 수정하기 위해 시간 추가
       "end" : end_date + " 24:00:00",
-      "backgroundColor" : color,  
+      "backgroundColor" : color.style.backgroundColor,  
     } 
     $.ajax({
       url : "/schedule_add",
@@ -164,8 +169,10 @@ function addCalendar() {
         alert("일정을 등록했습니다");
       },
       error : function(xhr, textStatus, errorThrown) {
-        console.log("schedule delete 일정삭제실패, 서버에러");
-        console.log(xhr, textStatus, errorThrown);
+        alert("로그인이 필요합니다");
+				window.location.href = '/login';
+        //console.log("schedule delete 일정삭제실패, 서버에러");
+        //console.log(xhr, textStatus, errorThrown);
       }
     })
     closeModal();
@@ -224,8 +231,8 @@ function createTodo() {
         ul.appendChild(li);
       },
       error : function(xhr, textStatus, errorThrown) {
-        console.log("todo add 저장실패, 서버에러");
-        console.log(xhr, textStatus, errorThrown);
+        alert("로그인이 필요합니다");
+				window.location.href = '/login';
       }
     })
     todoInput.value = ""; // todo 등록후 input창 초기화
@@ -245,8 +252,10 @@ function deleteTodo(e) {
         $(checkbox).parent('div').parent('li').remove();
       },
       error : function(xhr, textStatus, errorThrown) {
-        console.log("todo delete 삭제실패, 서버에러");
-        console.log(xhr, textStatus, errorThrown);
+        alert("로그인이 필요합니다");
+				window.location.href = '/login';
+        //console.log("todo delete 삭제실패, 서버에러");
+        //console.log(xhr, textStatus, errorThrown);
       }
     })
 	}
@@ -269,8 +278,46 @@ function completeTodo(e) {
         title.classList.remove("completed");
     },
     error : function(xhr, textStatus, errorThrown) {
-      console.log("todo complete 변경실패, 서버에러");
-      console.log(xhr, textStatus, errorThrown);
+      alert("로그인이 필요합니다");
+			window.location.href = '/login';
+      //console.log("todo complete 변경실패, 서버에러");
+      //console.log(xhr, textStatus, errorThrown);
     }
   })
 }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  // "일정색상" 클릭시 색상리스트 열기&닫기
+  let color_text = document.querySelector('.color_text');
+  let color_list = document.querySelector('.color_list');
+  color_text.addEventListener('click', function() {
+    if(color_list.classList.contains('active')){
+      color_list.classList.remove('active');
+    } else {
+      color_list.classList.add('active');
+    };
+  });
+
+  // 색상 선택시 color_text 에 표시함
+  const colors = document.querySelectorAll(".color_select");
+  for(let i=0; i<colors.length; i++) {
+    colors[i].addEventListener('click', function() {
+      let color = this.innerText;
+      color_text.text = color;
+
+      color_text.classList.add("selected");
+
+      if(color == "BLUE")
+        color_text.style.backgroundColor = "#1C6BB0";
+      else if(color == "RED")
+        color_text.style.backgroundColor = "#DF6C55";
+      else if(color == "GREEN")
+        color_text.style.backgroundColor = "#038D98";
+      else if(color == "PINK")
+        color_text.style.backgroundColor = "#F3A171";
+
+      color_list.classList.remove('active');
+    });
+  }
+});

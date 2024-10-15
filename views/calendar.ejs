@@ -3,8 +3,9 @@
 <head>
 	<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>부동산 도우미 - 일정관리 페이지</title>
-  <meta name="description" content="부동산 도우미 웹사이트는 부동산 계약 특약사항 작성에 도움을 드립니다">
+  <title>부동산 도우미</title>
+  <meta name="keywords" content="부동산 도우미" />
+  <meta name="description" content="부동산 업무에 도움을 드립니다. 특약사항, 질문답변, 매물찾기, 부동산뉴스, 일정관리..." />
 
   <!-- 브라우저 css 기본스타일 초기화 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css">
@@ -45,6 +46,7 @@
   
   <div id="contents">
     <div class="container_all">
+
       <!-- 캘린더 -->
       <div class="container_calendar">
         <div id='calendar'></div>
@@ -99,17 +101,19 @@
       <label for="end_date">종료날짜</label>
       <input type="date" id="end_date">
 
-      <label for="select">일정컬러</label>
-      <select name="color" id="select">
-        <option style="background-color:rgba(0, 0, 255, 0.8); color:white;" value="rgba(0, 0, 255, 0.8)" selected>blue</option>
-        <option style="background-color:rgba(255, 166, 0, 0.8); color:white;" value="rgba(255, 166, 0, 0.8)">orange</option>
-        <option style="background-color:rgba(255, 0, 0, 0.8); color:white;" value="rgba(255, 0, 0, 0.8)">red</option>
-        <option style="background-color:rgba(0, 128, 0, 0.8); color:white;" value="rgba(0, 128, 0, 0.8">green</option>
-      </select>
+      <div class="color_container">
+        <a class="color_text">색상을 선택하세요</a>
+        <ul class="color_list">
+          <li style="background-color:#1C6BB0; color:white;" class="color_select">BLUE</li>
+          <li style="background-color:#DF6C55; color:white;" class="color_select">RED</li>
+          <li style="background-color:#038D98; color:white;" class="color_select">GREEN</li>
+          <li style="background-color:#F3A171; color:white;" class="color_select">PINK</li>
+        </ul>
+      </div>
 
       <div class="container_btn">
-        <button type="button" class="modal_btn" onclick="addCalendar()">등록</button>
         <button type="button" class="modal_btn modal_btn_cancel" onclick="closeModal()">취소</button>
+        <button type="button" class="modal_btn" onclick="addCalendar()">등록</button>
       </div>
     </div>
   </div>

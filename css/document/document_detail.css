@@ -15,7 +15,6 @@
 /* 게시판 제목 */
 .table_head {
   margin-top: 40px;
-  margin-bottom: 20px;
   line-height: 30px;
 }
 .page_title {
@@ -43,6 +42,23 @@
   background-color: rgb(242, 242, 242);
 }
 
+/* 게시물 작성자 + 날짜 */
+.writer_container {
+  display: flex;
+}
+.person_image {
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+}
+.nickname_text {
+  font-size: 14px;
+  font-weight: bold;
+}
+.created_at {
+  font-size: 14px;
+  color: darkgray;
+}
 
 /* ckeditor5 */
 .main-container {

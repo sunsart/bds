@@ -35,7 +35,7 @@ router.get('/calendar', function(req, res) {
 
 
 // schedule db에 저장
-router.post('/schedule_add', function(req, res) {
+router.post('/schedule_add', loggedin, function(req, res) {
   let title = req.body.title;
   let start = req.body.start;
   let end = req.body.end;
@@ -53,7 +53,7 @@ router.post('/schedule_add', function(req, res) {
 
 
 // schedule 삭제
-router.post('/schedule_delete', function(req, res) {
+router.post('/schedule_delete', loggedin, function(req, res) {
   let schedule_id = req.body.id;
   let sql = "DELETE FROM schedule WHERE id = ?";
   conn.query(sql, schedule_id, function(err, result) {
@@ -66,7 +66,7 @@ router.post('/schedule_delete', function(req, res) {
 
 
 // todo db에 저장
-router.post('/todo_add', function(req, res) {
+router.post('/todo_add', loggedin, function(req, res) {
   let title = req.body.title;
   let user_id = req.session.user.id;
   let sql = "INSERT INTO todo (title, user_id) VALUES (?, ?)";
@@ -82,13 +82,12 @@ router.post('/todo_add', function(req, res) {
       bags[2] = result.insertId;
       res.status(200).send(bags);
     }
-    
   })
 })
 
 
 // todo 삭제
-router.post('/todo_delete', function(req, res) {
+router.post('/todo_delete', loggedin, function(req, res) {
   let id = req.body.id;
   let sql = "DELETE FROM todo WHERE id = ?";
   let params = [id];
@@ -101,7 +100,7 @@ router.post('/todo_delete', function(req, res) {
 })
 
 // todo 완료 변경
-router.post('/todo_complete', function(req, res) {
+router.post('/todo_complete', loggedin, function(req, res) {
   let id = req.body.id;
   let complete = req.body.complete;
   let sql = "UPDATE todo SET completed=? WHERE id=?";
@@ -114,6 +113,14 @@ router.post('/todo_complete', function(req, res) {
   })
 });
 
+// 로그인 여부 확인
+function loggedin(req, res, next) {
+  let login = req.session.user;
+  if(login) 
+    next();
+  else 
+    res.status(500).send("<script>alert('로그인이 필요합니다'); window.location.href='/login'</script>");
+}
 
 //router 변수를 외부 노출
 module.exports = router;

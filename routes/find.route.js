@@ -11,7 +11,6 @@ var conn = mysql.createConnection({
 });
 conn.connect();
 
-//-----------------------------------------//
 
 // 매물찾아요 리스트 페이지
 router.get('/find_list', function(req, res) {
@@ -25,7 +24,6 @@ router.get('/find_list', function(req, res) {
   conn.query(sql, function(err, rows) {
     if(err) throw err;
     totalPostCnt = rows[0].findCount;
-    console.log("전체 게시물 개수 = " + totalPostCnt);
 
     if(totalPostCnt <= 0)
       totalPostCnt = 1
@@ -48,7 +46,6 @@ router.get('/find_list', function(req, res) {
     // console.log("현재 세트의 시작 페이지 = " + startPage);
     // console.log("현재 세트의 끝 페이지 = " + endPage);
     // console.log("현재 페이지의 시작 게시글 번호 = " + startPost);
-    // console.log("============================");
     
     let sql2 = "SELECT id, title, content, user_id, user_nickname, post_date, hit, ( \
                 SELECT count(*) \
@@ -80,7 +77,7 @@ router.get('/find_list', function(req, res) {
         'totalSet' : totalSet,
         'totalPage' : totalPage,
         'currentPage' : currentPage,
-        'isSearchResult' : 'false',
+        'searchText' : ""
       }
 
       res.render('find_list.ejs', {paging:paging, data:data, user:req.session.user})
@@ -88,15 +85,89 @@ router.get('/find_list', function(req, res) {
   })
 })
 
+// 매물찾아요 검색결과 리스트
+router.get('/find_search', function(req, res) {
+  // 검색된 전체 게시물 개수 가져옴
+  let currentPage = req.query.page; // 현재 보여지는 페이지
+
+  if(!currentPage) currentPage = 1; // page 파라미터 값을 넘겨주지 않을 시, 1페이지로 설정
+  let postPerPage = 10; // 한 페이지에 보여질 게시물 수
+  let btnPerPage = 5;  // 한 페이지에 보여질 페이지 버튼의 개수 
+
+  let totalPostCnt = 0;
+  let find_text = req.query.search;
+  let query = "%" + find_text +"%";
+
+  let sql = "SELECT * FROM find WHERE title LIKE ? OR content LIKE ?";
+  let params = [query, query]; 
+  conn.query(sql, params, function(err, rows) {
+    if(err) throw err;
+    totalPostCnt = rows.length;
+    // console.log( '==="' + find_text + '"' + ' 검색된 게시물 개수 = ' + totalPostCnt);
+
+    if(totalPostCnt <= 0)
+      totalPostCnt = 1
+
+    let totalPage = Math.ceil(totalPostCnt / postPerPage); // 전체 페이지 수 (ceil 소수점 올림)
+    let totalSet = Math.ceil(totalPage / btnPerPage);     // 전체 세트 수 (5페이지가 한 세트)
+    let currentSet = Math.ceil(currentPage / btnPerPage); // 현재 세트 번호 
+    let startPage = ((currentSet-1) * btnPerPage) + 1;    // 시작 페이지 번호
+    let endPage = (startPage + btnPerPage) - 1;           // 끝 페이지 번호
+    let startPost = '';  // 시작 게시글 번호
+
+    // sql 문에 들어갈 offset 설정
+    if(currentPage <= 0)
+      startPost = 0
+    else 
+      startPost = (currentPage - 1) * postPerPage // 시작 게시글 번호 설정
+
+    let sql2 = "SELECT id, title, content, user_id, user_nickname, post_date, hit, ( \
+                SELECT count(*) \
+                FROM find_comment AS fc \
+                WHERE fc.find_id = f.id) AS commentCount \
+                FROM find AS f \
+                WHERE title LIKE ? OR content LIKE ? \
+                ORDER BY id DESC LIMIT ? OFFSET ?";
+    let params = [query, query, postPerPage, startPost];
+    let data = []; 
+    conn.query(sql2, params, function(err, rows2) {
+      if(err) throw err;
+      for(let i=0; i<rows2.length; i++) {
+        let node = {
+          'id' : rows2[i].id,
+          'title' : rows2[i].title,
+          'user_nickname' : rows2[i].user_nickname,
+          'post_date' : rows2[i].post_date,
+          'hit' : rows2[i].hit,
+          'commentCount' : rows2[i].commentCount
+        };
+        data.push(node);
+      }
+
+      let paging = { // ejs로 전송하기위해 객체화
+        'startPage' : startPage,
+        'endPage' : endPage,
+        'currentSet' : currentSet,
+        'totalSet' : totalSet,
+        'totalPage' : totalPage,
+        'currentPage' : currentPage,
+        'searchText' : find_text
+      }
+
+      res.render('find_search_list.ejs', {paging:paging, data:data, user:req.session.user});
+    })
+  })
+})
+
 
 // 매물찾아요 게시물등록 페이지
-router.get('/find_write', function(req, res) {
+router.get('/find_write', loggedin, function(req, res) {
   res.render('find_write.ejs', {user:req.session.user});
 })
 
 
 // 매물찾아요 게시물 등록
-router.post('/find_post', function(req, res) {
+router.post('/find_post', loggedin, function(req, res) {
   let title = req.body.title;
   let content = req.body.content;
   let user_id = req.session.user.id;
@@ -133,8 +204,8 @@ router.get('/find_detail/:id', async function(req, res) {
   }
 
   // 쿠키에 client ip 저장값이 있으면 조회수 증가하지 않고, 내용을 보여줌
-  let sql = " SELECT f.id, f.title, f.content, f.user_id, f.user_nickname, \
-              fc.idx, fc.comment, fc.commenter_id, fc.commenter_nickname, fc.post_date, fc.find_id, fc.response_to, fc.deleted \
+  let sql = " SELECT f.id, f.title, f.content, f.user_id, f.user_nickname, f.post_date, \
+              fc.idx, fc.comment, fc.commenter_id, fc.commenter_nickname, fc.created_at, fc.find_id, fc.response_to, fc.deleted \
               FROM find AS f LEFT OUTER JOIN find_comment AS fc \
               ON f.id = fc.find_id \
               WHERE f.id = ? ";
@@ -147,7 +218,7 @@ router.get('/find_detail/:id', async function(req, res) {
 
 
 // 매물찾아요 게시물 수정
-router.post('/find_edit', function(req, res) {
+router.post('/find_edit', loggedin, function(req, res) {
   let id = req.body.id;
   let title = req.body.title;
   let content = req.body.content;
@@ -165,7 +236,7 @@ router.post('/find_edit', function(req, res) {
 
 
 // 매물찾아요 게시물 삭제
-router.post('/find_delete', function(req, res) {
+router.post('/find_delete', loggedin, function(req, res) {
   let id = req.body.id;
   let sql = "DELETE FROM find WHERE id = ?";
   conn.query(sql, id, function(err, result) {
@@ -178,16 +249,16 @@ router.post('/find_delete', function(req, res) {
 
 
 // 매물찾아요 댓글,답글 등록 insert
-router.post('/find_response_post', function(req, res) {
+router.post('/find_response_post', loggedin, function(req, res) {
   let comment = req.body.content; // 댓글 내용
   let find_id = req.body.find_id; // 댓글이 등록되는 게시물의 인덱스
   let response_to = req.body.response_to;  // 상위 댓글의 인덱스
   let commenter_id = req.session.user.id;
   let commenter_nickname = req.session.user.nickname;
-  let post_date = postDate();
+  let created_at = postDateTime();
   let deleted = 0;
-  let sql = "INSERT INTO find_comment (comment, commenter_id, commenter_nickname, post_date, find_id, response_to, deleted) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  let params = [comment, commenter_id, commenter_nickname, post_date, find_id, response_to, deleted];
+  let sql = "INSERT INTO find_comment (comment, commenter_id, commenter_nickname, created_at, find_id, response_to, deleted) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  let params = [comment, commenter_id, commenter_nickname, created_at, find_id, response_to, deleted];
   conn.query(sql, params, function(err, result) {
     if(err)
       res.status(500).send();
@@ -198,7 +269,7 @@ router.post('/find_response_post', function(req, res) {
 
 
 // 매물찾아요 답글 수정 edit
-router.post('/find_response_edit', function(req, res) {
+router.post('/find_response_edit', loggedin, function(req, res) {
   let idx = req.body.idx; // 답글 idx
   let comment = req.body.content; // 댓글 내용
   let sql = "UPDATE find_comment SET comment=? WHERE idx=?";
@@ -213,7 +284,7 @@ router.post('/find_response_edit', function(req, res) {
 
 
 // 매물찾아요 댓글 삭제 --> 댓글 삭제하지 않고 "삭제된 댓글입니다" 변경함
-router.post('/find_comment_delete', function(req, res) {
+router.post('/find_comment_delete', loggedin, function(req, res) {
   let idx = req.body.idx; 
   let comment = "삭제된 댓글입니다";
   let deleted = 1;
@@ -227,8 +298,8 @@ router.post('/find_comment_delete', function(req, res) {
   })
 })
 
-// 매물찾아요 답글 삭제
-router.post('/find_response_delete', function(req, res) {
+// 매물찾아요 답글 삭제 --> 답글은 그대로 삭제함
+router.post('/find_response_delete', loggedin, function(req, res) {
   let idx = req.body.idx;
   let sql = "DELETE FROM find_comment WHERE idx = ?";
   conn.query(sql, idx, function(err, result) {
@@ -239,6 +310,15 @@ router.post('/find_response_delete', function(req, res) {
   })
 })
 
+// 로그인 여부 확인
+function loggedin(req, res, next) {
+  let login = req.session.user;
+  if(login) 
+    next();
+  else 
+    res.status(500).send("<script>alert('로그인이 필요합니다'); window.location.href='/login'</script>");
+}
+
 
 //현재 날짜 가져오기
 function postDate() {
@@ -246,7 +326,19 @@ function postDate() {
   const year = today.toLocaleDateString('en-US', {year: 'numeric',});
   const month = today.toLocaleDateString('en-US', {month: '2-digit',});
   const day = today.toLocaleDateString('en-US', {day: '2-digit',});
-  return `${year}-${month}-${day}`;
+  return `${year}.${month}.${day}`;
+}
+function postDateTime() {
+  let today = new Date();
+  let year = today.getFullYear();
+  let month = today.getMonth() + 1; // zero base month 때문에 +1 
+  let date = today.getDate();
+  let hour = today.getHours();
+  hour = hour >= 10 ? hour : "0" + hour; // hour 두자리로 출력
+  let minute = today.getMinutes();
+  minute = minute >= 10 ? minute : "0" + minute; // minute 두자리로 출력
+  let ampm = hour >= 12 ? '오후' : '오전';
+  return `${year}.${month}.${date} ${ampm} ${hour}:${minute}`;
 }
 
 // client ip를 가져오는 함수 (조회수 카운트)
@@ -254,7 +346,6 @@ function getUserIP(req) {
   const addr = req.headers['x-forwarded-for'] || req.connection.remoteAddress
   return addr
 }
-
 
 //router 변수를 외부 노출
 module.exports = router;

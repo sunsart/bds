@@ -156,5 +156,50 @@ input[type=date] {
 }
 
 
+ul, li {list-style:none; margin:0; padding:0}
+.color_container {
+  width: 160px; 
+  position: relative; 
+  border:1px solid #C4C4C4;
+  text-align: left;
+  z-index: 10;
+}
+.color_container a {
+  color: black;
+  line-height: 34px; 
+  display: block; 
+  padding-left: 20px;
+  text-decoration:none;
+  font-size: 14px;
+}
+.color_container a.selected {
+  color: white;
+}
+.color_list {
+  position: absolute; 
+  width: 160px; 
+  left: -1px; 
+  display: none;
+}
+.color_list.active {
+  display: block
+}
+.color_list li {
+  line-height: 34px; 
+  border: 1px solid #C4C4C4;
+  text-align: left; 
+  padding-left: 10px; 
+  cursor: pointer;
+  color: white;
+}
+.color_list li + li {
+  border-top:none;
+}
+.color_list li:hover {
+  background: rgba(0,0,0,0.2)
+}
+
+
+
 
 
