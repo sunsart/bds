@@ -205,7 +205,7 @@ router.get('/find_detail/:id', async function(req, res) {
 
   // 쿠키에 client ip 저장값이 있으면 조회수 증가하지 않고, 내용을 보여줌
   let sql = " SELECT f.id, f.title, f.content, f.user_id, f.user_nickname, f.post_date, \
-              fc.idx, fc.comment, fc.commenter_id, fc.commenter_nickname, fc.created_at, fc.find_id, fc.response_to, fc.deleted \
+              fc.idx, fc.comment, fc.commenter_id, fc.commenter_nickname, fc.created_at, fc.find_id, fc.response_to, fc.deleted, fc.response_name \
               FROM find AS f LEFT OUTER JOIN find_comment AS fc \
               ON f.id = fc.find_id \
               WHERE f.id = ? ";
@@ -253,12 +253,13 @@ router.post('/find_response_post', loggedin, function(req, res) {
   let comment = req.body.content; // 댓글 내용
   let find_id = req.body.find_id; // 댓글이 등록되는 게시물의 인덱스
   let response_to = req.body.response_to;  // 상위 댓글의 인덱스
+  let response_name = req.body.response_name;
   let commenter_id = req.session.user.id;
   let commenter_nickname = req.session.user.nickname;
   let created_at = postDateTime();
   let deleted = 0;
-  let sql = "INSERT INTO find_comment (comment, commenter_id, commenter_nickname, created_at, find_id, response_to, deleted) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  let params = [comment, commenter_id, commenter_nickname, created_at, find_id, response_to, deleted];
+  let sql = "INSERT INTO find_comment (comment, commenter_id, commenter_nickname, created_at, find_id, response_to, deleted, response_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+  let params = [comment, commenter_id, commenter_nickname, created_at, find_id, response_to, deleted, response_name];
   conn.query(sql, params, function(err, result) {
     if(err)
       res.status(500).send();

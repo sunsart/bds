@@ -203,8 +203,8 @@ router.get('/qna_detail/:id', async function(req, res) {
   }
 
   // 쿠키에 client ip 저장값이 있으면 조회수 증가하지 않고, 내용을 보여줌
-  let sql = " SELECT q.id, q.title, q.content, q.user_id, q.user_nickname, q.post_date,  \
-              qc.idx, qc.comment, qc.commenter_id, qc.commenter_nickname, qc.created_at, qc.qna_id, qc.response_to, qc.deleted \
+  let sql = " SELECT q.id, q.title, q.content, q.user_id, q.user_nickname, q.post_date, \
+              qc.idx, qc.comment, qc.commenter_id, qc.commenter_nickname, qc.created_at, qc.qna_id, qc.response_to, qc.deleted, qc.response_name \
               FROM qna AS q LEFT OUTER JOIN qna_comment AS qc \
               ON q.id = qc.qna_id \
               WHERE q.id = ? ";
@@ -252,12 +252,13 @@ router.post('/qna_response_post', loggedin, function(req, res) {
   let comment = req.body.content; // 댓글 내용
   let qna_id = req.body.qna_id; // 댓글이 등록되는 게시물의 인덱스
   let response_to = req.body.response_to;  // 상위 댓글의 인덱스
+  let response_name = req.body.response_name;
   let commenter_id = req.session.user.id;
   let commenter_nickname = req.session.user.nickname;
   let created_at = postDateTime();
   let deleted = 0;
-  let sql = "INSERT INTO qna_comment (comment, commenter_id, commenter_nickname, created_at, qna_id, response_to, deleted) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  let params = [comment, commenter_id, commenter_nickname, created_at, qna_id, response_to, deleted];
+  let sql = "INSERT INTO qna_comment (comment, commenter_id, commenter_nickname, created_at, qna_id, response_to, deleted, response_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+  let params = [comment, commenter_id, commenter_nickname, created_at, qna_id, response_to, deleted, response_name];
   conn.query(sql, params, function(err, result) {
     if(err)
       res.status(500).send();

@@ -97,9 +97,9 @@
               <p class="comment_content"> <%= data[i].comment %> </p>
               <p class="comment_date"> <%= data[i].created_at %> </p>
               <% if(user && data[i].deleted == 0) { %>
-                <span class="response_open_btn">답글쓰기</span>
+                <span class="comment_open_btn">답글쓰기</span>
                 <% if(user.id == data[i].commenter_id) { %>
-                  <span class="response_edit_btn">수정</span>
+                  <span class="comment_edit_btn">수정</span>
                   <span class="comment_delete_btn">삭제</span>
                   <input type="hidden" id="delete_comment_idx" value="">  <!-- 삭제할 comment 인덱스 -->
                 <% } %>
@@ -114,7 +114,10 @@
                 <input type="hidden" class="response_to" value="<%= data[j].response_to %>">
                 <input type="hidden" class="re_comment_id" value="<%= data[j].idx %>">
                 <p class="comment_name"> <%= data[j].commenter_nickname %> </p>
-                <p class="comment_content"> <%= data[j].comment %> </p>
+                <div class="comment_content">
+                  <span class="response_name"><%= data[j].response_name %></span>
+                  <span><%= data[j].comment %></span>
+                </div>
                 <p class="comment_date"> <%= data[j].created_at %> </p>
                 <% if(user) { %>
                   <span class="response_open_btn">답글쓰기</span>
@@ -139,6 +142,8 @@
         <p class="comment_name"><%= user.nickname %></p>
       <% } %>
       <textarea class="response_box" placeholder="답글을 남겨보세요."></textarea>
+      <input type="hidden" id="num_response_to" value=""> <!-- 답글이 달리는 댓글의 번호 -->
+      <input type="hidden" id="name_response_to" value=""> <!-- 답글 남기는 대상 -->
       <input type="hidden" id="post_type_edit" value="false">
       <input type="hidden" id="edit_comment_idx" value="">  <!-- 수정할 comment 인덱스 -->
       <div class="btn_container">
@@ -157,7 +162,7 @@
       <% } else { %>
         <div class="container_comment" style="height: 60px;">
           <p class="comment_btn" style="display:none;">등록</p>
-          <p class="login_btn" onclick="location.href='/login'">로그인하고 댓글을 남겨보세요.</p>
+          <p class="login_btn" onclick="location.href='/login'"><u>로그인</u> 하고 댓글을 남겨보세요.</p>
         </div>
       <% } %>
 

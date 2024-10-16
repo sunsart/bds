@@ -38,8 +38,8 @@ app.use(session({
   resave : false,
   saveUninitialized : true,
   store : sessionStore,
-  //cookie : { maxAge: 3600000 }  // 1시간 60x60x1000
-  cookie : { maxAge: 20000 }  // 20초 20x1000
+  cookie : { maxAge: 3600000 }  // 1시간 60x60x1000
+  //cookie : { maxAge: 20000 }  // 20초 20x1000
 }))
 // ---------------------------------------
 

@@ -173,7 +173,7 @@ router.get('/document_write', function(req, res) {
 router.get('/document_detail/:id', async function(req, res) {
   // 서식자료실 조회수 -> 다운수
   let sql = " SELECT d.id, d.title, d.content, d.user_id, d.user_nickname, d.post_date, d.original_name, d.changed_name, \
-              dc.idx, dc.comment, dc.commenter_id, dc.commenter_nickname, dc.created_at, dc.document_id, dc.response_to, dc.deleted \
+              dc.idx, dc.comment, dc.commenter_id, dc.commenter_nickname, dc.created_at, dc.document_id, dc.response_to, dc.deleted, dc.response_name \
               FROM document AS d LEFT OUTER JOIN document_comment AS dc \
               ON d.id = dc.document_id \
               WHERE d.id = ? ";
@@ -203,12 +203,13 @@ router.post('/document_response_post', loggedin, function(req, res) {
   let comment = req.body.content; // 댓글 내용
   let document_id = req.body.document_id; // 댓글이 등록되는 게시물의 인덱스
   let response_to = req.body.response_to;  // 상위 댓글의 인덱스
+  let response_name = req.body.response_name;
   let commenter_id = req.session.user.id;
   let commenter_nickname = req.session.user.nickname;
-  let post_date = postDate();
+  let created_at = postDate();
   let deleted = 0;
-  let sql = "INSERT INTO document_comment (comment, commenter_id, commenter_nickname, post_date, document_id, response_to, deleted) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  let params = [comment, commenter_id, commenter_nickname, post_date, document_id, response_to, deleted];
+  let sql = "INSERT INTO document_comment (comment, commenter_id, commenter_nickname, created_at, document_id, response_to, deleted, response_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+  let params = [comment, commenter_id, commenter_nickname, created_at, document_id, response_to, deleted, response_name];
   conn.query(sql, params, function(err, result) {
     if(err)
       res.status(500).send();

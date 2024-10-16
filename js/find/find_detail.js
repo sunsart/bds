@@ -302,11 +302,14 @@ document.querySelector('.comment_btn').addEventListener('click', () => {
   }
 });
 
-// 답글 입력창 등록 버튼 클릭시 post or edit
+
+
+// on,off 되는 답글 입력창 등록 버튼 클릭시 post or edit
 document.querySelector('.response_btn').addEventListener('click', () => {
 	let content = document.querySelector(".response_box").value;	// 답글 내용
 	let find_id = document.querySelector(".find_no").value;	// 댓글이 등록되는 게시물의 인덱스
-	let response_to = document.querySelector(".comment_id").value;	// 최상위 댓글 인덱스
+	let response_to = document.querySelector("#num_response_to").value;	// 답글이 달리는 댓글의 인덱스
+	let response_name = document.querySelector("#name_response_to").value;	// 누구에게 답글이 달리는지
 	let is_edit = document.querySelector("#post_type_edit").value;	// insert or edit
 	let comment_idx = document.querySelector("#edit_comment_idx").value;	// 수정할 답글 인덱스
   if(content == "")
@@ -334,7 +337,7 @@ document.querySelector('.response_btn').addEventListener('click', () => {
 			$.ajax({
 				url : "/find_response_post",
 				type : "POST",
-				data : {content:content, find_id:find_id, response_to:response_to},
+				data : {content:content, find_id:find_id, response_to:response_to, response_name:response_name},
 				success : function(data) {
 					alert("답글이 등록 되었습니다")
 					window.location.reload();
@@ -353,17 +356,24 @@ document.querySelector('.response_btn').addEventListener('click', () => {
 // 페이지 로드 후 작업
 // 수정, 삭제버튼이 다수 존재하기 때문에
 document.addEventListener('DOMContentLoaded', function() {
-	// 1.답글쓰기 버튼 클릭시 --> 답글창 on
-	const btns = document.querySelectorAll(".response_open_btn");
-	btns.forEach(btn => { 
+	// 1. 1단계 답글쓰기 버튼 클릭시 --> 답글창 on
+	const comment_btns = document.querySelectorAll(".comment_open_btn");
+	comment_btns.forEach(btn => { 
     btn.addEventListener('click', () => {
-			// 답글 입력창 on
+			// 답글 입력창 on, 입력 내용 초기화
 			const response = document.querySelector(".container_response");
 			response.classList.add("on");
-
-			// 수정할 내용을 초기화
 			document.querySelector(".response_box").value = "";
 
+			// 답글이 달리는 댓글의 인덱스, 답글이 달리는 회원닉네임
+			let comment_idx = btn.previousElementSibling
+												.previousElementSibling
+												.previousElementSibling
+												.previousElementSibling.value;
+			document.querySelector("#num_response_to").value = comment_idx;
+			let comment_name = "";
+			document.querySelector("#name_response_to").value = comment_name;
+			
 			// 등록버튼 클릭시 mysql insert
 			const post_type = document.querySelector("#post_type_edit");
 			post_type.value = "false";
@@ -374,25 +384,60 @@ document.addEventListener('DOMContentLoaded', function() {
 		})
 	});
 
-	// 2.취소버튼 클릭시 답글 --> 답글창 off
+	// 2. 2단계 답글쓰기 버튼 클릭시 --> 답글창 on
+	const response_btns = document.querySelectorAll(".response_open_btn");
+	response_btns.forEach(btn => { 
+    btn.addEventListener('click', () => {
+			// 답글 입력창 on, 입력 내용 초기화
+			const response = document.querySelector(".container_response");
+			response.classList.add("on");
+			document.querySelector(".response_box").value = "";
+
+			// 답글이 달리는 댓글의 인덱스
+			let comment_idx = btn.previousElementSibling
+												.previousElementSibling
+												.previousElementSibling
+												.previousElementSibling
+												.previousElementSibling.value;
+			document.querySelector("#num_response_to").value = comment_idx;
+
+			// 답글 남기는 대상 표시하기 위해
+			let comment_name = btn.previousElementSibling
+												.previousElementSibling
+												.previousElementSibling.innerText; 
+			document.querySelector("#name_response_to").value = comment_name;
+			
+			// 등록버튼 클릭시 mysql insert
+			const post_type = document.querySelector("#post_type_edit");
+			post_type.value = "false";
+
+			// 답글 입력창의 위치를 수정할 댓글 아래로 이동함
+			const eidt_comment = btn.parentElement;
+			eidt_comment.after(response);
+		})
+	});
+
+	// 3.취소버튼 클릭시 답글 --> 답글창 off
 	const cancel = document.querySelector(".cancel_btn");
 	cancel.addEventListener('click', () => {
-		// 수정할 답글을 보이게 함
+		// 3-1. 수정할 답글을 보이게 하거나
 		cancel.parentElement.parentElement.previousElementSibling.classList.remove("off");
-		// 답글 입력창 off
+		// 3-2. 답글 입력창 off
 		cancel.parentElement.parentElement.classList.remove("on");
 	})
 
-	// 3.댓글&답글 수정 버튼 클릭시 --> 답글창 on
-	const edit_btns = document.querySelectorAll(".response_edit_btn");
-	edit_btns.forEach(btn => { 
+	// 4. 댓글 수정 버튼 클릭시 
+	const comment_edit_btns = document.querySelectorAll(".comment_edit_btn");
+	comment_edit_btns.forEach(btn => { 
     btn.addEventListener('click', () => {
 			// 답글 입력창 on
 			const response = document.querySelector(".container_response");
 			response.classList.add("on");
 			
 			// 수정할 내용 가져오기
-			const content = btn.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
+			const content = btn.previousElementSibling
+													.previousElementSibling
+													.previousElementSibling.textContent;
 			document.querySelector(".response_box").value = content;
 
 			// 등록버튼 클릭시 mysql edit
@@ -416,7 +461,42 @@ document.addEventListener('DOMContentLoaded', function() {
 		})
 	});
 
-	// 4. 댓글 삭제 index
+	// 5. 답글 수정 버튼 클릭시
+	const response_edit_btns = document.querySelectorAll(".response_edit_btn");
+	response_edit_btns.forEach(btn => { 
+    btn.addEventListener('click', () => {
+			// 답글 입력창 on
+			const response = document.querySelector(".container_response");
+			response.classList.add("on");
+			
+			// 수정할 내용 가져오기
+			const content = btn.previousElementSibling
+													.previousElementSibling
+													.previousElementSibling.children[1].innerText;
+			document.querySelector(".response_box").value = content;
+
+			// 등록버튼 클릭시 mysql edit
+			const post_type = document.querySelector("#post_type_edit");
+			post_type.value = "true";
+
+			// 수정할 답글의 idx 가져오기
+			const comment_idx = btn.previousElementSibling
+													.previousElementSibling
+													.previousElementSibling
+													.previousElementSibling
+													.previousElementSibling.value;
+			document.querySelector("#edit_comment_idx").value = comment_idx;
+
+			// 답글 입력창의 위치를 수정할 댓글 아래로 이동함
+			const eidt_comment = btn.parentElement;
+			eidt_comment.after(response);
+
+			// 수정할 댓글을 보이지 않게함
+			eidt_comment.classList.add("off");
+		})
+	});
+
+	// 6. 댓글 삭제 index
 	const c_btns = document.querySelectorAll(".comment_delete_btn");
 	c_btns.forEach(btn => { 
 		// 삭제할 답글의 idx 가져오기
@@ -427,9 +507,9 @@ document.addEventListener('DOMContentLoaded', function() {
 										.previousElementSibling
 										.previousElementSibling.value;
 		btn.nextElementSibling.value = idx;
-	});	
+	});
 
-	// 5. 답글 삭제 index
+	// 7. 답글 삭제 index
 	const r_btns = document.querySelectorAll(".response_delete_btn");
 	r_btns.forEach(btn => { 
 		// 삭제할 답글의 idx 가져오기
@@ -441,6 +521,7 @@ document.addEventListener('DOMContentLoaded', function() {
 										.previousElementSibling.value;
 		btn.nextElementSibling.value = idx;
 	});
+	
 });
 
 // 댓글 삭제버튼 클릭시 --> 댓글 삭제하지 않고 "삭제된 댓글입니다" 표시함
@@ -473,7 +554,7 @@ for(let i=0; i<c_btns.length; i++) {
 const r_btns = document.querySelectorAll(".response_delete_btn");
 for(let i=0; i<r_btns.length; i++) {
 	r_btns[i].addEventListener('click', function() {
-		let result = confirm("댓글을 삭제할까요?");
+		let result = confirm("답글을 삭제할까요?");
 		let idx = r_btns[i].nextElementSibling.value;
 		if(result) {
 			$.ajax({

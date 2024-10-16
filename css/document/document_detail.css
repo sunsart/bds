@@ -152,7 +152,7 @@ input[type=button]:hover {
 .comment_name {
   font-size: 15px;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   padding-left: 0px;
   padding-top: 10px;
 }
@@ -160,7 +160,7 @@ input[type=button]:hover {
   font-size: 16px;
   padding-left: 10px;
   line-height: 150%;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
 .comment_date {
   display: inline;
@@ -169,13 +169,13 @@ input[type=button]:hover {
   padding-bottom: 10px;
   color: darkgray;
 }
-.response_open_btn {
+.comment_open_btn, .response_open_btn  {
   font-size: 14px;
   color: darkgray;
   padding-left: 10px;
   cursor: pointer;
 }
-.response_edit_btn, .response_delete_btn, .comment_delete_btn {
+.comment_edit_btn, .response_edit_btn, .comment_delete_btn, .response_delete_btn {
   font-size: 14px;
   color: darkgray;
   padding-left: 10px;
@@ -190,6 +190,9 @@ input[type=button]:hover {
 }
 .re_comment.off{
   display: none;
+}
+.response_name {
+  color: blue;
 }
 
 

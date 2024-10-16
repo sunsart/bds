@@ -28,11 +28,12 @@
   font-family: "Nanum Gothic", sans-serif;
   font-weight: 400;
   line-height: 1.4;
-  color: #333;
+  color: #333333;
   font-size: 16px;
   width: 100%;
   resize: none;
   box-sizing: border-box;
+  border: 1px solid gray;
 }
 
 
