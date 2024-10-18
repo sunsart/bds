@@ -193,8 +193,8 @@ function createTodo() {
   const todoInput = document.querySelector('#todoInput');
   if(todoInput.value == null || todoInput.value == "") {
     alert("할 일을 입력하세요");
-  } else if (todoInput.value.length > 20) {
-    alert("20글자 이하로 입력해주세요 (띄어쓰기 포함)");
+  } else if (todoInput.value.length > 25) {
+    alert("25글자 이하로 입력해주세요 (띄어쓰기 포함)");
   } else {
     $.ajax({
       url : "/todo_add",

@@ -20,12 +20,14 @@ function findpw() {
   let email = document.querySelector("#findpw_email").value;
   const pattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
 
-  if (name == "" ) 
-    alert("아이디를 입력해주세요");
+  if (name.length < 4 || name.length >= 20) 
+    alert("아이디는 4글자 ~ 20글자 이내로 입력해주세요");
   else if (email == "")
     alert("이메일 주소를 입력해주세요");
   else if (pattern.test(email) === false)
     alert("이메일 형식이 올바르지 않습니다");
+  else if (email.length >= 45)
+    alert("이메일주소는 45자 이내로 입력해주세요");
   else {
     $.ajax({
       url : "/findpw",

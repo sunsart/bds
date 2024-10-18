@@ -21,6 +21,8 @@ function findid() {
     alert("이메일 주소를 입력해주세요")
   else if (pattern.test(email) === false) 
     alert("이메일 형식이 올바르지 않습니다")
+  else if (email.length >= 45)
+    alert("이메일주소는 45자 이내로 입력해주세요");
   else {
     $.ajax({
       url : "/findid",

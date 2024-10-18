@@ -20,6 +20,8 @@ function checkSignup() {
     alert("이메일주소를 입력해주세요");
   else if (pattern.test(email) === false) 
     alert("이메일주소 형식이 올바르지 않습니다");
+  else if (email.length >= 45)
+    alert("이메일주소는 45자 이내로 입력해주세요");
   else if (terms.checked == false) 
     alert("약관에 동의해 주세요");
   else {
@@ -29,7 +31,7 @@ function checkSignup() {
       data : {name:name, pw:pw1, nickname:nickname, email:email},
       success : function(data) {
         if(data[0] == "가입실패") 
-          alert("아이디, 이메일주소, 별명이 이미 존재합니다");
+          alert("같은 이름의 아이디, 이메일주소, 별명이 존재합니다");
         else if(data[0] == "가입성공") {
           alert("정상적으로 회원가입 되었습니다.");
           window.location.href = '/login';

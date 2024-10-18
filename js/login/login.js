@@ -2,10 +2,10 @@ function Login() {
   let name = document.querySelector("#login_name").value;
   let pw = document.querySelector("#login_pw").value;
 
-  if (name == "") 
-    alert("아이디를 입력해주세요")
-  else if (pw == "") 
-    alert("비밀번호를 입력해주세요")
+  if (name.length < 4 || name.length >= 20) 
+    alert("아이디는 4글자 ~ 20글자 이내로 입력해주세요");
+  else if (pw.length < 6)
+    alert("비밀번호는 6글자 이상 입력해주세요");
   else {
     $.ajax({
       url : "/login",
